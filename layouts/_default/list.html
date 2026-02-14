@@ -6,6 +6,21 @@
 {{- with $home.featuredPostCount }}{{ $postLimit = . }}{{ end }}
 {{- $projectLimit := 3 }}
 {{- with $home.featuredProjectCount }}{{ $projectLimit = . }}{{ end }}
+{{- $identityDefaults := slice
+"Software Developer"
+"AI Researcher"
+"NTUAIS Organizer"
+"Product-minded Builder"
+}}
+{{- $identityList := $home.identities | default $identityDefaults }}
+{{- $focusDefaults := slice
+"AI safety research and applied systems"
+"Responsible deployment practices"
+"Community building for NTUAIS"
+"Rapid AI tooling and prototyping"
+}}
+{{- $focusList := $home.focuses | default $focusDefaults }}
+{{- $nowLine := $home.now | default "Currently building practical AI tools, writing about safety-by-design systems, and strengthening the AI ethics ecosystem in Taiwan." }}
 
 {{- $allPosts := where site.RegularPages "Section" "posts" }}
 {{- $allPosts = where $allPosts "Params.hiddenInHomeList" "!=" "true" }}
@@ -28,10 +43,24 @@
     <h1 class="home-title">{{ $home.title | default site.Title }}</h1>
     <p class="home-subtitle">{{ $home.subtitle | default site.Params.description }}</p>
     <p class="home-intro">{{ $home.intro | default "Recent thoughts, projects, and short technical reflections." }}</p>
+    <div class="home-identity-wrap" role="list" aria-label="Current roles">
+      {{- range $identityList }}
+      <span class="home-identity" role="listitem">{{ . }}</span>
+      {{- end }}
+    </div>
     <div class="home-cta-row">
       {{- range $home.ctas }}
       {{- $style := .style | default "secondary" }}
       <a class="home-btn home-btn-{{ $style }}" href="{{ .url | absURL }}">{{ .name }}</a>
+      {{- end }}
+    </div>
+    <div class="home-now">
+      <p class="home-now-label">Now</p>
+      <p>{{ $nowLine }}</p>
+    </div>
+    <div class="home-focus-grid" role="list" aria-label="Focus list">
+      {{- range $focusList }}
+      <p class="home-focus-item" role="listitem">{{ . }}</p>
       {{- end }}
     </div>
     {{- with $home.skills }}
@@ -44,14 +73,14 @@
     {{- end }}
   </section>
 
-  <section class="home-section home-reveal" aria-labelledby="featured-posts-title">
+  <section class="home-section" aria-labelledby="featured-posts-title">
     <div class="home-section-head">
       <h2 id="featured-posts-title">Featured articles</h2>
       <a class="home-link" href="/posts/">View all posts</a>
     </div>
     <div class="home-grid">
-      {{- range $i, $post := $featuredPosts }}
-      <article class="home-card home-reveal" style="--reveal-index: {{ $i }}">
+      {{- range $post := $featuredPosts }}
+      <article class="home-card">
         <p class="home-card-kind">Article</p>
         <h3><a href="{{ $post.RelPermalink }}">{{ $post.Title }}</a></h3>
         <p>{{ $post.Summary | plainify | truncate 140 }}</p>
@@ -65,7 +94,7 @@
   </section>
 
   {{- with site.GetPage "/about" }}
-  <section class="home-about home-section home-reveal" aria-labelledby="about-section-title">
+  <section class="home-about home-section" aria-labelledby="about-section-title">
     <div class="home-section-head">
       <h2 id="about-section-title">{{ $home.aboutTitle | default .Title }}</h2>
       <a class="home-link" href="{{ .RelPermalink }}">Read more</a>
@@ -74,14 +103,14 @@
   </section>
   {{- end }}
 
-  <section class="home-section home-reveal" aria-labelledby="projects-title">
+  <section class="home-section" aria-labelledby="projects-title">
     <div class="home-section-head">
       <h2 id="projects-title">Selected projects</h2>
       <a class="home-link" href="/projects/">Browse projects</a>
     </div>
     <div class="home-grid">
-      {{- range $i, $project := $featuredProjects }}
-      <article class="home-card home-reveal" style="--reveal-index: {{ $i }}">
+      {{- range $project := $featuredProjects }}
+      <article class="home-card">
         <p class="home-card-kind">Project</p>
         <h3><a href="{{ $project.RelPermalink }}">{{ $project.Title }}</a></h3>
         <p>{{ $project.Summary | plainify | truncate 160 }}</p>
@@ -104,7 +133,7 @@
     </div>
   </section>
 
-  <section class="home-section home-reveal" aria-labelledby="contact-title">
+  <section class="home-section" aria-labelledby="contact-title">
     <div class="home-section-head">
       <h2 id="contact-title">{{ $home.contactTitle | default "Contact" }}</h2>
     </div>
@@ -116,57 +145,6 @@
     </div>
   </section>
 </main>
-
-<script>
-(() => {
-  const blocks = document.querySelectorAll('.home-reveal');
-  if (!blocks.length) return;
-
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const cards = document.querySelectorAll('.home-card');
-
-  if (reduceMotion) {
-    blocks.forEach((node) => node.classList.add('is-visible'));
-    return;
-  }
-
-  blocks.forEach((node) => node.style.setProperty('--reveal-delay', `${Number(node.style.getPropertyValue('--reveal-index') || 0) * 90}ms`));
-
-  const observer = new IntersectionObserver((entries, obs) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      entry.target.classList.add('is-visible');
-      obs.unobserve(entry.target);
-    });
-  }, {
-    threshold: 0.1,
-    rootMargin: '0px 0px -80px 0px'
-  });
-
-  blocks.forEach((node) => observer.observe(node));
-
-  if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
-    cards.forEach((card) => {
-      const bounds = () => card.getBoundingClientRect();
-
-      card.addEventListener('pointermove', (event) => {
-        const rect = bounds();
-        const offsetX = ((event.clientX - rect.left) / rect.width - 0.5) * 2;
-        const offsetY = ((event.clientY - rect.top) / rect.height - 0.5) * 2;
-        const rotateX = offsetY * -6;
-        const rotateY = offsetX * 7;
-        card.style.setProperty('--rx', `${rotateX}deg`);
-        card.style.setProperty('--ry', `${rotateY}deg`);
-      });
-
-      card.addEventListener('pointerleave', () => {
-        card.style.setProperty('--rx', '0deg');
-        card.style.setProperty('--ry', '0deg');
-      });
-    });
-  }
-})();
-</script>
 
 {{- else }}
 

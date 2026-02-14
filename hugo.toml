@@ -48,6 +48,19 @@ relativeURLs = false
     title = "Hi, I'm Leonardo Foo"
     subtitle = "Software developer, AI researcher, and organizer of NTUAIS."
     intro = "I build useful systems, explore AI safety, and share ideas that connect research, engineering, and impact."
+    identities = [
+      "Software Developer",
+      "AI Researcher",
+      "NTUAIS Organizer"
+    ]
+    now = "Building practical AI tools, writing about safety and responsible AI, and strengthening the AI safety ecosystem with NTUAIS."
+    focuses = [
+      "AI safety",
+      "Model and system evaluation",
+      "Responsible deployment",
+      "AI tooling and rapid prototyping",
+      "Impactful community building"
+    ]
     featuredPostCount = 3
     featuredProjectCount = 3
     aboutTitle = "About"
