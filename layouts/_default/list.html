@@ -37,7 +37,7 @@
 {{- $featuredProjects = first $projectLimit (sort $allProjects "Date" "desc") }}
 {{- end }}
 
-<main class="home-wrap">
+<section class="home-wrap">
   <section class="home-hero" aria-label="Introduction">
     <p class="home-kicker">{{ $home.kicker | default "AI + Systems + Product" }}</p>
     <h1 class="home-title">{{ $home.title | default site.Title }}</h1>
@@ -99,7 +99,7 @@
       <h2 id="about-section-title">{{ $home.aboutTitle | default .Title }}</h2>
       <a class="home-link" href="{{ .RelPermalink }}">Read more</a>
     </div>
-    <p class="home-about-content">{{ .Summary | default $home.aboutBlurb }}</p>
+    <p class="home-about-content">{{ $home.aboutBlurb | default .Summary }}</p>
   </section>
   {{- end }}
 
@@ -144,7 +144,7 @@
       <a class="home-link" href="{{ "/resume/" | absURL }}">Resume / CV</a>
     </div>
   </section>
-</main>
+</section>
 
 {{- else }}
 
