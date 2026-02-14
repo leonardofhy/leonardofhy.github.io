@@ -5,11 +5,11 @@ summary: "Leonardo Foo's Resume"
 ---
 
 # Leonardo Foo
-**AI Engineer & Graduate Student**
-*Taipei, Taiwan* | [LinkedIn](https://www.linkedin.com/in/leonardo-fhy/) | [GitHub](https://github.com/leonardofhy)
+**Software Developer • AI Researcher • NTUAIS Organizer**
+*Taipei, Taiwan* | [LinkedIn](https://www.linkedin.com/in/leonardo-fhy/) | [GitHub](https://github.com/leonardo-fhy)
 
 ## Summary
-Graduate student in Communication Engineering at NTU with a focus on Artificial Intelligence and Machine Learning. Passionate about building intelligent systems and scalable web applications.
+Graduate student in Communication Engineering at NTU focusing on Artificial Intelligence and Machine Learning, with active research interests in AI safety, system-level impact, and practical deployment.
 
 ## Education
 **National Taiwan University** | *M.S. in Communication Engineering*
@@ -25,10 +25,15 @@ Graduate student in Communication Engineering at NTU with a focus on Artificial 
 - Developed computer vision models for defect detection.
 - Optimized inference speed by 30% using TensorRT.
 
+**Organizer, NTUAIS (National Taiwan University AI Safety)**
+*2024 - Present*
+- Organize discussions, speaker sessions, and student-led activities around AI safety and responsible AI.
+- Connect researchers, students, and practitioners to share practical safety insights.
+
 ## Skills
 - **Languages**: Python, C++, JavaScript, Go
-- **AI/ML**: PyTorch, TensorFlow, OpenCV, Hugging Face
-- **Web**: Hugo, React, Node.js
+- **AI/ML**: PyTorch, TensorFlow, OpenCV, Hugging Face, Safe AI Evaluation
+- **Web**: Hugo, React, Node.js, GitHub Actions
 - **Tools**: Docker, Git, Linux, AWS
 
 ## Projects

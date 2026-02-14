@@ -46,12 +46,12 @@ relativeURLs = false
   [params.home]
     kicker = "AI. Build. Explain."
     title = "Hi, I'm Leonardo Foo"
-    subtitle = "Machine learning engineer and product-minded builder, sharing practical notes from research, code, and experiments."
-    intro = "I write about AI engineering, software systems, and how to ship small useful ideas quickly."
+    subtitle = "Software developer, AI researcher, and organizer of NTUAIS."
+    intro = "I build useful systems, explore AI safety, and share ideas that connect research, engineering, and impact."
     featuredPostCount = 3
     featuredProjectCount = 3
     aboutTitle = "About"
-    aboutBlurb = "I care about practical AI systems, readable documentation, and clean developer experiences."
+    aboutBlurb = "I'm a software developer, AI researcher, and NTUAIS organizer in Taiwan. I care about practical AI, responsible deployment, and learning that creates real-world impact."
     contactTitle = "Let's connect"
 
     [[params.home.ctas]]
@@ -70,12 +70,12 @@ relativeURLs = false
     style = "ghost"
 
     skills = [
-      "Machine Learning",
-      "Computer Vision",
-      "LLM Applications",
-      "Hugo + Go",
-      "Python / Go",
-      "Cloud + CI/CD"
+      "AI Safety & Alignment",
+      "Applied Machine Learning",
+      "Software Engineering",
+      "NTUAIS Community Building",
+      "Vibe Coding / Rapid Prototyping",
+      "Impact-focused Research",
     ]
 
     [[params.home.contactLinks]]
