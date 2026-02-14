@@ -46,11 +46,12 @@ summary: "Brief description" # Used in listings
 
 ### Automatic Deployment
 
-- **Trigger**: Push to `main` branch
+- **Trigger**: Push to `main` branch only
 - **Workflow**: `.github/workflows/deploy.yml`
 - **Build**: Uses Hugo Extended with `--minify`
 - **Target**: Deploys to `gh-pages` branch → GitHub Pages
 - **URL**: `https://leonardofhy.github.io/leonardo_blog`
+- **Recommended branch flow**: Develop on `dev`, then merge `dev -> main` to trigger deployment.
 
 ### Critical Dependencies
 
@@ -95,6 +96,10 @@ hugo server --buildDrafts
 
 # Access at http://localhost:1313
 ```
+
+Branch workflow:
+- `dev`: development branch for daily work and feature integration
+- `main`: production branch; push here will trigger deployment automatically
 
 ### Content Guidelines
 
