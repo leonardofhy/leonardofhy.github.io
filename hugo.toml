@@ -1,6 +1,5 @@
 baseURL = 'https://leonardofhy.github.io/leonardo_blog'
-# languageCode = 'en' # Removed in favor of languages table
-defaultContentLanguage = 'en'
+languageCode = 'en'
 title = "Leonardo Foo's Blog"
 theme = "PaperMod"
 
@@ -8,14 +7,34 @@ theme = "PaperMod"
 canonifyURLs = true
 relativeURLs = false
 
-[outputs]
-  home = ["HTML", "RSS", "JSON"]
-
 [params]
+  author = "Leonardo Foo Haw Yang"
+  description = "Leonardo Foo's personal blog about AI engineering, machine learning, and software development."
+  keywords = ["AI", "machine learning", "software engineering", "Hugo", "Python"]
   defaultTheme = "auto"
   disableThemeToggle = false
-  
-  # Social icons (Global)
+
+  [params.profileMode]
+    enabled = true
+    title = "Leonardo Foo Haw Yang"
+    subtitle = "Graduate Student in Graduate Institute of Communication Engineering, National Taiwan University"
+
+    [[params.profileMode.buttons]]
+    name = "Blog Posts"
+    url = "/posts"
+
+    [[params.profileMode.buttons]]
+    name = "Resume"
+    url = "/resume/"
+
+    [[params.profileMode.buttons]]
+    name = "Projects"
+    url = "/projects/"
+
+    [[params.profileMode.buttons]]
+    name = "About"
+    url = "/about/"
+
   [[params.socialIcons]]
   name = "github"
   url = "https://github.com/leonardofhy"
@@ -23,81 +42,3 @@ relativeURLs = false
   [[params.socialIcons]]
   name = "linkedin"
   url = "https://www.linkedin.com/in/leonardo-fhy/"
-
-[params.fuseOpts]
-  isCaseSensitive = false
-  shouldSort = true
-  location = 0
-  distance = 1000
-  threshold = 0.4
-  minMatchCharLength = 0
-  keys = ["title", "permalink", "summary", "content"]
-
-# --- Languages Configuration ---
-
-[languages]
-  [languages.en]
-    languageName = "English"
-    weight = 1
-    title = "Leonardo Foo's Blog"
-    
-    [languages.en.params]
-      author = "Leonardo Foo Haw Yang"
-      
-      [languages.en.params.profileMode]
-        enabled = true
-        title = "Leonardo Foo Haw Yang"
-        subtitle = "Graduate Student in Graduate Institute of Communication Engineering, National Taiwan University"
-        
-        [[languages.en.params.profileMode.buttons]]
-        name = "Blog Posts"
-        url = "/posts"
-        
-        [[languages.en.params.profileMode.buttons]]
-        name = "Resume"
-        url = "/resume/"
-        
-        [[languages.en.params.profileMode.buttons]]
-        name = "Projects"
-        url = "/projects/"
-        
-        [[languages.en.params.profileMode.buttons]]
-        name = "About"
-        url = "/about/"
-
-        [[languages.en.params.profileMode.buttons]]
-        name = "Search"
-        url = "/search/"
-
-  [languages.zh-tw]
-    languageName = "繁體中文"
-    weight = 2
-    title = "胡皓雍的部落格"
-    
-    [languages.zh-tw.params]
-      author = "胡皓雍"
-      
-      [languages.zh-tw.params.profileMode]
-        enabled = true
-        title = "胡皓雍"
-        subtitle = "國立臺灣大學電信工程學研究所研究生"
-        
-        [[languages.zh-tw.params.profileMode.buttons]]
-        name = "文章"
-        url = "/posts"
-        
-        [[languages.zh-tw.params.profileMode.buttons]]
-        name = "履歷"
-        url = "/resume/"
-        
-        [[languages.zh-tw.params.profileMode.buttons]]
-        name = "專案"
-        url = "/projects/"
-        
-        [[languages.zh-tw.params.profileMode.buttons]]
-        name = "關於"
-        url = "/about/"
-
-        [[languages.zh-tw.params.profileMode.buttons]]
-        name = "搜尋"
-        url = "/search/"
