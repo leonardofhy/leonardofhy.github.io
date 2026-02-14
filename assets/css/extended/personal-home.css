@@ -74,6 +74,58 @@
   background: linear-gradient(180deg, var(--personal-page-top), var(--personal-page-bottom));
 }
 
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: color-mix(in oklab, var(--personal-card) 88%, transparent);
+  border-bottom: 1px solid var(--personal-border);
+  backdrop-filter: blur(10px);
+}
+
+.nav {
+  max-width: min(1080px, 92vw);
+  margin-inline-start: auto;
+  margin-inline-end: auto;
+}
+
+.logo a {
+  color: var(--personal-text);
+}
+
+.logo-switches {
+  gap: 0.25rem;
+}
+
+#menu a {
+  font-size: 0.98rem;
+  display: inline-flex;
+}
+
+#menu a span {
+  color: var(--personal-text);
+  border-radius: 999px;
+  padding: 0.32rem 0.74rem;
+  border: 1px solid transparent;
+  transition: background-color 140ms ease, color 140ms ease, border-color 140ms ease, transform 140ms ease;
+}
+
+#menu a span:hover {
+  color: var(--personal-accent);
+  border-color: color-mix(in oklab, var(--personal-accent), transparent 70%);
+  background: var(--personal-now-bg);
+  transform: translateY(-1px);
+}
+
+#menu .active,
+#menu .active:hover {
+  color: var(--personal-accent);
+  font-weight: 700;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--personal-accent), transparent 70%);
+  background: color-mix(in oklab, var(--personal-accent), transparent 90%);
+}
+
 .home-wrap {
   width: min(1080px, 92vw);
   margin: 0 auto;
