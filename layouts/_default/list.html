@@ -71,9 +71,16 @@
       {{- end }}
     </div>
     {{- end }}
+
+    <div class="home-section-nav" role="list" aria-label="Page sections">
+      <a class="home-section-nav-link" href="#featured-posts" role="listitem">Featured articles</a>
+      <a class="home-section-nav-link" href="#about-section" role="listitem">About</a>
+      <a class="home-section-nav-link" href="#projects-section" role="listitem">Projects</a>
+      <a class="home-section-nav-link" href="#contact-section" role="listitem">Contact</a>
+    </div>
   </section>
 
-  <section class="home-section" aria-labelledby="featured-posts-title">
+  <section class="home-section" id="featured-posts" aria-labelledby="featured-posts-title">
     <div class="home-section-head">
       <h2 id="featured-posts-title">Featured articles</h2>
       <a class="home-link" href="/posts/">View all posts</a>
@@ -94,7 +101,7 @@
   </section>
 
   {{- with site.GetPage "/about" }}
-  <section class="home-about home-section" aria-labelledby="about-section-title">
+  <section class="home-about home-section" id="about-section" aria-labelledby="about-section-title">
     <div class="home-section-head">
       <h2 id="about-section-title">{{ $home.aboutTitle | default .Title }}</h2>
       <a class="home-link" href="{{ .RelPermalink }}">Read more</a>
@@ -103,7 +110,7 @@
   </section>
   {{- end }}
 
-  <section class="home-section" aria-labelledby="projects-title">
+  <section class="home-section" id="projects-section" aria-labelledby="projects-title">
     <div class="home-section-head">
       <h2 id="projects-title">Selected projects</h2>
       <a class="home-link" href="/projects/">Browse projects</a>
@@ -133,7 +140,7 @@
     </div>
   </section>
 
-  <section class="home-section" aria-labelledby="contact-title">
+  <section class="home-section" id="contact-section" aria-labelledby="contact-title">
     <div class="home-section-head">
       <h2 id="contact-title">{{ $home.contactTitle | default "Contact" }}</h2>
     </div>
