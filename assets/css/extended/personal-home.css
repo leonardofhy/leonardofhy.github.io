@@ -1,8 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
 :root {
-  --personal-page-top: #f6f8fc;
-  --personal-page-bottom: #eef2f7;
+  --personal-page-top: #f4f7fb;
+  --personal-page-bottom: #f4f7fb;
+  --personal-page-surface: #f4f7fb;
   --personal-bg: #f5f7fb;
   --personal-card: #ffffff;
   --personal-text: #0f172a;
@@ -33,11 +34,15 @@
   --personal-meta-list-border: #d7e0ef;
   --personal-meta-list-text: #0f4c81;
   --personal-link: #0f766e;
+  --personal-section-bg: color-mix(in oklab, #ffffff 92%, var(--personal-page-surface));
+  --personal-section-border: #d6dde8;
+  --personal-section-shadow: 0 12px 30px -24px rgba(15, 23, 42, 0.22);
 }
 
 .dark {
   --personal-page-top: #0b1220;
-  --personal-page-bottom: #080d17;
+  --personal-page-bottom: #0b1220;
+  --personal-page-surface: #0b1220;
   --personal-bg: #0f172a;
   --personal-card: #111b2e;
   --personal-text: #e5e7eb;
@@ -68,10 +73,26 @@
   --personal-meta-list-border: #2b3f57;
   --personal-meta-list-text: #95b9ff;
   --personal-link: #2dd4bf;
+  --personal-section-bg: color-mix(in oklab, #132238 86%, #0b1220);
+  --personal-section-border: #203449;
+  --personal-section-shadow: 0 14px 28px -22px rgba(0, 0, 0, 0.52);
 }
 
-.main {
+.list,
+body.list {
   background: linear-gradient(180deg, var(--personal-page-top), var(--personal-page-bottom));
+  background-color: var(--personal-page-surface);
+}
+
+body,
+html {
+  background-color: var(--personal-page-surface);
+}
+
+main.main,
+.list .main,
+body.list .main {
+  background: transparent !important;
 }
 
 .header {
@@ -104,26 +125,24 @@
 
 #menu a span {
   color: var(--personal-text);
-  border-radius: 999px;
-  padding: 0.32rem 0.74rem;
-  border: 1px solid transparent;
-  transition: background-color 140ms ease, color 140ms ease, border-color 140ms ease, transform 140ms ease;
+  border-radius: 0.45rem;
+  padding: 0.2rem 0.3rem;
+  border: 0;
+  transition: color 140ms ease;
 }
 
 #menu a span:hover {
   color: var(--personal-accent);
-  border-color: color-mix(in oklab, var(--personal-accent), transparent 70%);
-  background: var(--personal-now-bg);
-  transform: translateY(-1px);
 }
 
 #menu .active,
 #menu .active:hover {
   color: var(--personal-accent);
   font-weight: 700;
-  border-radius: 999px;
-  border: 1px solid color-mix(in oklab, var(--personal-accent), transparent 70%);
-  background: color-mix(in oklab, var(--personal-accent), transparent 90%);
+  border-radius: 0.45rem;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .home-section-nav {
@@ -154,23 +173,31 @@
 }
 
 .home-wrap {
-  width: min(1080px, 92vw);
+  width: min(1080px, 100%);
   margin: 0 auto;
-  padding: clamp(1rem, 2.6vw, 2rem);
+  padding: clamp(1rem, 2.6vw, 2rem) clamp(0.35rem, 1.4vw, 0.9rem);
+  display: grid;
+  gap: 1.35rem;
+  align-content: start;
+  justify-items: stretch;
 }
 
 .home-hero,
 .home-section {
-  margin-bottom: 1.2rem;
-  border: 1px solid var(--personal-border);
+  width: 100%;
+  padding: clamp(1rem, 2.4vw, 1.6rem);
+  border: 1px solid var(--personal-section-border);
   border-radius: 1rem;
-  background: var(--personal-card);
-  box-shadow: var(--personal-shadow);
-  padding: clamp(1rem, 2.8vw, 1.8rem);
+  background: var(--personal-section-bg);
+  box-shadow: var(--personal-section-shadow);
 }
 
 .home-hero {
   border-color: var(--personal-hero-border);
+}
+
+.home-section {
+  padding-bottom: clamp(1rem, 2.2vw, 1.35rem);
 }
 
 .home-kicker {
