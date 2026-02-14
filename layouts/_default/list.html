@@ -1,0 +1,241 @@
+{{- define "main" }}
+
+{{- if .IsHome }}
+{{- $home := site.Params.home }}
+{{- $postLimit := 3 }}
+{{- with $home.featuredPostCount }}{{ $postLimit = . }}{{ end }}
+{{- $projectLimit := 3 }}
+{{- with $home.featuredProjectCount }}{{ $projectLimit = . }}{{ end }}
+
+{{- $allPosts := where site.RegularPages "Section" "posts" }}
+{{- $allPosts = where $allPosts "Params.hiddenInHomeList" "!=" "true" }}
+{{- $featuredCandidates := where $allPosts "Params.featured" true }}
+{{- $featuredPosts := first $postLimit (sort $featuredCandidates "Date" "desc") }}
+{{- if lt (len $featuredPosts) $postLimit }}
+{{- $featuredPosts = first $postLimit (sort $allPosts "Date" "desc") }}
+{{- end }}
+
+{{- $allProjects := where site.RegularPages "Section" "projects" }}
+{{- $projectCandidates := where $allProjects "Params.featured" true }}
+{{- $featuredProjects := first $projectLimit (sort $projectCandidates "Date" "desc") }}
+{{- if lt (len $featuredProjects) $projectLimit }}
+{{- $featuredProjects = first $projectLimit (sort $allProjects "Date" "desc") }}
+{{- end }}
+
+<main class="home-wrap">
+  <section class="home-hero" aria-label="Introduction">
+    <p class="home-kicker">{{ $home.kicker | default "AI + Systems + Product" }}</p>
+    <h1 class="home-title">{{ $home.title | default site.Title }}</h1>
+    <p class="home-subtitle">{{ $home.subtitle | default site.Params.description }}</p>
+    <p class="home-intro">{{ $home.intro | default "Recent thoughts, projects, and short technical reflections." }}</p>
+    <div class="home-cta-row">
+      {{- range $home.ctas }}
+      {{- $style := .style | default "secondary" }}
+      <a class="home-btn home-btn-{{ $style }}" href="{{ .url | absURL }}">{{ .name }}</a>
+      {{- end }}
+    </div>
+    {{- with $home.skills }}
+    <p class="home-skill-title">Focus areas</p>
+    <div class="home-skill-wrap" role="list" aria-label="Focus areas">
+      {{- range . }}
+      <span class="home-skill" role="listitem">{{ . }}</span>
+      {{- end }}
+    </div>
+    {{- end }}
+  </section>
+
+  <section class="home-section" aria-labelledby="featured-posts-title">
+    <div class="home-section-head">
+      <h2 id="featured-posts-title">Featured articles</h2>
+      <a class="home-link" href="/posts/">View all posts</a>
+    </div>
+    <div class="home-grid">
+      {{- range $featuredPosts }}
+      <article class="home-card">
+        <p class="home-card-kind">Article</p>
+        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        <p>{{ .Summary | plainify | truncate 140 }}</p>
+        <p class="home-meta">{{ .Date.Format "Jan 2, 2006" }} · {{ .ReadingTime }} min read</p>
+        <a class="home-link-inline" href="{{ .RelPermalink }}">Read</a>
+      </article>
+      {{- else }}
+      <p class="home-empty">No posts yet. Start writing in <code>content/posts</code>.</p>
+      {{- end }}
+    </div>
+  </section>
+
+  {{- with site.GetPage "/about" }}
+  <section class="home-about home-section" aria-labelledby="about-section-title">
+    <div class="home-section-head">
+      <h2 id="about-section-title">{{ $home.aboutTitle | default .Title }}</h2>
+      <a class="home-link" href="{{ .RelPermalink }}">Read more</a>
+    </div>
+    <p class="home-about-content">{{ .Summary | default $home.aboutBlurb }}</p>
+  </section>
+  {{- end }}
+
+  <section class="home-section" aria-labelledby="projects-title">
+    <div class="home-section-head">
+      <h2 id="projects-title">Selected projects</h2>
+      <a class="home-link" href="/projects/">Browse projects</a>
+    </div>
+    <div class="home-grid">
+      {{- range $featuredProjects }}
+      <article class="home-card">
+        <p class="home-card-kind">Project</p>
+        <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+        <p>{{ .Summary | plainify | truncate 160 }}</p>
+        <div class="home-meta-wrap">
+          {{- with .Params.technologies }}
+          <div class="home-meta-list" aria-label="Technologies">
+            {{- range . }}
+            <span>{{ . }}</span>
+            {{- end }}
+          </div>
+          {{- end }}
+          {{- if .Params.project_url }}
+          <a class="home-link-inline" href="{{ .Params.project_url }}" target="_blank" rel="noopener noreferrer">Live / repo</a>
+          {{- end }}
+        </div>
+      </article>
+      {{- else }}
+      <p class="home-empty">No projects yet. Add project entries under <code>content/projects</code>.</p>
+      {{- end }}
+    </div>
+  </section>
+
+  <section class="home-section" aria-labelledby="contact-title">
+    <div class="home-section-head">
+      <h2 id="contact-title">{{ $home.contactTitle | default "Contact" }}</h2>
+    </div>
+    <div class="home-contact-wrap">
+      {{- range $home.contactLinks }}
+      <a class="home-btn home-btn-secondary" href="{{ .url | safeURL }}">{{ .name }}</a>
+      {{- end }}
+      <a class="home-link" href="{{ "/resume/" | absURL }}">Resume / CV</a>
+    </div>
+  </section>
+</main>
+
+{{- else }}
+
+{{- if (and site.Params.profileMode.enabled .IsHome) }}
+{{- partial "index_profile.html" . }}
+{{- else }} {{/* if not profileMode */}}
+
+{{- if not .IsHome | and .Title }}
+<header class="page-header">
+  {{- partial "breadcrumbs.html" . }}
+  <h1>
+    {{ .Title }}
+    {{- if and (or (eq .Kind `term`) (eq .Kind `section`)) (.Param "ShowRssButtonInSectionTermList") }}
+    {{- with .OutputFormats.Get "rss" }}
+    <a href="{{ .RelPermalink }}" title="RSS" aria-label="RSS">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" height="23">
+        <path d="M4 11a9 9 0 0 1 9 9" />
+        <path d="M4 4a16 16 0 0 1 16 16" />
+        <circle cx="5" cy="19" r="1" />
+      </svg>
+    </a>
+    {{- end }}
+    {{- end }}
+  </h1>
+  {{- if .Description }}
+  <div class="post-description">
+    {{ .Description | markdownify }}
+  </div>
+  {{- end }}
+</header>
+{{- end }}
+
+{{- if .Content }}
+<div class="post-content">
+  {{- if not (.Param "disableAnchoredHeadings") }}
+  {{- partial "anchored_headings.html" .Content -}}
+  {{- else }}{{ .Content }}{{ end }}
+</div>
+{{- end }}
+
+{{- $pages := union .RegularPages .Sections }}
+
+{{- if .IsHome }}
+{{- $pages = where site.RegularPages "Type" "in" site.Params.mainSections }}
+{{- $pages = where $pages "Params.hiddenInHomeList" "!=" "true"  }}
+{{- end }}
+
+{{- $paginator := .Paginate $pages }}
+
+{{- if and .IsHome site.Params.homeInfoParams (eq $paginator.PageNumber 1) }}
+{{- partial "home_info.html" . }}
+{{- end }}
+
+{{- $term := .Data.Term }}
+{{- range $index, $page := $paginator.Pages }}
+
+{{- $class := "post-entry" }}
+
+{{- $user_preferred := or site.Params.disableSpecial1stPost site.Params.homeInfoParams }}
+{{- if (and $.IsHome (eq $paginator.PageNumber 1) (eq $index 0) (not $user_preferred) }}
+{{- $class = "first-entry" }}
+{{- else if $term }}
+{{- $class = "post-entry tag-entry" }}
+{{- end }}
+
+<article class="{{ $class }}">
+  {{- $isHidden := (.Param "cover.hiddenInList") | default (.Param "cover.hidden") | default false }}
+  {{- partial "cover.html" (dict "cxt" . "IsSingle" false "isHidden" $isHidden) }}
+  <header class="entry-header">
+    <h2 class="entry-hint-parent">
+      {{- .Title }}
+      {{- if .Draft }}
+      <span class="entry-hint" title="Draft">
+        <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" fill="currentColor">
+          <path
+            d="M160-410v-60h300v60H160Zm0-165v-60h470v60H160Zm0-165v-60h470v60H160Zm360 580v-123l221-220q9-9 20-13t22-4q12 0 23 4.5t20 13.5l37 37q9 9 13 20t4 22q0 11-4.5 22.5T862.09-380L643-160H520Zm300-263-37-37 37 37ZM580-220h38l121-122-18-19-19-18-122 121v38Zm141-141-19-18 37 37-18-19Z" />
+        </svg>
+      </span>
+      {{- end }}
+    </h2>
+  </header>
+  {{- if (ne (.Param "hideSummary") true) }}
+  <div class="entry-content">
+    <p>{{ .Summary | plainify | htmlUnescape }}{{ if .Truncated }}...{{ end }}</p>
+  </div>
+  {{- end }}
+  {{- if not (.Param "hideMeta") }}
+  <footer class="entry-footer">
+    {{- partial "post_meta.html" . -}}
+  </footer>
+  {{- end }}
+  <a class="entry-link" aria-label="post link to {{ .Title | plainify }}" href="{{ .Permalink }}"></a>
+</article>
+{{- end }}
+
+{{- if gt $paginator.TotalPages 1 }}
+<footer class="page-footer">
+  <nav class="pagination">
+    {{- if $paginator.HasPrev }}
+    <a class="prev" href="{{ $paginator.Prev.URL | absURL }}">
+      «&nbsp;{{ i18n "prev_page" }}&nbsp;
+      {{- if (.Param "ShowPageNums") }}
+      {{- sub $paginator.PageNumber 1 }}/{{ $paginator.TotalPages }}
+      {{- end }}
+    </a>
+    {{- end }}
+    {{- if $paginator.HasNext }}
+    <a class="next" href="{{ $paginator.Next.URL | absURL }}">
+      {{- i18n "next_page" }}&nbsp;
+      {{- if (.Param "ShowPageNums") }}
+      {{- add 1 $paginator.PageNumber }}/{{ $paginator.TotalPages }}
+      {{- end }}&nbsp;»
+    </a>
+    {{- end }}
+  </nav>
+</footer>
+{{- end }}
+
+{{- end }}{{/* end profileMode */}}
+
+{{- end }}
+{{- end }}

@@ -15,7 +15,7 @@ relativeURLs = false
   disableThemeToggle = false
 
   [params.profileMode]
-    enabled = true
+    enabled = false
     title = "Leonardo Foo Haw Yang"
     subtitle = "Graduate Student in Graduate Institute of Communication Engineering, National Taiwan University"
 
@@ -42,3 +42,50 @@ relativeURLs = false
   [[params.socialIcons]]
   name = "linkedin"
   url = "https://www.linkedin.com/in/leonardo-fhy/"
+
+  [params.home]
+    kicker = "AI. Build. Explain."
+    title = "Hi, I'm Leonardo Foo"
+    subtitle = "Machine learning engineer and product-minded builder, sharing practical notes from research, code, and experiments."
+    intro = "I write about AI engineering, software systems, and how to ship small useful ideas quickly."
+    featuredPostCount = 3
+    featuredProjectCount = 3
+    aboutTitle = "About"
+    aboutBlurb = "I care about practical AI systems, readable documentation, and clean developer experiences."
+    contactTitle = "Let's connect"
+
+    [[params.home.ctas]]
+    name = "Read Blog"
+    url = "/posts/"
+    style = "primary"
+
+    [[params.home.ctas]]
+    name = "View Projects"
+    url = "/projects/"
+    style = "secondary"
+
+    [[params.home.ctas]]
+    name = "Contact Me"
+    url = "/about/"
+    style = "ghost"
+
+    skills = [
+      "Machine Learning",
+      "Computer Vision",
+      "LLM Applications",
+      "Hugo + Go",
+      "Python / Go",
+      "Cloud + CI/CD"
+    ]
+
+    [[params.home.contactLinks]]
+    name = "Email"
+    url = "mailto:leonardo@example.com"
+
+    [[params.home.contactLinks]]
+    name = "GitHub"
+    url = "https://github.com/leonardofhy"
+
+    [[params.home.contactLinks]]
+    name = "LinkedIn"
+    url = "https://www.linkedin.com/in/leonardo-fhy/"
