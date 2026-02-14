@@ -107,6 +107,10 @@
       <a class="home-link" href="{{ .RelPermalink }}">Read more</a>
     </div>
     <p class="home-about-content">{{ $home.aboutBlurb | default .Summary }}</p>
+    <div class="home-about-cta">
+      <a class="home-btn home-btn-secondary" href="{{ .RelPermalink }}">About me</a>
+      <a class="home-btn home-btn-ghost" href="{{ "/resume/" | absURL }}">Resume / CV</a>
+    </div>
   </section>
   {{- end }}
 

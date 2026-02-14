@@ -450,6 +450,13 @@
   margin: 0;
 }
 
+.home-about-cta {
+  margin-top: 0.9rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
 .home-link-inline {
   width: fit-content;
   color: var(--personal-link);
@@ -485,6 +492,11 @@
 
   .home-focus-grid {
     grid-template-columns: 1fr;
+  }
+
+  .home-about-cta .home-btn {
+    padding: 0.52rem 0.9rem;
+    font-size: 0.91rem;
   }
 
   .header {
