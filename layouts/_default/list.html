@@ -6,6 +6,10 @@
 {{- with $home.featuredPostCount }}{{ $postLimit = . }}{{ end }}
 {{- $projectLimit := 3 }}
 {{- with $home.featuredProjectCount }}{{ $projectLimit = . }}{{ end }}
+{{- $postsPage := site.GetPage "/posts" }}
+{{- $projectsPage := site.GetPage "/projects" }}
+{{- $aboutPage := site.GetPage "/about" }}
+{{- $resumePage := site.GetPage "/resume" }}
 {{- $identityDefaults := slice
 "Software Developer"
 "AI Researcher"
@@ -51,7 +55,13 @@
     <div class="home-cta-row">
       {{- range $home.ctas }}
       {{- $style := .style | default "secondary" }}
-      <a class="home-btn home-btn-{{ $style }}" href="{{ .url | absURL }}">{{ .name }}</a>
+      {{- if findRE "^#" .url }}
+      <a class="home-btn home-btn-{{ $style }}" href="{{ .url }}">{{ .name }}</a>
+      {{- else if findRE "://" .url }}
+      <a class="home-btn home-btn-{{ $style }}" href="{{ .url }}">{{ .name }}</a>
+      {{- else }}
+      <a class="home-btn home-btn-{{ $style }}" href="{{ strings.TrimPrefix .url "/" | absURL }}">{{ .name }}</a>
+      {{- end }}
       {{- end }}
     </div>
     <div class="home-now">
@@ -83,7 +93,7 @@
   <section class="home-section" id="featured-posts" aria-labelledby="featured-posts-title">
     <div class="home-section-head">
       <h2 id="featured-posts-title">Featured articles</h2>
-      <a class="home-link" href="/posts/">View all posts</a>
+      <a class="home-link" href="{{ with $postsPage }}{{ .RelPermalink }}{{ else }}{{ "/posts/" | absURL }}{{ end }}">View all posts</a>
     </div>
     <div class="home-grid">
       {{- range $post := $featuredPosts }}
@@ -104,12 +114,12 @@
   <section class="home-about home-section" id="about-section" aria-labelledby="about-section-title">
     <div class="home-section-head">
       <h2 id="about-section-title">{{ $home.aboutTitle | default .Title }}</h2>
-      <a class="home-link" href="{{ .RelPermalink }}">Read more</a>
+      <a class="home-link" href="{{ with $aboutPage }}{{ .RelPermalink }}{{ else }}{{ "/about/" | absURL }}{{ end }}">Read more</a>
     </div>
     <p class="home-about-content">{{ $home.aboutBlurb | default .Summary }}</p>
     <div class="home-about-cta">
-      <a class="home-btn home-btn-secondary" href="{{ .RelPermalink }}">About me</a>
-      <a class="home-btn home-btn-ghost" href="{{ "/resume/" | absURL }}">Resume / CV</a>
+      <a class="home-btn home-btn-secondary" href="{{ with $aboutPage }}{{ .RelPermalink }}{{ else }}{{ "/about/" | absURL }}{{ end }}">About me</a>
+      <a class="home-btn home-btn-ghost" href="{{ with $resumePage }}{{ .RelPermalink }}{{ else }}{{ "/resume/" | absURL }}{{ end }}">Resume / CV</a>
     </div>
   </section>
   {{- end }}
@@ -117,7 +127,7 @@
   <section class="home-section" id="projects-section" aria-labelledby="projects-title">
     <div class="home-section-head">
       <h2 id="projects-title">Selected projects</h2>
-      <a class="home-link" href="/projects/">Browse projects</a>
+      <a class="home-link" href="{{ with $projectsPage }}{{ .RelPermalink }}{{ else }}{{ "/projects/" | absURL }}{{ end }}">Browse projects</a>
     </div>
     <div class="home-grid">
       {{- range $project := $featuredProjects }}
@@ -152,7 +162,7 @@
       {{- range $home.contactLinks }}
       <a class="home-btn home-btn-secondary" href="{{ .url | safeURL }}">{{ .name }}</a>
       {{- end }}
-      <a class="home-link" href="{{ "/resume/" | absURL }}">Resume / CV</a>
+      <a class="home-link" href="{{ with $resumePage }}{{ .RelPermalink }}{{ else }}{{ "/resume/" | absURL }}{{ end }}">Resume / CV</a>
     </div>
   </section>
 </section>

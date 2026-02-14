@@ -21,7 +21,7 @@ relativeURLs = false
 
     [[params.profileMode.buttons]]
     name = "Blog Posts"
-    url = "/posts"
+    url = "posts/"
 
     [[params.profileMode.buttons]]
     name = "Resume"
@@ -45,22 +45,22 @@ relativeURLs = false
 
   [[menu.main]]
   name = "Posts"
-  url = "/posts/"
+  url = "posts/"
   weight = 1
 
   [[menu.main]]
   name = "Projects"
-  url = "/projects/"
+  url = "projects/"
   weight = 2
 
   [[menu.main]]
   name = "About"
-  url = "/about/"
+  url = "about/"
   weight = 3
 
   [[menu.main]]
   name = "Resume"
-  url = "/resume/"
+  url = "resume/"
   weight = 4
 
   [params.home]
@@ -89,17 +89,17 @@ relativeURLs = false
 
     [[params.home.ctas]]
     name = "Read Blog"
-    url = "/posts/"
+    url = "posts/"
     style = "primary"
 
     [[params.home.ctas]]
     name = "View Projects"
-    url = "/projects/"
+    url = "projects/"
     style = "secondary"
 
     [[params.home.ctas]]
     name = "Contact Me"
-    url = "/about/"
+    url = "#contact-section"
     style = "ghost"
 
     skills = [
