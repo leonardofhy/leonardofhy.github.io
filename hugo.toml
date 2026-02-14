@@ -43,6 +43,26 @@ relativeURLs = false
   name = "linkedin"
   url = "https://www.linkedin.com/in/leonardo-fhy/"
 
+  [[menu.main]]
+  name = "Posts"
+  url = "/posts/"
+  weight = 1
+
+  [[menu.main]]
+  name = "Projects"
+  url = "/projects/"
+  weight = 2
+
+  [[menu.main]]
+  name = "About"
+  url = "/about/"
+  weight = 3
+
+  [[menu.main]]
+  name = "Resume"
+  url = "/resume/"
+  weight = 4
+
   [params.home]
     kicker = "AI. Build. Explain."
     title = "Hi, I'm Leonardo Foo"
