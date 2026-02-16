@@ -1,11 +1,7 @@
-baseURL = 'https://leonardofhy.github.io/leonardo_blog'
+baseURL = 'https://leonardofhy.github.io/'
 languageCode = 'en'
 title = "Leonardo Foo's Blog"
 theme = "PaperMod"
-
-# Ensure proper URL generation for GitHub Pages
-canonifyURLs = true
-relativeURLs = false
 
 [params]
   author = "Leonardo Foo Haw Yang"
