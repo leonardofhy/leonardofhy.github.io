@@ -50,7 +50,7 @@ summary: "Brief description" # Used in listings
 - **Workflow**: `.github/workflows/deploy.yml`
 - **Build**: Uses Hugo Extended with `--minify`
 - **Target**: Deploys to `gh-pages` branch → GitHub Pages
-- **URL**: `https://leonardofhy.github.io/leonardo_blog`
+- **URL**: `https://leonardofhy.github.io`
 - **Recommended branch flow**: Develop on `dev`, then merge `dev -> main` to trigger deployment.
 
 ### Critical Dependencies

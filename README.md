@@ -4,7 +4,7 @@ A personal blog built with [Hugo](https://gohugo.io/) and hosted on GitHub Pages
 
 ## 🌐 Site Access
 
-The blog is live at: **https://leonardofhy.github.io/leonardo_blog**
+The blog is live at: **https://leonardofhy.github.io**
 
 > **Note**: If you experience redirects to an inaccessible domain, please use the direct GitHub Pages URL above. The repository owner may need to update the custom domain settings in the GitHub Pages configuration.
 
@@ -38,8 +38,8 @@ The site is automatically deployed via GitHub Actions whenever changes are pushe
 
 2. **Clone the repository** (with submodules for the theme):
    ```bash
-   git clone --recurse-submodules https://github.com/leonardofhy/leonardo_blog.git
-   cd leonardo_blog
+   git clone --recurse-submodules https://github.com/leonardofhy/leonardofhy.github.io.git
+   cd leonardofhy.github.io
    ```
 
 ### Running Locally
@@ -121,7 +121,7 @@ This creates a `public/` directory with the static site files.
 ## 📁 Project Structure
 
 ```
-leonardo_blog/
+leonardofhy.github.io/
 ├── archetypes/          # Content templates
 │   └── default.md       # Default post template
 ├── content/             # Site content

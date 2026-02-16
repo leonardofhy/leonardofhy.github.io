@@ -36,8 +36,8 @@ The Hugo ecosystem has hundreds of themes, but I settled on [PaperMod](https://g
 brew install hugo
 
 # Create new site
-hugo new site leonardo_blog
-cd leonardo_blog
+hugo new site my-blog
+cd my-blog
 
 # Add theme as git submodule
 git submodule add https://github.com/adityatelange/hugo-PaperMod themes/PaperMod
@@ -48,7 +48,7 @@ git submodule add https://github.com/adityatelange/hugo-PaperMod themes/PaperMod
 The most important configuration in `hugo.toml`:
 
 ```toml
-baseURL = 'https://leonardofhy.github.io/leonardo_blog'
+baseURL = 'https://leonardofhy.github.io/'
 title = "Leonardo's Blog"
 theme = "PaperMod"
 
@@ -68,7 +68,7 @@ theme = "PaperMod"
 **Problem**: Theme wasn't loading properly after cloning
 **Solution**: Always clone with submodules:
 ```bash
-git clone --recurse-submodules https://github.com/leonardofhy/leonardo_blog.git
+git clone --recurse-submodules https://github.com/leonardofhy/leonardofhy.github.io.git
 ```
 
 ### Challenge 2: Deployment Configuration
@@ -155,4 +155,4 @@ If you're considering starting a technical blog, I highly recommend this stack. 
 
 ---
 
-*Have questions about Hugo or this setup? Feel free to reach out or check the [repository](https://github.com/leonardofhy/leonardo_blog) for the full configuration.*
+*Have questions about Hugo or this setup? Feel free to reach out or check the [repository](https://github.com/leonardofhy/leonardofhy.github.io) for the full configuration.*
