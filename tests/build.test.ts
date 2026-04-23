@@ -33,7 +33,7 @@ describe('posts list', () => {
 
   it('renders one StreamItem per post source file', () => {
     const doc = $('dist/posts/index.html');
-    expect(doc('.v6-stream-item').length).toBe(5);
+    expect(doc('.v6-stream-item').length).toBe(6);
   });
 
   it('topbar marks writing active', () => {

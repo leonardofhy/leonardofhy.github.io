@@ -20,8 +20,8 @@ function readFrontmatter(path: string): Record<string, unknown> {
 }
 
 describe('content source files', () => {
-  it('has 5 posts in src/content/posts', () => {
-    expect(listMd('src/content/posts')).toHaveLength(5);
+  it('has 6 posts in src/content/posts', () => {
+    expect(listMd('src/content/posts')).toHaveLength(6);
   });
 
   it('has 2 projects in src/content/projects', () => {
