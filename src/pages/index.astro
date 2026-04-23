@@ -1,0 +1,137 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TopBar from '../components/TopBar.astro';
+import TerminalPanel from '../components/TerminalPanel.astro';
+import ToolCall from '../components/ToolCall.astro';
+import BelowCard from '../components/BelowCard.astro';
+import AgentREPL, { type Message, type QuickCommand } from '../components/AgentREPL';
+
+const posts = (await getCollection('posts', (p) => p.data.draft !== true && !p.data.hiddenInHomeList))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+const projects = (await getCollection('projects', (p) => p.data.draft !== true))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const latestPost = posts[0];
+const featuredProject = projects.find((p) => p.data.featured) ?? projects[0];
+
+const initialMessages: Message[] = [
+  { kind: 'system', text: 'leonardo-agent v2026.04 · connected · taipei' },
+  { kind: 'user', text: 'whoami' },
+  {
+    kind: 'assistant',
+    tools: [
+      { name: 'read_file', args: '~/profile.md', ok: true },
+      { name: 'list_files', args: 'content/projects/', ok: true },
+    ],
+    md: [
+      { type: 'p', text: "Hey — I'm **Leonardo Foo Haw Yang** (胡皓雍)." },
+      {
+        type: 'p',
+        text: 'Software developer, AI researcher, and organizer of **NTUAIS**. M.S. student at NTU Communication Engineering, based in Taipei.',
+      },
+      {
+        type: 'p',
+        text: 'I build useful systems, explore AI safety, and share ideas that connect research, engineering, and impact.',
+      },
+      {
+        type: 'list',
+        items: [
+          'Research · model evaluation & responsible deployment',
+          'Engineering · AI tooling, rapid prototyping',
+          'Community · organizing the NTU AI Safety circle',
+        ],
+      },
+    ],
+  },
+];
+
+const quickCommands: QuickCommand[] = [
+  { cmd: '/writing', label: 'show recent posts', href: '/posts/' },
+  { cmd: '/projects', label: 'what have you built?', href: '/projects/' },
+  { cmd: '/now', label: 'what are you working on?', href: '/about/' },
+  { cmd: '/contact', label: 'how do I reach you?', href: '#contact' },
+];
+
+const buildDate = new Date().toISOString().slice(0, 10).replace(/-/g, '.');
+---
+<BaseLayout
+  title="Leonardo Foo — AI engineer, researcher, NTUAIS organizer"
+  description="Leonardo Foo's personal site — AI safety, applied ML, writing and projects."
+>
+  <TopBar active="agent" />
+
+  <section class="v6-shell">
+    <TerminalPanel
+      title="session · ask-leonardo"
+      meta={[
+        'model: claude-sonnet-4.5',
+        'context: 12.4k / 200k',
+        'cwd: ~/leonardo',
+      ]}
+      statusLeft={[
+        { label: '▸', value: 'agent mode' },
+        { label: 'tokens/min:', value: '1.2k' },
+        { label: 'latency:', value: '340ms' },
+      ]}
+      statusRight={[
+        { label: 'utc+8' },
+        { label: `build ${buildDate}` },
+        { label: 'hugo + claude' },
+      ]}
+    >
+      <AgentREPL
+        client:load
+        initialMessages={initialMessages}
+        quickCommands={quickCommands}
+      />
+    </TerminalPanel>
+
+    <section class="v6-below" aria-label="Highlights">
+      {latestPost && (
+        <BelowCard
+          label="▸ latest writing"
+          title={latestPost.data.title}
+          body={latestPost.data.summary}
+          href={`/posts/${latestPost.id}/`}
+          stats={[
+            { label: 'published', value: latestPost.data.date.toISOString().slice(0, 10).replace(/-/g, '.') },
+            { label: 'tag', value: (latestPost.data.tags ?? []).slice(0, 2).join(' · ') || '—' },
+          ]}
+        />
+      )}
+      {featuredProject && (
+        <BelowCard
+          label="▸ featured project"
+          title={featuredProject.data.title}
+          body={featuredProject.data.summary}
+          href={`/projects/${featuredProject.id}/`}
+          stats={[
+            { label: 'stack', value: (featuredProject.data.technologies ?? []).slice(0, 2).join(' · ').toLowerCase() || '—' },
+            { label: 'status', value: featuredProject.data.status },
+          ]}
+        />
+      )}
+      <div id="contact" class="v6-below-card">
+        <div class="v6-below-label">▸ currently</div>
+        <h3 class="v6-below-title">NTUAIS, cohort 02</h3>
+        <p class="v6-below-body">
+          Running speaker sessions and student-led activities on AI safety, practical evaluation, and
+          responsible deployment.
+        </p>
+        <div class="stats">
+          <span>role</span><b>organizer</b>
+          <span>since</span><b>2024</b>
+        </div>
+      </div>
+    </section>
+
+    <div class="v6-legend">
+      <span>© {new Date().getFullYear()} leonardo foo · built with astro + claude · site runs as an agent</span>
+      <span>
+        <kbd>⌘</kbd><kbd>k</kbd> command palette · <kbd>g</kbd><kbd>p</kbd> projects ·
+        <kbd>g</kbd><kbd>w</kbd> writing
+      </span>
+    </div>
+  </section>
+</BaseLayout>

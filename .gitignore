@@ -1,31 +1,18 @@
-# Hugo build directory
-public/
-.hugo_build.lock
+# Astro build + cache
+dist/
+.astro/
+node_modules/
 
-# Static cache files
-resources/_gen/
-
-# Hugo binary (if downloaded locally)
-hugo
-hugo.exe
-*.tar.gz
-
-# Python cache files (legacy)
-__pycache__/
-*.py[cod]
-*$py.class
-
-# IDE / Editor specific files
+# IDE / editor
 .vscode/
 .idea/
 *.swp
 *~
 .DS_Store
 
-# Other common ignores
+# Logs
 *.log
-local_settings.py
 
-# OS generated files
+# OS
 Thumbs.db
 ehthumbs.db

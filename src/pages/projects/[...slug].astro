@@ -1,0 +1,99 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopBar from '../../components/TopBar.astro';
+import TerminalPanel from '../../components/TerminalPanel.astro';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects', (p) => p.data.draft !== true);
+  return projects.map((project) => ({
+    params: { slug: project.id },
+    props: { project },
+  }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+
+const fmBlock = `name:       "${project.data.title}"
+slug:       "${project.id}"
+year:       ${project.data.date.getFullYear()}
+status:     "${project.data.status}"
+featured:   ${project.data.featured}
+stack:      ${JSON.stringify(project.data.technologies ?? [])}${
+  project.data.project_url ? `\nurl:        "${project.data.project_url}"` : ''
+}`;
+---
+<BaseLayout
+  title={`${project.data.title} — Leonardo Foo`}
+  description={project.data.summary}
+>
+  <TopBar active="projects" />
+
+  <div class="v6-subhead">
+    <a href="/projects/">← cat projects.json</a>
+    <span class="sep">/</span>
+    <span>{project.id}</span>
+  </div>
+
+  <section class="v6-shell">
+    <TerminalPanel
+      title={`$ read_file projects/${project.id}.md`}
+      meta={[
+        `status: ${project.data.status}`,
+        ...(project.data.featured ? ['featured: true'] : []),
+        `updated: ${project.data.date.toISOString().slice(0, 10)}`,
+      ]}
+    >
+      <div style="padding: 18px 0 0;">
+        <div class="v6-fm-card">
+          <div class="v6-section-label">▸ project manifest</div>
+          <pre class="v6-fm-pre">{fmBlock}</pre>
+        </div>
+
+        <div class="v6-post-head">
+          <h1>{project.data.title}</h1>
+          <div class="v6-post-meta">
+            <span>started {project.data.date.toISOString().slice(0, 10)}</span>
+            <span>·</span>
+            <span>status: <em>{project.data.status}</em></span>
+            {project.data.project_url && (
+              <>
+                <span>·</span>
+                <span>
+                  <a href={project.data.project_url} target="_blank" rel="noopener noreferrer">repo ↗</a>
+                </span>
+              </>
+            )}
+          </div>
+        </div>
+
+        <article class="v6-post-body">
+          <Content />
+        </article>
+
+        {project.data.technologies && project.data.technologies.length > 0 && (
+          <div style="margin: 0 24px 20px; padding: 14px 16px; background: rgba(245,244,238,0.02); border: 1px solid var(--rule-mid); border-radius: 8px;">
+            <div class="v6-section-label">▸ stack</div>
+            <div class="v6-proj-stack">
+              {project.data.technologies.map((t) => <span>{t.toLowerCase()}</span>)}
+            </div>
+          </div>
+        )}
+
+        <nav class="v6-post-nav" aria-label="Project navigation">
+          <a class="prev" href="/projects/">
+            <span class="nv-label">← back</span>
+            <span class="nv-title">All projects</span>
+          </a>
+          {project.data.project_url && (
+            <a class="next" href={project.data.project_url} target="_blank" rel="noopener noreferrer">
+              <span class="nv-label">open →</span>
+              <span class="nv-title">Repository</span>
+            </a>
+          )}
+        </nav>
+      </div>
+    </TerminalPanel>
+  </section>
+</BaseLayout>

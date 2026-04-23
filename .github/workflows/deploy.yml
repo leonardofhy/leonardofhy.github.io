@@ -1,9 +1,10 @@
-name: Deploy Hugo Site to GitHub Pages
+name: Deploy Astro Site to GitHub Pages
 
 on:
   # Runs only on pushes to main (prod deploy source)
   push:
     branches: ["main"]
+  workflow_dispatch:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
@@ -11,8 +12,8 @@ permissions:
   pages: write
   id-token: write
 
-# Allow only one concurrent deployment, skipping runs queued between the run in-progress and latest queued.
-# Cancel in-progress runs so only the latest commit on main is deployed.
+# Allow only one concurrent deployment; cancel in-progress runs so only the
+# latest commit on main is deployed.
 concurrency:
   group: "pages"
   cancel-in-progress: true
@@ -21,37 +22,28 @@ jobs:
   deploy:
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }} # Sets the deployment URL in the GitHub environment tab
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository # Checks out your repository code
+      - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
         with:
-          submodules: recursive
+          node-version: 22
+          cache: npm
 
-      - name: Setup Hugo # Downloads and installs Hugo
-        uses: peaceiris/actions-hugo@v3
-        with:
-          hugo-version: '0.155.1'
-          extended: true
+      - name: Install dependencies
+        run: npm ci
 
-      - name: Build Hugo site # Builds the Hugo site
-        run: hugo --minify
+      - name: Build Astro site
+        run: npm run build
 
-      - name: Deploy to GitHub Pages # Deploys the site to GitHub Pages
+      - name: Deploy to GitHub Pages
+        id: deployment
         uses: peaceiris/actions-gh-pages@v4
         with:
-          # Token automatically provided by GitHub Actions for authorization
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          # Directory containing the built website files
-          publish_dir: ./public
-          # The target branch for deployment
+          publish_dir: ./dist
           publish_branch: gh-pages
-          # Optional: Customize the commit message
-          # commit_message: Deploy from commit ${{ github.sha }}
-          # Optional: Keep the history of the gh-pages branch (default is false, forces push)
-          # keep_files: false
-          # Optional: Create a fresh branch history each time (similar effect to keep_files: false)
-          # force_orphan: true
-          # Optional: Uncomment and fill in your custom domain name if you use one
-          # cname: your_custom_domain.com

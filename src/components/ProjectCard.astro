@@ -1,0 +1,47 @@
+---
+interface Props {
+  id: string;
+  year: string | number;
+  title: string;
+  slug: string;
+  status: 'shipped' | 'archived' | 'private' | 'wip';
+  featured?: boolean;
+  desc: string;
+  stack?: string[];
+  href?: string;
+  projectUrl?: string;
+}
+
+const { id, year, title, slug, status, featured = false, desc, stack = [], href, projectUrl } = Astro.props;
+
+const Tag = href ? 'a' : 'div';
+const cardClass = `v6-proj-card${featured ? ' featured' : ''}`;
+---
+<Tag class={cardClass} {...(href ? { href } : {})}>
+  {featured && <span class="flag">★ FEATURED</span>}
+
+  <div class="v6-proj-head-row">
+    <span>prj/{id} · {year}</span>
+    <span class={`v6-proj-status ${status}`}>● {status}</span>
+  </div>
+
+  <div class="v6-proj-title">{title}</div>
+  <div class="v6-proj-slug">"{slug}"</div>
+
+  <p class="v6-proj-desc">{desc}</p>
+
+  {stack.length > 0 && (
+    <div class="v6-proj-stack-wrap">
+      <div class="v6-proj-stack-label">stack</div>
+      <div class="v6-proj-stack">
+        {stack.map((s) => <span>{s}</span>)}
+      </div>
+    </div>
+  )}
+
+  {projectUrl && (
+    <div class="v6-proj-links">
+      <span class="secondary">gh: {projectUrl.replace(/^https?:\/\/(www\.)?github\.com\//, '@').replace(/\/$/, '')}</span>
+    </div>
+  )}
+</Tag>
