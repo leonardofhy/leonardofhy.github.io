@@ -1,67 +1,61 @@
-<!doctype html><html lang=en dir=auto><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name=robots content="index, follow"><title>Quick Note: Setting Up Python Virtual Environments | Leonardo Foo's Blog</title><meta name=keywords content="python,virtual-environments,development,quick-tip"><meta name=description content="A quick reference guide for creating and managing Python virtual environments using venv, including common commands and best practices."><meta name=author content="胡皓雍 (Leonardo Foo Haw Yang)"><link rel=canonical href=https://leonardofhy.github.io/posts/python-virtual-environments-quick-guide/><link crossorigin=anonymous href=/assets/css/stylesheet.58db3827d78d31bb09092eaa14fc5336cb212b79eafb6674b9726b212fba3c5e.css integrity="sha256-WNs4J9eNMbsJCS6qFPxTNsshK3nq+2Z0uXJrIS+6PF4=" rel="preload stylesheet" as=style><link rel=icon href=https://leonardofhy.github.io/favicon.ico><link rel=icon type=image/png sizes=16x16 href=https://leonardofhy.github.io/favicon-16x16.png><link rel=icon type=image/png sizes=32x32 href=https://leonardofhy.github.io/favicon-32x32.png><link rel=apple-touch-icon href=https://leonardofhy.github.io/apple-touch-icon.png><link rel=mask-icon href=https://leonardofhy.github.io/safari-pinned-tab.svg><meta name=theme-color content="#2e2e33"><meta name=msapplication-TileColor content="#2e2e33"><link rel=alternate hreflang=en href=https://leonardofhy.github.io/posts/python-virtual-environments-quick-guide/><noscript><style>#theme-toggle,.top-link{display:none}</style></noscript><meta property="og:url" content="https://leonardofhy.github.io/posts/python-virtual-environments-quick-guide/"><meta property="og:site_name" content="Leonardo Foo's Blog"><meta property="og:title" content="Quick Note: Setting Up Python Virtual Environments"><meta property="og:description" content="A quick reference guide for creating and managing Python virtual environments using venv, including common commands and best practices."><meta property="og:locale" content="en"><meta property="og:type" content="article"><meta property="article:section" content="posts"><meta property="article:published_time" content="2025-08-03T09:30:00+08:00"><meta property="article:modified_time" content="2025-08-03T09:30:00+08:00"><meta property="article:tag" content="Python"><meta property="article:tag" content="Virtual-Environments"><meta property="article:tag" content="Development"><meta property="article:tag" content="Quick-Tip"><meta name=twitter:card content="summary"><meta name=twitter:title content="Quick Note: Setting Up Python Virtual Environments"><meta name=twitter:description content="A quick reference guide for creating and managing Python virtual environments using venv, including common commands and best practices."><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Posts","item":"https://leonardofhy.github.io/posts/"},{"@type":"ListItem","position":2,"name":"Quick Note: Setting Up Python Virtual Environments","item":"https://leonardofhy.github.io/posts/python-virtual-environments-quick-guide/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"BlogPosting","headline":"Quick Note: Setting Up Python Virtual Environments","name":"Quick Note: Setting Up Python Virtual Environments","description":"A quick reference guide for creating and managing Python virtual environments using venv, including common commands and best practices.","keywords":["python","virtual-environments","development","quick-tip"],"articleBody":"Why Virtual Environments? Virtual environments keep your Python projects isolated and prevent dependency conflicts. Each project gets its own Python installation and package directory.\nQuick Setup Create Virtual Environment # Create new virtual environment python -m venv myproject-env # Activate (macOS/Linux) source myproject-env/bin/activate # Activate (Windows) myproject-env\\Scripts\\activate Install Packages # Install packages pip install requests pandas numpy # Save dependencies pip freeze \u003e requirements.txt # Install from requirements pip install -r requirements.txt Deactivate # When done working deactivate Best Practices Name consistently: Use projectname-env or venv Add to .gitignore: Never commit virtual environments Use requirements.txt: Track dependencies explicitly Separate environments: One per project Common Commands # List installed packages pip list # Show package info pip show package-name # Upgrade package pip install --upgrade package-name # Uninstall package pip uninstall package-name Alternative: Using Poetry # Install Poetry (one time) curl -sSL https://install.python-poetry.org | python3 - # Create new project poetry new myproject cd myproject # Add dependencies poetry add requests pandas # Activate shell poetry shell That’s it! Virtual environments made simple. Happy coding! 🐍\n","wordCount":"175","inLanguage":"en","datePublished":"2025-08-03T09:30:00+08:00","dateModified":"2025-08-03T09:30:00+08:00","author":{"@type":"Person","name":"胡皓雍 (Leonardo Foo Haw Yang)"},"mainEntityOfPage":{"@type":"WebPage","@id":"https://leonardofhy.github.io/posts/python-virtual-environments-quick-guide/"},"publisher":{"@type":"Organization","name":"Leonardo Foo's Blog","logo":{"@type":"ImageObject","url":"https://leonardofhy.github.io/favicon.ico"}}}</script></head><body class=dark id=top><div class=v6-topbar-wrap><header class=v6-topbar><a class=v6-brand href=https://leonardofhy.github.io/><div class=v6-brand-glyph>L</div><div><b>leonardo.dev</b><span>— 胡皓雍 · taipei</span></div></a><nav class=v6-topnav aria-label=Primary><a href=https://leonardofhy.github.io/>agent</a>
-<a href=https://leonardofhy.github.io/posts/ class=active>writing</a>
-<a href=https://leonardofhy.github.io/projects/>projects</a>
-<a href=https://leonardofhy.github.io/about/>about</a>
-<a href=https://leonardofhy.github.io/resume/>resume</a></nav><div class=v6-status title="open to research collab"><i></i>online · open to research collab</div></header></div><main class=main><div class=v6-subhead><a href=https://leonardofhy.github.io/posts/>← tail -f posts/</a>
-<span class=sep>/</span>
-<span>post 04 of 05</span></div><section class=v6-shell><div class=v6-panel><div class=v6-panel-top><div class=v6-panel-top-l><div class=v6-dots><i class=r></i><i class=y></i><i class=g></i></div><span>$ read_file content/posts/python-virtual-environments-quick-guide.md</span></div><div class=v6-panel-top-r><span>md · 1465 bytes</span>
-<span>82 lines</span>
-<span>encoding: utf-8</span></div></div><div style="padding:18px 0 0"><div class=v6-fm-card><div class=v6-section-label>▸ frontmatter</div><pre class=v6-fm-pre><span class=k>title:    </span>"Quick Note: Setting Up Python Virtual Environments"
-<span class=k>date:     </span>2025-08-03T09:30:00&#43;08:00
-<span class=k>author:   </span>胡皓雍 (Leonardo Foo Haw Yang)
-<span class=k>tags:     </span>["python","virtual-environments","development","quick-tip"]
-<span class=k>summary:  </span>"A quick reference guide for creating and managing Python virtual …"</pre></div><div class=v6-post-head><h1>Quick Note: Setting Up Python Virtual Environments</h1><div class=v6-post-meta><span>2025-08-03 · 09:30 utc+8</span>
-<span>·</span>
-<span>1 min read</span>
-<span>·</span>
-<span>tag: <em>python, virtual-environments, development, quick-tip</em></span></div></div><article class=v6-post-body><h2 id=why-virtual-environments>Why Virtual Environments?</h2><p>Virtual environments keep your Python projects isolated and prevent dependency conflicts. Each project gets its own Python installation and package directory.</p><h2 id=quick-setup>Quick Setup</h2><h3 id=create-virtual-environment>Create Virtual Environment</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Create new virtual environment</span>
-</span></span><span style=display:flex><span>python -m venv myproject-env
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Activate (macOS/Linux)</span>
-</span></span><span style=display:flex><span>source myproject-env/bin/activate
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Activate (Windows)</span>
-</span></span><span style=display:flex><span>myproject-env<span style=color:#ae81ff>\S</span>cripts<span style=color:#ae81ff>\a</span>ctivate
-</span></span></code></pre></div><h3 id=install-packages>Install Packages</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Install packages</span>
-</span></span><span style=display:flex><span>pip install requests pandas numpy
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Save dependencies</span>
-</span></span><span style=display:flex><span>pip freeze &gt; requirements.txt
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Install from requirements</span>
-</span></span><span style=display:flex><span>pip install -r requirements.txt
-</span></span></code></pre></div><h3 id=deactivate>Deactivate</h3><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># When done working</span>
-</span></span><span style=display:flex><span>deactivate
-</span></span></code></pre></div><h2 id=best-practices>Best Practices</h2><ul><li><strong>Name consistently</strong>: Use <code>projectname-env</code> or <code>venv</code></li><li><strong>Add to .gitignore</strong>: Never commit virtual environments</li><li><strong>Use requirements.txt</strong>: Track dependencies explicitly</li><li><strong>Separate environments</strong>: One per project</li></ul><h2 id=common-commands>Common Commands</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># List installed packages</span>
-</span></span><span style=display:flex><span>pip list
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Show package info</span>
-</span></span><span style=display:flex><span>pip show package-name
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Upgrade package</span>
-</span></span><span style=display:flex><span>pip install --upgrade package-name
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Uninstall package</span>
-</span></span><span style=display:flex><span>pip uninstall package-name
-</span></span></code></pre></div><h2 id=alternative-using-poetry>Alternative: Using Poetry</h2><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-bash data-lang=bash><span style=display:flex><span><span style=color:#75715e># Install Poetry (one time)</span>
-</span></span><span style=display:flex><span>curl -sSL https://install.python-poetry.org | python3 -
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Create new project</span>
-</span></span><span style=display:flex><span>poetry new myproject
-</span></span><span style=display:flex><span>cd myproject
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Add dependencies</span>
-</span></span><span style=display:flex><span>poetry add requests pandas
-</span></span><span style=display:flex><span>
-</span></span><span style=display:flex><span><span style=color:#75715e># Activate shell</span>
-</span></span><span style=display:flex><span>poetry shell
-</span></span></code></pre></div><p>That&rsquo;s it! Virtual environments made simple. Happy coding! 🐍</p></article><div class=v6-ask><div class=v6-section-label>▸ ask about this post</div><div class=v6-ask-row><span class=v6-prompt>></span>
-<input type=text placeholder="what theme does leonardo recommend? did he run into issues?" aria-label="question input" disabled>
-<button type=button disabled>ask ↵</button></div></div><nav class=v6-post-nav aria-label="Post navigation"><a class=prev href=/posts/top-programming-tools-workflow/><span class=nv-label>← prev</span>
-<span class=nv-title>Top 5 Programming Tools That Changed My Workflow</span>
-</a><a class=next href=/posts/hello-world/><span class=nv-label>next →</span>
-<span class=nv-title>我的第一篇文章</span></a></nav></div></div></section></main><footer class=footer><span>&copy; 2026 <a href=https://leonardofhy.github.io/>Leonardo Foo's Blog</a></span> ·
-<span>Powered by
-<a href=https://gohugo.io/ rel="noopener noreferrer" target=_blank>Hugo</a> &
-<a href=https://github.com/adityatelange/hugo-PaperMod/ rel=noopener target=_blank>PaperMod</a></span></footer><a href=#top aria-label="go to top" title="Go to Top (Alt + G)" class=top-link id=top-link accesskey=g><svg viewBox="0 0 12 6" fill="currentColor"><path d="M12 6H0l6-6z"/></svg>
-</a><script>let menu=document.getElementById("menu");menu&&(menu.scrollLeft=localStorage.getItem("menu-scroll-position"),menu.onscroll=function(){localStorage.setItem("menu-scroll-position",menu.scrollLeft)}),document.querySelectorAll('a[href^="#"]').forEach(e=>{e.addEventListener("click",function(e){e.preventDefault();var t=this.getAttribute("href").substr(1);window.matchMedia("(prefers-reduced-motion: reduce)").matches?document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView():document.querySelector(`[id='${decodeURIComponent(t)}']`).scrollIntoView({behavior:"smooth"}),t==="top"?history.replaceState(null,null," "):history.pushState(null,null,`#${t}`)})})</script><script>var mybutton=document.getElementById("top-link");window.onscroll=function(){document.body.scrollTop>800||document.documentElement.scrollTop>800?(mybutton.style.visibility="visible",mybutton.style.opacity="1"):(mybutton.style.visibility="hidden",mybutton.style.opacity="0")}</script></body></html>
+<!DOCTYPE html><html lang="en"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Quick Note: Setting Up Python Virtual Environments — Leonardo Foo</title><meta name="description" content="A quick reference guide for creating and managing Python virtual environments using venv, including common commands and best practices."><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap-index.xml"><meta property="og:title" content="Quick Note: Setting Up Python Virtual Environments — Leonardo Foo"><meta property="og:description" content="A quick reference guide for creating and managing Python virtual environments using venv, including common commands and best practices."><link rel="stylesheet" href="/_astro/TerminalPanel.DqhJKEV2.css"></head> <body>  <div class="v6-topbar-wrap"> <header class="v6-topbar"> <a class="v6-brand" href="/"> <div class="v6-brand-glyph">L</div> <div><b>leonardo.dev</b><span>— 胡皓雍 · taipei</span></div> </a> <nav class="v6-topnav"> <a href="/">agent</a><a href="/posts/" class="active">writing</a><a href="/projects/">projects</a><a href="/about/">about</a><a href="/resume/">resume</a> </nav> <div class="v6-status"><i></i> online · open to research collab</div> </header> </div> <div class="v6-subhead"> <a href="/posts/">← tail -f posts/</a> <span class="sep">/</span> <span>post 05 of 06</span> </div> <section class="v6-shell"> <div class="v6-panel"> <div class="v6-panel-top"> <div class="v6-panel-top-l"> <div class="v6-dots"><i class="r"></i><i class="y"></i><i class="g"></i></div> <span>$ read_file content/posts/python-virtual-environments-quick-guide.md</span> </div> <div class="v6-panel-top-r"> <span>md · 1463 bytes</span><span>80 lines</span><span>encoding: utf-8</span> </div> </div>  <div style="padding: 18px 0 0;"> <div class="v6-fm-card"> <div class="v6-section-label">▸ frontmatter</div> <pre class="v6-fm-pre">title:    &quot;Quick Note: Setting Up Python Virtual Environments&quot;
+date:     2025-08-03T01:30:00.000Z
+author:   胡皓雍 (Leonardo Foo Haw Yang)
+tags:     [&quot;python&quot;,&quot;virtual-environments&quot;,&quot;development&quot;,&quot;quick-tip&quot;]
+summary:  &quot;A quick reference guide for creating and managing Python virtual environments using venv, including common commands and best practices.&quot;</pre> </div> <div class="v6-post-head"> <h1>Quick Note: Setting Up Python Virtual Environments</h1> <div class="v6-post-meta"> <span>2025-08-03 · 01:30 utc+8</span> <span>·</span> <span>1 min read</span>  <span>·</span> <span>tag: <em>python, virtual-environments, development, quick-tip</em></span>  </div> </div> <article class="v6-post-body"> <h2 id="why-virtual-environments">Why Virtual Environments?</h2>
+<p>Virtual environments keep your Python projects isolated and prevent dependency conflicts. Each project gets its own Python installation and package directory.</p>
+<h2 id="quick-setup">Quick Setup</h2>
+<h3 id="create-virtual-environment">Create Virtual Environment</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Create new virtual environment</span></span>
+<span class="line"><span style="color:#B392F0">python</span><span style="color:#79B8FF"> -m</span><span style="color:#9ECBFF"> venv</span><span style="color:#9ECBFF"> myproject-env</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Activate (macOS/Linux)</span></span>
+<span class="line"><span style="color:#79B8FF">source</span><span style="color:#9ECBFF"> myproject-env/bin/activate</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Activate (Windows)</span></span>
+<span class="line"><span style="color:#B392F0">myproject-env\Scripts\activate</span></span></code></pre>
+<h3 id="install-packages">Install Packages</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Install packages</span></span>
+<span class="line"><span style="color:#B392F0">pip</span><span style="color:#9ECBFF"> install</span><span style="color:#9ECBFF"> requests</span><span style="color:#9ECBFF"> pandas</span><span style="color:#9ECBFF"> numpy</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Save dependencies</span></span>
+<span class="line"><span style="color:#B392F0">pip</span><span style="color:#9ECBFF"> freeze</span><span style="color:#F97583"> ></span><span style="color:#9ECBFF"> requirements.txt</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Install from requirements</span></span>
+<span class="line"><span style="color:#B392F0">pip</span><span style="color:#9ECBFF"> install</span><span style="color:#79B8FF"> -r</span><span style="color:#9ECBFF"> requirements.txt</span></span></code></pre>
+<h3 id="deactivate">Deactivate</h3>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># When done working</span></span>
+<span class="line"><span style="color:#B392F0">deactivate</span></span></code></pre>
+<h2 id="best-practices">Best Practices</h2>
+<ul>
+<li><strong>Name consistently</strong>: Use <code>projectname-env</code> or <code>venv</code></li>
+<li><strong>Add to .gitignore</strong>: Never commit virtual environments</li>
+<li><strong>Use requirements.txt</strong>: Track dependencies explicitly</li>
+<li><strong>Separate environments</strong>: One per project</li>
+</ul>
+<h2 id="common-commands">Common Commands</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># List installed packages</span></span>
+<span class="line"><span style="color:#B392F0">pip</span><span style="color:#9ECBFF"> list</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Show package info</span></span>
+<span class="line"><span style="color:#B392F0">pip</span><span style="color:#9ECBFF"> show</span><span style="color:#9ECBFF"> package-name</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Upgrade package</span></span>
+<span class="line"><span style="color:#B392F0">pip</span><span style="color:#9ECBFF"> install</span><span style="color:#79B8FF"> --upgrade</span><span style="color:#9ECBFF"> package-name</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Uninstall package</span></span>
+<span class="line"><span style="color:#B392F0">pip</span><span style="color:#9ECBFF"> uninstall</span><span style="color:#9ECBFF"> package-name</span></span></code></pre>
+<h2 id="alternative-using-poetry">Alternative: Using Poetry</h2>
+<pre class="astro-code github-dark" style="background-color:#24292e;color:#e1e4e8; overflow-x: auto;" tabindex="0" data-language="bash"><code><span class="line"><span style="color:#6A737D"># Install Poetry (one time)</span></span>
+<span class="line"><span style="color:#B392F0">curl</span><span style="color:#79B8FF"> -sSL</span><span style="color:#9ECBFF"> https://install.python-poetry.org</span><span style="color:#F97583"> |</span><span style="color:#B392F0"> python3</span><span style="color:#9ECBFF"> -</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Create new project</span></span>
+<span class="line"><span style="color:#B392F0">poetry</span><span style="color:#9ECBFF"> new</span><span style="color:#9ECBFF"> myproject</span></span>
+<span class="line"><span style="color:#79B8FF">cd</span><span style="color:#9ECBFF"> myproject</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Add dependencies</span></span>
+<span class="line"><span style="color:#B392F0">poetry</span><span style="color:#9ECBFF"> add</span><span style="color:#9ECBFF"> requests</span><span style="color:#9ECBFF"> pandas</span></span>
+<span class="line"></span>
+<span class="line"><span style="color:#6A737D"># Activate shell</span></span>
+<span class="line"><span style="color:#B392F0">poetry</span><span style="color:#9ECBFF"> shell</span></span></code></pre>
+<p>That’s it! Virtual environments made simple. Happy coding! 🐍</p> </article> <div class="v6-ask"> <div class="v6-section-label">▸ ask about this post</div> <div class="v6-ask-row"> <span class="v6-prompt">&gt;</span> <input type="text" placeholder="what theme does leonardo recommend? did he run into issues?" aria-label="question input" disabled> <button type="button" disabled>ask ↵</button> </div> </div> <nav class="v6-post-nav" aria-label="Post navigation"> <a class="prev" href="/posts/top-programming-tools-workflow/"> <span class="nv-label">← prev</span> <span class="nv-title">Top 5 Programming Tools That Changed My Workflow</span> </a> <a class="next" href="/posts/hello-world/"> <span class="nv-label">next →</span> <span class="nv-title">我的第一篇文章</span> </a> </nav> </div>   </div> </section>  </body></html>
