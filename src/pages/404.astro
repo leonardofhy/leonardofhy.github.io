@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TopBar from '../components/TopBar.astro';
+import TerminalPanel from '../components/TerminalPanel.astro';
+import ToolCall from '../components/ToolCall.astro';
+---
+<BaseLayout
+  title="404 — not found"
+  description="This page doesn't exist."
+>
+  <TopBar active="agent" />
+
+  <section class="v6-shell">
+    <TerminalPanel
+      title="$ cd /nowhere"
+      meta={['exit: 1', 'stderr']}
+    >
+      <div style="padding: 28px 32px 36px;">
+        <div class="v6-tools">
+          <ToolCall name="stat" args="~/requested-path" result="ENOENT" ok={false} />
+        </div>
+
+        <h1 style="font-family: var(--serif); font-size: 72px; color: var(--ink); letter-spacing: -0.03em; margin: 20px 0 8px; font-weight: 400; line-height: 1;">
+          404 <em style="color: var(--accent); font-style: italic;">not found.</em>
+        </h1>
+        <p style="color: var(--ink-3); font-size: 14px; max-width: 560px; line-height: 1.6;">
+          The page you're looking for isn't in this repo — maybe a moved URL, a typo, or a stale bookmark.
+          Try the agent on the home page, or jump to a section below.
+        </p>
+
+        <div class="v6-quick" style="margin-top: 22px;">
+          <a class="v6-quick-chip" href="/"><span class="cmd">/home</span>back to the agent</a>
+          <a class="v6-quick-chip" href="/posts/"><span class="cmd">/writing</span>recent posts</a>
+          <a class="v6-quick-chip" href="/projects/"><span class="cmd">/projects</span>things I've built</a>
+          <a class="v6-quick-chip" href="/about/"><span class="cmd">/about</span>who is leonardo</a>
+        </div>
+      </div>
+    </TerminalPanel>
+  </section>
+</BaseLayout>

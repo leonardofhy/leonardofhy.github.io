@@ -1,0 +1,102 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TopBar from '../../components/TopBar.astro';
+import TerminalPanel from '../../components/TerminalPanel.astro';
+import ToolCall from '../../components/ToolCall.astro';
+import StreamItem from '../../components/StreamItem';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', (p) => p.data.draft !== true);
+  const byTag = new Map<string, typeof posts>();
+  for (const post of posts) {
+    for (const t of post.data.tags ?? []) {
+      const slug = t.toLowerCase().replace(/\s+/g, '-');
+      if (!byTag.has(slug)) byTag.set(slug, []);
+      byTag.get(slug)!.push(post);
+    }
+  }
+  return Array.from(byTag.entries()).map(([slug, entries]) => ({
+    params: { tag: slug },
+    props: {
+      tagSlug: slug,
+      tagLabel: entries[0].data.tags!.find(
+        (t) => t.toLowerCase().replace(/\s+/g, '-') === slug
+      ) ?? slug,
+      entries: entries.sort((a, b) => b.data.date.getTime() - a.data.date.getTime()),
+    },
+  }));
+}
+
+const { tagSlug, tagLabel, entries } = Astro.props;
+
+const streamItems = entries.map((p, idx) => {
+  const body = (p as unknown as { body?: string }).body ?? '';
+  const words = body.trim().split(/\s+/).filter(Boolean).length;
+  const readMin = Math.max(1, Math.round(words / 220));
+  const lines = body.split('\n').length;
+  const fmText = `---
+file:     ${p.id}.md
+date:     ${p.data.date.toISOString().slice(0, 10)}
+tags:     ${JSON.stringify(p.data.tags ?? [])}
+read:     ${readMin} min
+lines:    ${lines}
+---`;
+  return {
+    date: p.data.date.toISOString().slice(0, 10),
+    title: p.data.title,
+    href: `/posts/${p.id}/`,
+    readMin,
+    words,
+    frontmatterText: fmText,
+    summary: p.data.summary,
+    fileName: `${p.id}.md`,
+    initiallyOpen: idx === 0,
+  };
+});
+---
+<BaseLayout
+  title={`#${tagLabel} — Leonardo Foo`}
+  description={`Posts tagged ${tagLabel}.`}
+>
+  <TopBar active="writing" />
+
+  <div class="v6-subhead">
+    <a href="/posts/">← tail -f posts/</a>
+    <span class="sep">/</span>
+    <span>grep -l "tag:{tagLabel}"</span>
+  </div>
+
+  <section class="v6-shell">
+    <TerminalPanel
+      title={`$ grep -rl "tag:${tagLabel}" content/posts/`}
+      meta={[`${entries.length} matches`, `tag: ${tagLabel}`]}
+    >
+      <div style="padding: 18px 24px 22px;">
+        <div class="v6-tools">
+          <ToolCall name="grep" args={`-rl "tag:${tagLabel}"`} result={`${entries.length} files`} />
+        </div>
+        <p style="color: var(--ink-3); margin: 8px 0 18px; font-size: 13px;">
+          <span style="color: var(--accent);">▸ </span>
+          Posts filtered by tag <em style="color: var(--accent); font-style: normal;">{tagLabel}</em>.
+          <a href="/posts/" style="color: var(--accent);">clear filter</a>
+        </p>
+
+        {streamItems.map((e) => (
+          <StreamItem
+            client:visible
+            date={e.date}
+            title={e.title}
+            href={e.href}
+            readMin={e.readMin}
+            words={e.words}
+            frontmatterText={e.frontmatterText}
+            summary={e.summary}
+            fileName={e.fileName}
+            initiallyOpen={e.initiallyOpen}
+          />
+        ))}
+      </div>
+    </TerminalPanel>
+  </section>
+</BaseLayout>

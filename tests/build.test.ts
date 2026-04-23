@@ -117,6 +117,36 @@ describe('resume page', () => {
   });
 });
 
+describe('feeds and archives', () => {
+  it('produces rss.xml that parses as an RSS feed', () => {
+    const xml = readFileSync('dist/rss.xml', 'utf8');
+    expect(xml).toContain('<rss');
+    expect(xml).toContain('<channel>');
+    expect(xml).toContain('Leonardo');
+  });
+
+  it('produces index.xml as a Hugo-compat alias', () => {
+    const xml = readFileSync('dist/index.xml', 'utf8');
+    expect(xml).toContain('<rss');
+  });
+
+  it('generates sitemap-index.xml', () => {
+    expect(existsSync('dist/sitemap-index.xml')).toBe(true);
+  });
+
+  it('generates a tag archive for "hugo"', () => {
+    expect(existsSync('dist/tags/hugo/index.html')).toBe(true);
+    const doc = $('dist/tags/hugo/index.html');
+    expect(doc('.v6-stream-item').length).toBeGreaterThan(0);
+  });
+
+  it('renders a 404 page', () => {
+    expect(existsSync('dist/404.html')).toBe(true);
+    const doc = $('dist/404.html');
+    expect(doc('h1').text()).toMatch(/404/);
+  });
+});
+
 describe('home page (V6 Agent)', () => {
   it('renders V6 top bar with agent link active', () => {
     const doc = $('dist/index.html');
