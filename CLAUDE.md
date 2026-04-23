@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Astro 5 static site running the V6 "Agent" (Claude Code terminal) design for Leonardo's personal page. Deployed to GitHub Pages from the `gh-pages` branch via a GitHub Actions workflow on push to `main`. Site URL: `https://leonardofhy.github.io`.
+Astro 6 static site running the V6 "Agent" (Claude Code terminal) design for Leonardo's personal page. Deployed to GitHub Pages from the `gh-pages` branch via a GitHub Actions workflow on push to `main`. Site URL: `https://leonardofhy.github.io`.
 
 Migrated from Hugo + PaperMod in 2026-04 — the final Hugo state is tagged `hugo-v6-final` if you ever need to diff against it.
 
@@ -21,7 +21,7 @@ npm run check     # type + content-schema check only
 
 ## Architecture
 
-- **Framework**: Astro 5, `output: 'static'` (default), `trailingSlash: 'always'` in `astro.config.mjs`. Integrations: `@astrojs/react` (for interactive islands), `@astrojs/mdx`, `@astrojs/sitemap`. RSS via `@astrojs/rss`.
+- **Framework**: Astro 6, `output: 'static'` (default), `trailingSlash: 'always'` in `astro.config.mjs`. Integrations: `@astrojs/react` (for interactive islands), `@astrojs/mdx`, `@astrojs/sitemap`. RSS via `@astrojs/rss`.
 - **TypeScript**: `tsconfig.json` extends `astro/tsconfigs/strict`; React 19 JSX. Only `src/` and `tests/` are included.
 - **Content**: typed via `src/content.config.ts` using Zod (v4, imported as `astro/zod`). Three collections:
   - `posts` — `src/content/posts/*.md` (frontmatter: `title`, `date`, `summary` required; `tags`, `categories`, `author`, `featured`, `hiddenInHomeList`, `lang`, `draft` optional)
