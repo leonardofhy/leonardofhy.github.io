@@ -1,0 +1,28 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+  lang?: 'en' | 'zh-TW';
+}
+
+const { title, description, lang = 'en' } = Astro.props;
+const htmlLang = lang === 'zh-TW' ? 'zh-Hant-TW' : 'en';
+---
+<!doctype html>
+<html lang={htmlLang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>{title}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <meta property="og:title" content={title} />
+    {description && <meta property="og:description" content={description} />}
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

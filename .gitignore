@@ -1,6 +1,11 @@
-# Hugo build directory
+# Hugo build directory (legacy, removed when Hugo is fully retired)
 public/
 .hugo_build.lock
+
+# Astro
+dist/
+.astro/
+node_modules/
 
 # Static cache files
 resources/_gen/
