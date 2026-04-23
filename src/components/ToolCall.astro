@@ -1,0 +1,18 @@
+---
+interface Props {
+  name: string;
+  args: string;
+  result?: string;
+  ok?: boolean;
+}
+
+const { name, args, result, ok = true } = Astro.props;
+---
+<div class="v6-tool">
+  <span class="ok" style={ok ? undefined : 'background: rgba(196, 85, 77, 0.18); color: var(--err);'}>
+    {ok ? '✓' : '✗'}
+  </span>
+  <span>
+    <b>{name}</b>(<em>{args}</em>){result && <> → {result}</>}
+  </span>
+</div>

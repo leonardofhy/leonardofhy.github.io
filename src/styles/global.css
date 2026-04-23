@@ -553,13 +553,14 @@ body > header.header { display: none !important; }
 .v6-filter:hover { background: var(--accent); color: var(--paper); }
 .v6-filter.active { background: var(--accent); color: var(--paper); }
 
-details.v6-stream-item {
+.v6-stream-item {
   border-left: 2px solid var(--rule);
   padding-left: 16px;
   margin-bottom: 14px;
   transition: border-color 0.15s;
 }
-details.v6-stream-item[open] { border-color: var(--accent); }
+details.v6-stream-item[open],
+.v6-stream-item.open { border-color: var(--accent); }
 .v6-stream-summary {
   cursor: pointer;
   display: grid;
@@ -574,8 +575,10 @@ details.v6-stream-item[open] { border-color: var(--accent); }
 .v6-stream-date { color: var(--ink-5); font-size: 11px; }
 .v6-stream-title { color: var(--ink); font-size: 14px; font-weight: 500; }
 .v6-stream-meta { color: var(--ink-4); font-size: 11px; text-align: right; }
-details.v6-stream-item[open] .v6-stream-caret::before { content: "▾"; }
-details.v6-stream-item:not([open]) .v6-stream-caret::before { content: "▸"; }
+details.v6-stream-item[open] .v6-stream-caret::before,
+.v6-stream-item.open .v6-stream-caret::before { content: "▾"; }
+details.v6-stream-item:not([open]) .v6-stream-caret::before,
+.v6-stream-item:not(.open):not([open]) .v6-stream-caret::before { content: "▸"; }
 
 .v6-stream-body { margin-top: 10px; padding-left: 24px; }
 .v6-stream-fm {

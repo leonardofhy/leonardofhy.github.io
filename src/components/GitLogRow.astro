@@ -1,0 +1,22 @@
+---
+interface Props {
+  hash: string;
+  date: string;
+  kind: 'feat' | 'perf' | 'merge' | 'init' | 'fix';
+  msg: string;
+  tag?: string;
+  color: string;
+}
+
+const { hash, date, kind, msg, tag, color } = Astro.props;
+---
+<div class="v6-gitlog-row">
+  <span class="dot" style={`color: ${color}`}>●</span>
+  <span class="hash">{hash}</span>
+  <span class="date">{date}</span>
+  <span class={`kind ${kind}`}>{kind}</span>
+  <span class="msg">
+    {msg}
+    {tag && <span class="tag" style={`color: ${color}`}> {tag}</span>}
+  </span>
+</div>

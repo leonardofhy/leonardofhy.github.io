@@ -1,0 +1,57 @@
+---
+interface StatusItem {
+  label: string;
+  value?: string;
+}
+
+interface Props {
+  title: string;
+  meta?: string[];
+  statusLeft?: StatusItem[];
+  statusRight?: StatusItem[];
+}
+
+const { title, meta = [], statusLeft, statusRight } = Astro.props;
+
+const hasStatusSlot = Astro.slots.has('status');
+const hasStatusProps = (statusLeft && statusLeft.length > 0) || (statusRight && statusRight.length > 0);
+const showStatusBar = hasStatusSlot || hasStatusProps;
+---
+<div class="v6-panel">
+  <div class="v6-panel-top">
+    <div class="v6-panel-top-l">
+      <div class="v6-dots"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+      <span>{title}</span>
+    </div>
+    {meta.length > 0 && (
+      <div class="v6-panel-top-r">
+        {meta.map((m) => <span>{m}</span>)}
+      </div>
+    )}
+  </div>
+
+  <slot />
+
+  {showStatusBar && (
+    hasStatusSlot ? (
+      <slot name="status" />
+    ) : (
+      <div class="v6-statusbar">
+        <div class="v6-statusbar-l">
+          {statusLeft?.map((item) => (
+            <span>
+              {item.value ? <><b>{item.label}</b> {item.value}</> : <b>{item.label}</b>}
+            </span>
+          ))}
+        </div>
+        <div class="v6-statusbar-r">
+          {statusRight?.map((item) => (
+            <span>
+              {item.value ? <><b>{item.label}</b> {item.value}</> : <b>{item.label}</b>}
+            </span>
+          ))}
+        </div>
+      </div>
+    )
+  )}
+</div>

@@ -1,0 +1,21 @@
+---
+interface Props {
+  section: string;
+  rows: [key: string, value: string][];
+}
+
+const { section, rows } = Astro.props;
+---
+<div class="v6-toml-block">
+  <div class="v6-toml-head">
+    [<b>{section}</b>]
+  </div>
+  <div class="v6-toml-rows">
+    {rows.map(([k, v]) => (
+      <div class="v6-toml-row">
+        <span class="k">{k}</span>
+        <span class="v">= <em>{v}</em></span>
+      </div>
+    ))}
+  </div>
+</div>

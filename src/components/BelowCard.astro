@@ -1,0 +1,29 @@
+---
+interface Stat {
+  label: string;
+  value: string;
+}
+
+interface Props {
+  label: string;
+  title: string;
+  body: string;
+  stats?: Stat[];
+  href?: string;
+}
+
+const { label, title, body, stats, href } = Astro.props;
+const Tag = href ? 'a' : 'div';
+---
+<Tag class="v6-below-card" {...(href ? { href } : {})}>
+  <div class="v6-below-label">{label}</div>
+  <h3 class="v6-below-title">{title}</h3>
+  <p class="v6-below-body">{body}</p>
+  {stats && stats.length > 0 && (
+    <div class="stats">
+      {stats.map((s) => (
+        <><span>{s.label}</span><b>{s.value}</b></>
+      ))}
+    </div>
+  )}
+</Tag>

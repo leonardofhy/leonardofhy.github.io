@@ -1,0 +1,29 @@
+---
+interface Props {
+  active: 'agent' | 'writing' | 'projects' | 'about' | 'resume';
+}
+
+const { active } = Astro.props;
+
+const links: { key: Props['active']; label: string; href: string }[] = [
+  { key: 'agent', label: 'agent', href: '/' },
+  { key: 'writing', label: 'writing', href: '/posts/' },
+  { key: 'projects', label: 'projects', href: '/projects/' },
+  { key: 'about', label: 'about', href: '/about/' },
+  { key: 'resume', label: 'resume', href: '/resume/' },
+];
+---
+<div class="v6-topbar-wrap">
+  <header class="v6-topbar">
+    <a class="v6-brand" href="/">
+      <div class="v6-brand-glyph">L</div>
+      <div><b>leonardo.dev</b><span>— 胡皓雍 · taipei</span></div>
+    </a>
+    <nav class="v6-topnav">
+      {links.map((l) => (
+        <a href={l.href} class={l.key === active ? 'active' : undefined}>{l.label}</a>
+      ))}
+    </nav>
+    <div class="v6-status"><i></i> online · open to research collab</div>
+  </header>
+</div>
