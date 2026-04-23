@@ -5,10 +5,12 @@ interface Props {
   title: string;
   description?: string;
   lang?: 'en' | 'zh-TW';
+  image?: string;
 }
 
-const { title, description, lang = 'en' } = Astro.props;
+const { title, description, lang = 'en', image = '/images/portrait.jpg' } = Astro.props;
 const htmlLang = lang === 'zh-TW' ? 'zh-Hant-TW' : 'en';
+const ogImage = new URL(image, Astro.site ?? 'https://leonardofhy.github.io/').toString();
 ---
 <!doctype html>
 <html lang={htmlLang}>
@@ -21,6 +23,10 @@ const htmlLang = lang === 'zh-TW' ? 'zh-Hant-TW' : 'en';
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta property="og:title" content={title} />
     {description && <meta property="og:description" content={description} />}
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
   </head>
   <body>
     <slot />
