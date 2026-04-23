@@ -25,6 +25,43 @@ describe('build', () => {
   });
 });
 
+describe('posts list', () => {
+  it('renders a terminal panel with tail -f title', () => {
+    const doc = $('dist/posts/index.html');
+    expect(doc('.v6-panel-top-l span').text()).toContain('tail -f');
+  });
+
+  it('renders one StreamItem per post source file', () => {
+    const doc = $('dist/posts/index.html');
+    expect(doc('.v6-stream-item').length).toBe(5);
+  });
+
+  it('topbar marks writing active', () => {
+    const doc = $('dist/posts/index.html');
+    expect(doc('.v6-topnav a.active').text().trim()).toBe('writing');
+  });
+});
+
+describe('post detail', () => {
+  const slug = 'building-hugo-blog-lessons-learned';
+  it('renders title, frontmatter card, and body', () => {
+    const doc = $(`dist/posts/${slug}/index.html`);
+    expect(doc('.v6-post-head h1').text()).toBe('Building a Hugo Blog: Lessons Learned');
+    expect(doc('.v6-fm-pre').text()).toContain('title:');
+    expect(doc('.v6-post-body').length).toBe(1);
+  });
+
+  it('renders an ask-about-this-post footer', () => {
+    const doc = $(`dist/posts/${slug}/index.html`);
+    expect(doc('.v6-ask').length).toBe(1);
+  });
+
+  it('renders prev/next nav', () => {
+    const doc = $(`dist/posts/${slug}/index.html`);
+    expect(doc('.v6-post-nav').length).toBe(1);
+  });
+});
+
 describe('home page (V6 Agent)', () => {
   it('renders V6 top bar with agent link active', () => {
     const doc = $('dist/index.html');
