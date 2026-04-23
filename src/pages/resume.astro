@@ -1,0 +1,192 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TopBar from '../components/TopBar.astro';
+import TerminalPanel from '../components/TerminalPanel.astro';
+import ToolCall from '../components/ToolCall.astro';
+import TomlBlock from '../components/TomlBlock.astro';
+import GitLogRow from '../components/GitLogRow.astro';
+
+const commits: {
+  hash: string;
+  date: string;
+  kind: 'feat' | 'perf' | 'merge' | 'init' | 'fix';
+  msg: string;
+  tag?: string;
+  color: string;
+}[] = [
+  { hash: 'a7f3e21', date: '2024',    kind: 'feat',  msg: 'launch NTUAIS — organize student-led AI safety activities', tag: '(HEAD → main, ntuais)', color: 'var(--accent)' },
+  { hash: '3c1b88a', date: 'Sep 2024', kind: 'perf',  msg: 'ship defect-detection CV model · 30% speedup via TensorRT', color: 'var(--ok)' },
+  { hash: '9e2d14f', date: 'Jul 2024', kind: 'feat',  msg: 'start AI research internship at Tech Company Inc.', tag: '(intern)', color: 'var(--warn)' },
+  { hash: '51fa09c', date: 'Sep 2023', kind: 'feat',  msg: 'begin M.S. in Communication Engineering @ NTU', tag: '(m.s.)', color: 'var(--accent)' },
+  { hash: '8b4e2a7', date: 'Jun 2023', kind: 'merge', msg: 'graduate B.S. in Electrical Engineering @ NTU', tag: '(b.s.)', color: 'var(--accent)' },
+  { hash: '1c0aab2', date: 'Sep 2019', kind: 'init',  msg: 'initial commit — enroll B.S. in Electrical Engineering', color: 'var(--ink-4)' },
+];
+
+const contact: [string, string][] = [
+  ['loc', 'Taipei, TW'],
+  ['email', 'leonardo@…'],
+  ['gh', '@leonardofhy'],
+  ['li', 'leonardo-fhy'],
+];
+const languages: [string, string][] = [
+  ['中文', 'native'],
+  ['english', 'fluent'],
+];
+const availability: [string, string][] = [
+  ['open_to', 'research / intern'],
+  ['response', '< 24h'],
+  ['tz', 'utc+8'],
+];
+
+const education = [
+  {
+    when: 'Sep 2023 — Present',
+    inst: 'National Taiwan University',
+    role: 'M.S. in Communication Engineering',
+    notes: ['focus: deep learning · computer vision', 'research: ai safety · practical eval'],
+  },
+  {
+    when: 'Sep 2019 — Jun 2023',
+    inst: 'National Taiwan University',
+    role: 'B.S. in Electrical Engineering',
+    notes: [] as string[],
+  },
+];
+
+const experience = [
+  {
+    when: 'Jul 2024 — Sep 2024',
+    role: 'AI Research Intern',
+    org: 'Tech Company Inc.',
+    notes: [
+      'computer vision models for industrial defect detection',
+      '30% inference speedup via tensorrt',
+    ],
+  },
+  {
+    when: '2024 — Present',
+    role: 'Organizer',
+    org: 'NTUAIS (NTU AI Safety)',
+    notes: [
+      'organize discussions, speaker sessions, student-led activities',
+      'connect researchers + students for practical safety insights',
+    ],
+  },
+];
+
+const skills: [string, string[]][] = [
+  ['languages', ['python', 'c++', 'javascript', 'go']],
+  ['ai/ml', ['pytorch', 'tensorflow', 'opencv', 'huggingface', 'safe-ai-eval']],
+  ['web', ['hugo', 'astro', 'react', 'node.js', 'gh-actions']],
+  ['tools', ['docker', 'git', 'linux', 'aws']],
+];
+---
+<BaseLayout
+  title="Resume — Leonardo Foo"
+  description="CV / resume for Leonardo Foo Haw Yang — software developer, AI researcher."
+>
+  <TopBar active="resume" />
+
+  <section class="v6-shell">
+    <TerminalPanel
+      title="$ git log --oneline --graph --all ~/career"
+      meta={[`${commits.length} commits`, 'branch: main']}
+    >
+      <div style="padding: 22px 24px 26px;">
+        <div class="v6-resume-head">
+          <div>
+            <h1>
+              Leonardo Foo <em>Haw Yang</em>
+            </h1>
+            <div class="v6-resume-sub">
+              software dev · ai researcher · ntuais organizer · <em>taipei, tw</em>
+            </div>
+          </div>
+          <a class="v6-dl-btn" href="#" aria-label="Download PDF resume">↓ download.pdf</a>
+        </div>
+
+        <div class="v6-tools">
+          <ToolCall name="git_log" args="--oneline --graph --all" result={`${commits.length} commits`} />
+        </div>
+
+        <div class="v6-gitlog">
+          {commits.map((c) => (
+            <GitLogRow
+              hash={c.hash}
+              date={c.date}
+              kind={c.kind}
+              msg={c.msg}
+              tag={c.tag}
+              color={c.color}
+            />
+          ))}
+        </div>
+
+        <div class="v6-cv">
+          <aside>
+            <TomlBlock section="contact" rows={contact} />
+            <TomlBlock section="languages" rows={languages} />
+            <TomlBlock section="availability" rows={availability} />
+          </aside>
+
+          <main>
+            <section class="v6-cv-section">
+              <h2>## summary</h2>
+              <p class="v6-cv-p">
+                Graduate student in Communication Engineering at NTU focusing on artificial
+                intelligence and machine learning, with active research interests in AI safety,
+                system-level impact, and practical deployment.
+              </p>
+            </section>
+
+            <section class="v6-cv-section">
+              <h2>## education</h2>
+              {education.map((e) => (
+                <div class="v6-cv-entry">
+                  <span class="v6-cv-when">{e.when}</span>
+                  <div>
+                    <div class="v6-cv-inst">{e.inst}</div>
+                    <div class="v6-cv-role">{e.role}</div>
+                    {e.notes.length > 0 && (
+                      <ul class="v6-cv-notes">
+                        {e.notes.map((n) => <li>{n}</li>)}
+                      </ul>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </section>
+
+            <section class="v6-cv-section">
+              <h2>## experience</h2>
+              {experience.map((e) => (
+                <div class="v6-cv-entry">
+                  <span class="v6-cv-when">{e.when}</span>
+                  <div>
+                    <div class="v6-cv-inst">{e.role}</div>
+                    <div class="v6-cv-role italic">{e.org}</div>
+                    <ul class="v6-cv-notes">
+                      {e.notes.map((n) => <li>{n}</li>)}
+                    </ul>
+                  </div>
+                </div>
+              ))}
+            </section>
+
+            <section class="v6-cv-section">
+              <h2>## skills</h2>
+              {skills.map(([k, arr]) => (
+                <div class="v6-skills-row">
+                  <span class="k">{k}</span>
+                  <div class="chips">
+                    {arr.map((s) => <span>{s}</span>)}
+                  </div>
+                </div>
+              ))}
+            </section>
+          </main>
+        </div>
+      </div>
+    </TerminalPanel>
+  </section>
+</BaseLayout>

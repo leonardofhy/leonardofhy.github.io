@@ -89,6 +89,34 @@ describe('project detail', () => {
   });
 });
 
+describe('about page', () => {
+  it('renders four TOML section blocks', () => {
+    const doc = $('dist/about/index.html');
+    const heads = doc('.v6-toml-head').toArray().map((el) => doc(el).text());
+    for (const label of ['[identity]', '[what_i_do]', '[off_the_clock]', '[availability]']) {
+      expect(heads.join(' ')).toContain(label);
+    }
+  });
+
+  it('renders headline with the accent em', () => {
+    const doc = $('dist/about/index.html');
+    expect(doc('.v6-about-headline em').text()).toContain('Leonardo');
+  });
+});
+
+describe('resume page', () => {
+  it('renders six git-log rows', () => {
+    const doc = $('dist/resume/index.html');
+    expect(doc('.v6-gitlog-row').length).toBe(6);
+  });
+
+  it('renders contact/languages/availability TOML blocks and skills rows', () => {
+    const doc = $('dist/resume/index.html');
+    expect(doc('.v6-toml-block').length).toBeGreaterThanOrEqual(3);
+    expect(doc('.v6-skills-row').length).toBe(4);
+  });
+});
+
 describe('home page (V6 Agent)', () => {
   it('renders V6 top bar with agent link active', () => {
     const doc = $('dist/index.html');

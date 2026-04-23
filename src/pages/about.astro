@@ -1,0 +1,107 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TopBar from '../components/TopBar.astro';
+import TerminalPanel from '../components/TerminalPanel.astro';
+import ToolCall from '../components/ToolCall.astro';
+import TomlBlock from '../components/TomlBlock.astro';
+
+const blocks: { section: string; rows: [string, string][] }[] = [
+  {
+    section: 'identity',
+    rows: [
+      ['name', '"Leonardo Foo Haw Yang"'],
+      ['zh', '"胡皓雍"'],
+      ['role', '"m.s. student · communication engineering"'],
+      ['affiliation', '"national taiwan university"'],
+      ['org', '"ntuais"'],
+      ['location', '"taipei, tw · utc+8"'],
+    ],
+  },
+  {
+    section: 'what_i_do',
+    rows: [
+      ['research', '"ai safety, practical eval, measurable impact"'],
+      ['engineering', '"research ideas → deployable tools"'],
+      ['community', '"organize ntuais, safety learning discussions"'],
+      ['writing', '"ai engineering · safety · tech-and-society"'],
+    ],
+  },
+  {
+    section: 'off_the_clock',
+    rows: [
+      ['games', '["chess"]'],
+      ['anime', '["donghua"]'],
+      ['reading', '["ai safety", "chinese history", "geopolitics", "manga", "social science"]'],
+      ['workflow', '"vibe coding · ship fast with solid iteration"'],
+      ['mission', '"impact society through better ai + better engineering"'],
+    ],
+  },
+  {
+    section: 'availability',
+    rows: [
+      ['open_to', '["research collab", "intern", "speaking"]'],
+      ['response_time', '"~24h"'],
+      ['timezone', '"utc+8"'],
+    ],
+  },
+];
+
+const contactLinks: { name: string; url: string }[] = [
+  { name: 'email', url: 'mailto:leonardo@example.com' },
+  { name: 'github', url: 'https://github.com/leonardofhy' },
+  { name: 'linkedin', url: 'https://www.linkedin.com/in/leonardo-fhy/' },
+];
+---
+<BaseLayout
+  title="About — Leonardo Foo"
+  description="Software developer, AI researcher, and NTUAIS organizer based in Taipei."
+>
+  <TopBar active="about" />
+
+  <section class="v6-shell">
+    <TerminalPanel
+      title="$ cat ~/.config/leonardo.toml"
+      meta={['toml · 2.1 kb', 'readable: ✓']}
+    >
+      <div style="padding: 22px 24px 24px;">
+        <div class="v6-tools">
+          <ToolCall name="read_file" args="~/.config/leonardo.toml" result="ok" />
+        </div>
+
+        <div class="v6-about-intro">
+          <div class="v6-portrait" aria-hidden="true">
+            <div class="v6-portrait-monogram">LF</div>
+            <div class="v6-portrait-label">— portrait · placeholder</div>
+          </div>
+          <div>
+            <h1 class="v6-about-headline">Hi, I'm <em>Leonardo.</em></h1>
+            <p class="v6-about-lead">
+              Software developer, AI researcher, and organizer of <b>NTUAIS</b>
+              (National Taiwan University AI Safety), based in Taipei.
+            </p>
+            <p class="v6-about-sub">
+              I care about building practical AI systems and advancing responsible AI deployment —
+              and I enjoy connecting people through ideas and community work around AI safety,
+              research, and societal impact.
+            </p>
+          </div>
+        </div>
+
+        {blocks.map((b) => <TomlBlock section={b.section} rows={b.rows} />)}
+
+        <div class="v6-connect">
+          <div>
+            <div class="v6-section-label">▸ let's connect</div>
+            <div class="v6-connect-body">
+              Always open to meaningful conversations and collaborations around AI safety,
+              applied ML, and community work.
+            </div>
+          </div>
+          <div class="v6-connect-links">
+            {contactLinks.map((l) => <a href={l.url}>{l.name} ↗</a>)}
+          </div>
+        </div>
+      </div>
+    </TerminalPanel>
+  </section>
+</BaseLayout>
