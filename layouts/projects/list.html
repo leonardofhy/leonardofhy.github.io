@@ -1,0 +1,81 @@
+{{- define "main" }}
+{{- $projects := sort .RegularPages "Date" "desc" -}}
+{{- $count := len $projects -}}
+{{- $featured := where $projects "Params.featured" true -}}
+
+<section class="v6-shell">
+  <div class="v6-panel">
+    <div class="v6-panel-top">
+      <div class="v6-panel-top-l">
+        <div class="v6-dots"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+        <span>$ cat ~/leonardo/projects.json | jq .</span>
+      </div>
+      <div class="v6-panel-top-r">
+        <span>{{ $count }} entries</span>
+        <span>featured: {{ len $featured }}</span>
+        <span>last build: {{ now.Format "2006-01-02" }}</span>
+      </div>
+    </div>
+
+    <div style="padding: 20px 24px 22px;">
+      <div class="v6-tools">
+        <div class="v6-tool"><span class="ok">✓</span><span><b>read_file</b>(<em>~/projects.json</em>) → parsed ({{ $count }} entries)</span></div>
+        <div class="v6-tool"><span class="ok">✓</span><span><b>gh_api</b>(<em>--repos</em>) → metadata fetched</span></div>
+      </div>
+
+      <div class="v6-proj-intro">
+        <span class="caret">▸ </span>
+        Selected work across research, ML tooling, and infrastructure. Each entry is an object
+        with <em>stack</em>, <em>status</em>, and <em>description</em>.
+      </div>
+
+      <div class="v6-proj-grid">
+        {{- range $i, $p := $projects }}
+        {{- $id := printf "%03d" (add $i 1) -}}
+        {{- $status := "shipped" -}}
+        {{- with $p.Params.status }}{{ $status = . }}{{ end -}}
+        {{- $slug := $p.File.ContentBaseName -}}
+        <a class="v6-proj-card {{ if $p.Params.featured }}featured{{ end }}" href="{{ $p.RelPermalink }}">
+          {{- if $p.Params.featured }}<span class="flag">★ FEATURED</span>{{ end }}
+          <div class="v6-proj-head-row">
+            <span>prj/{{ $id }} · {{ $p.Date.Format "2006" }}</span>
+            <span class="v6-proj-status {{ $status }}">● {{ $status }}</span>
+          </div>
+          <div class="v6-proj-title">{{ $p.Title }}</div>
+          <div class="v6-proj-slug">"{{ $slug }}"</div>
+          <p class="v6-proj-desc">{{ $p.Summary | plainify | truncate 220 }}</p>
+          {{- with $p.Params.technologies }}
+          <div class="v6-proj-stack-wrap">
+            <div class="v6-proj-stack-label">stack</div>
+            <div class="v6-proj-stack">
+              {{- range . }}<span>{{ . | lower }}</span>{{ end }}
+            </div>
+          </div>
+          {{- end }}
+          <div class="v6-proj-links">
+            {{- with $p.Params.project_url }}
+            <span>gh ↗</span>
+            {{- end }}
+            <span class="sep">·</span>
+            <span class="secondary">readme</span>
+            <span class="sep">·</span>
+            <span class="secondary">ask about this</span>
+          </div>
+        </a>
+        {{- end }}
+      </div>
+
+      <div class="v6-buildlog">
+        <div class="v6-section-label">▸ recent build log</div>
+        {{- range first 4 (sort $projects "Lastmod" "desc") }}
+        <div class="v6-buildlog-row">
+          <span class="t">{{ .Lastmod.Format "2006.01.02 15:04" }}</span>
+          <span class="ok">✓</span>
+          <span>{{ .File.ContentBaseName }} · {{ .Summary | plainify | truncate 80 }}</span>
+        </div>
+        {{- end }}
+      </div>
+    </div>
+  </div>
+</section>
+{{- end }}

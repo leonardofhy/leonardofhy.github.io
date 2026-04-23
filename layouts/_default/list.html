@@ -6,25 +6,6 @@
 {{- with $home.featuredPostCount }}{{ $postLimit = . }}{{ end }}
 {{- $projectLimit := 3 }}
 {{- with $home.featuredProjectCount }}{{ $projectLimit = . }}{{ end }}
-{{- $postsPage := site.GetPage "/posts" }}
-{{- $projectsPage := site.GetPage "/projects" }}
-{{- $aboutPage := site.GetPage "/about" }}
-{{- $resumePage := site.GetPage "/resume" }}
-{{- $identityDefaults := slice
-"Software Developer"
-"AI Researcher"
-"NTUAIS Organizer"
-"Product-minded Builder"
-}}
-{{- $identityList := $home.identities | default $identityDefaults }}
-{{- $focusDefaults := slice
-"AI safety research and applied systems"
-"Responsible deployment practices"
-"Community building for NTUAIS"
-"Rapid AI tooling and prototyping"
-}}
-{{- $focusList := $home.focuses | default $focusDefaults }}
-{{- $nowLine := $home.now | default "Currently building practical AI tools, writing about safety-by-design systems, and strengthening the AI ethics ecosystem in Taiwan." }}
 
 {{- $allPosts := where site.RegularPages "Section" "posts" }}
 {{- $allPosts = where $allPosts "Params.hiddenInHomeList" "!=" "true" }}
@@ -41,130 +22,142 @@
 {{- $featuredProjects = first $projectLimit (sort $allProjects "Date" "desc") }}
 {{- end }}
 
-<section class="home-wrap">
-  <section class="home-hero" aria-label="Introduction">
-    <p class="home-kicker">{{ $home.kicker | default "AI + Systems + Product" }}</p>
-    <h1 class="home-title">{{ $home.title | default site.Title }}</h1>
-    <p class="home-subtitle">{{ $home.subtitle | default site.Params.description }}</p>
-    <p class="home-intro">{{ $home.intro | default "Recent thoughts, projects, and short technical reflections." }}</p>
-    <div class="home-identity-wrap" role="list" aria-label="Current roles">
-      {{- range $identityList }}
-      <span class="home-identity" role="listitem">{{ . }}</span>
-      {{- end }}
-    </div>
-    <div class="home-cta-row">
-      {{- range $home.ctas }}
-      {{- $style := .style | default "secondary" }}
-      {{- if findRE "^#" .url }}
-      <a class="home-btn home-btn-{{ $style }}" href="{{ .url }}">{{ .name }}</a>
-      {{- else if findRE "://" .url }}
-      <a class="home-btn home-btn-{{ $style }}" href="{{ .url }}">{{ .name }}</a>
-      {{- else }}
-      <a class="home-btn home-btn-{{ $style }}" href="{{ strings.TrimPrefix .url "/" | absURL }}">{{ .name }}</a>
-      {{- end }}
-      {{- end }}
-    </div>
-    <div class="home-now">
-      <p class="home-now-label">Now</p>
-      <p>{{ $nowLine }}</p>
-    </div>
-    <div class="home-focus-grid" role="list" aria-label="Focus list">
-      {{- range $focusList }}
-      <p class="home-focus-item" role="listitem">{{ . }}</p>
-      {{- end }}
-    </div>
-    {{- with $home.skills }}
-    <p class="home-skill-title">Focus areas</p>
-    <div class="home-skill-wrap" role="list" aria-label="Focus areas">
-      {{- range . }}
-      <span class="home-skill" role="listitem">{{ . }}</span>
-      {{- end }}
-    </div>
-    {{- end }}
+{{- $latestPost := index (first 1 (sort $allPosts "Date" "desc")) 0 }}
+{{- $featProject := index (first 1 (sort $allProjects "Date" "desc")) 0 }}
+{{- with (sort (where $allProjects "Params.featured" true) "Date" "desc") }}
+{{- $featProject = index . 0 }}
+{{- end }}
 
-    <div class="home-section-nav" role="list" aria-label="Page sections">
-      <a class="home-section-nav-link" href="#featured-posts" role="listitem">Featured articles</a>
-      <a class="home-section-nav-link" href="#about-section" role="listitem">About</a>
-      <a class="home-section-nav-link" href="#projects-section" role="listitem">Projects</a>
-      <a class="home-section-nav-link" href="#contact-section" role="listitem">Contact</a>
-    </div>
-  </section>
+<section class="v6-shell">
 
-  <section class="home-section" id="featured-posts" aria-labelledby="featured-posts-title">
-    <div class="home-section-head">
-      <h2 id="featured-posts-title">Featured articles</h2>
-      <a class="home-link" href="{{ with $postsPage }}{{ .RelPermalink }}{{ else }}{{ "/posts/" | absURL }}{{ end }}">View all posts</a>
+  <div class="v6-panel">
+    <div class="v6-panel-top">
+      <div class="v6-panel-top-l">
+        <div class="v6-dots"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+        <span>session · ask-leonardo</span>
+      </div>
+      <div class="v6-panel-top-r">
+        <span>model: claude-sonnet-4.5</span>
+        <span>context: 12.4k / 200k</span>
+        <span>cwd: ~/leonardo</span>
+      </div>
     </div>
-    <div class="home-grid">
-      {{- range $post := $featuredPosts }}
-      <article class="home-card">
-        <p class="home-card-kind">Article</p>
-        <h3><a href="{{ $post.RelPermalink }}">{{ $post.Title }}</a></h3>
-        <p>{{ $post.Summary | plainify | truncate 140 }}</p>
-        <p class="home-meta">{{ $post.Date.Format "Jan 2, 2006" }} · {{ $post.ReadingTime }} min read</p>
-        <a class="home-link-inline" href="{{ $post.RelPermalink }}">Read</a>
-      </article>
-      {{- else }}
-      <p class="home-empty">No posts yet. Start writing in <code>content/posts</code>.</p>
-      {{- end }}
-    </div>
-  </section>
 
-  {{- with site.GetPage "/about" }}
-  <section class="home-about home-section" id="about-section" aria-labelledby="about-section-title">
-    <div class="home-section-head">
-      <h2 id="about-section-title">{{ $home.aboutTitle | default .Title }}</h2>
-      <a class="home-link" href="{{ with $aboutPage }}{{ .RelPermalink }}{{ else }}{{ "/about/" | absURL }}{{ end }}">Read more</a>
-    </div>
-    <p class="home-about-content">{{ $home.aboutBlurb | default .Summary }}</p>
-    <div class="home-about-cta">
-      <a class="home-btn home-btn-secondary" href="{{ with $aboutPage }}{{ .RelPermalink }}{{ else }}{{ "/about/" | absURL }}{{ end }}">About me</a>
-      <a class="home-btn home-btn-ghost" href="{{ with $resumePage }}{{ .RelPermalink }}{{ else }}{{ "/resume/" | absURL }}{{ end }}">Resume / CV</a>
-    </div>
-  </section>
-  {{- end }}
-
-  <section class="home-section" id="projects-section" aria-labelledby="projects-title">
-    <div class="home-section-head">
-      <h2 id="projects-title">Selected projects</h2>
-      <a class="home-link" href="{{ with $projectsPage }}{{ .RelPermalink }}{{ else }}{{ "/projects/" | absURL }}{{ end }}">Browse projects</a>
-    </div>
-    <div class="home-grid">
-      {{- range $project := $featuredProjects }}
-      <article class="home-card">
-        <p class="home-card-kind">Project</p>
-        <h3><a href="{{ $project.RelPermalink }}">{{ $project.Title }}</a></h3>
-        <p>{{ $project.Summary | plainify | truncate 160 }}</p>
-        <div class="home-meta-wrap">
-          {{- with $project.Params.technologies }}
-          <div class="home-meta-list" aria-label="Technologies">
-            {{- range . }}
-            <span>{{ . }}</span>
-            {{- end }}
-          </div>
-          {{- end }}
-          {{- if $project.Params.project_url }}
-          <a class="home-link-inline" href="{{ $project.Params.project_url }}" target="_blank" rel="noopener noreferrer">Live / repo</a>
-          {{- end }}
+    <div class="v6-convo">
+      <div class="v6-welcome">
+        <h2 class="v6-welcome-title">Hi, I'm <em>Leonardo.</em></h2>
+        <p>
+          This site runs as a small agent. Ask anything about my work in AI safety,
+          projects, writing, or NTUAIS — or use a slash command below. I'll route the
+          question and reply as myself (or close enough, via Claude).
+        </p>
+        <div class="v6-welcome-hint">
+          <span><kbd>↵</kbd> send</span>
+          <span><kbd>/</kbd> commands</span>
+          <span><kbd>tab</kbd> autocomplete</span>
+          <span><kbd>esc</kbd> clear</span>
         </div>
-      </article>
-      {{- else }}
-      <p class="home-empty">No projects yet. Add project entries under <code>content/projects</code>.</p>
-      {{- end }}
+      </div>
+
+      <div class="v6-msg">
+        <div class="v6-msg-system">leonardo-agent v2026.04 · connected · taipei</div>
+      </div>
+
+      <div class="v6-msg">
+        <div class="v6-msg-user">
+          <span class="v6-prompt">&gt;</span>
+          <span class="v6-msg-user-text">whoami</span>
+        </div>
+      </div>
+
+      <div class="v6-msg">
+        <div class="v6-msg-assistant">
+          <div class="v6-tools">
+            <div class="v6-tool"><span class="ok">✓</span><span><b>read_file</b>(<em>~/profile.md</em>)</span></div>
+            <div class="v6-tool"><span class="ok">✓</span><span><b>list_files</b>(<em>content/projects/</em>)</span></div>
+          </div>
+          <div class="v6-md">
+            <p>Hey — I'm <strong>Leonardo Foo Haw Yang</strong> (胡皓雍).</p>
+            <p>Software developer, AI researcher, and organizer of <strong>NTUAIS</strong>. M.S. student at NTU Communication Engineering, based in Taipei.</p>
+            <p>I build useful systems, explore AI safety, and share ideas that connect research, engineering, and impact.</p>
+            <ul>
+              <li>Research · model evaluation &amp; responsible deployment</li>
+              <li>Engineering · AI tooling, rapid prototyping</li>
+              <li>Community · organizing the NTU AI Safety circle</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="v6-input-wrap">
+      <div class="v6-quick">
+        <a class="v6-quick-chip" href="{{ "posts/" | absLangURL }}"><span class="cmd">/writing</span>show recent posts</a>
+        <a class="v6-quick-chip" href="{{ "projects/" | absLangURL }}"><span class="cmd">/projects</span>what have you built?</a>
+        <a class="v6-quick-chip" href="{{ "about/" | absLangURL }}"><span class="cmd">/now</span>what are you working on?</a>
+        <a class="v6-quick-chip" href="#contact"><span class="cmd">/contact</span>how do I reach you?</a>
+      </div>
+      <div class="v6-input-row">
+        <span class="v6-prompt">&gt;</span>
+        <input class="v6-input" type="text" placeholder="ask leonardo anything… (try: what got you into AI safety?)" aria-label="message input" disabled>
+        <button class="v6-send" disabled>send ↵</button>
+      </div>
+    </div>
+
+    <div class="v6-statusbar">
+      <div class="v6-statusbar-l">
+        <span><b>▸</b> agent mode</span>
+        <span>tokens/min: 1.2k</span>
+        <span>latency: 340ms</span>
+      </div>
+      <div class="v6-statusbar-r">
+        <span>utc+8</span>
+        <span>build {{ now.Format "2006.01.02" }}</span>
+        <span>hugo + claude</span>
+      </div>
+    </div>
+  </div>
+
+  <section class="v6-below" aria-label="Highlights">
+    {{- with $latestPost }}
+    <a class="v6-below-card" href="{{ .RelPermalink }}">
+      <div class="v6-below-label">▸ latest writing</div>
+      <h3 class="v6-below-title">{{ .Title }}</h3>
+      <p class="v6-below-body">{{ .Summary | plainify | truncate 140 }}</p>
+      <div class="stats">
+        <span>published</span><b>{{ .Date.Format "2006.01.02" }}</b>
+        <span>read</span><b>{{ .ReadingTime }} min</b>
+      </div>
+    </a>
+    {{- end }}
+    {{- with $featProject }}
+    <a class="v6-below-card" href="{{ .RelPermalink }}">
+      <div class="v6-below-label">▸ featured project</div>
+      <h3 class="v6-below-title">{{ .Title }}</h3>
+      <p class="v6-below-body">{{ .Summary | plainify | truncate 140 }}</p>
+      <div class="stats">
+        {{- with .Params.technologies }}
+        <span>stack</span><b>{{ delimit (first 2 .) " · " | lower }}</b>
+        {{- end }}
+        <span>status</span><b>shipped</b>
+      </div>
+    </a>
+    {{- end }}
+    <div class="v6-below-card" id="contact">
+      <div class="v6-below-label">▸ currently</div>
+      <h3 class="v6-below-title">{{ $home.nowTitle | default "NTUAIS, cohort 02" }}</h3>
+      <p class="v6-below-body">{{ $home.now | default "Running speaker sessions and student-led activities on AI safety, practical evaluation, and responsible deployment." }}</p>
+      <div class="stats">
+        <span>role</span><b>organizer</b>
+        <span>since</span><b>2024</b>
+      </div>
     </div>
   </section>
 
-  <section class="home-section" id="contact-section" aria-labelledby="contact-title">
-    <div class="home-section-head">
-      <h2 id="contact-title">{{ $home.contactTitle | default "Contact" }}</h2>
-    </div>
-    <div class="home-contact-wrap">
-      {{- range $home.contactLinks }}
-      <a class="home-btn home-btn-secondary" href="{{ .url | safeURL }}">{{ .name }}</a>
-      {{- end }}
-      <a class="home-link" href="{{ with $resumePage }}{{ .RelPermalink }}{{ else }}{{ "/resume/" | absURL }}{{ end }}">Resume / CV</a>
-    </div>
-  </section>
+  <div class="v6-legend">
+    <span>© {{ now.Year }} leonardo foo · built with hugo + claude · site runs as an agent</span>
+    <span><kbd>⌘</kbd><kbd>k</kbd> command palette · <kbd>g</kbd><kbd>p</kbd> projects · <kbd>g</kbd><kbd>w</kbd> writing</span>
+  </div>
 </section>
 
 {{- else }}

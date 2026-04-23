@@ -7,8 +7,8 @@ theme = "PaperMod"
   author = "Leonardo Foo Haw Yang"
   description = "Leonardo Foo's personal blog about AI engineering, machine learning, and software development."
   keywords = ["AI", "machine learning", "software engineering", "Hugo", "Python"]
-  defaultTheme = "auto"
-  disableThemeToggle = false
+  defaultTheme = "dark"
+  disableThemeToggle = true
 
   [params.profileMode]
     enabled = false
@@ -60,6 +60,8 @@ theme = "PaperMod"
   weight = 4
 
   [params.home]
+    brandSub = "胡皓雍 · taipei"
+    nowTitle = "NTUAIS, cohort 02"
     kicker = "AI. Build. Explain."
     title = "Hi, I'm Leonardo Foo"
     subtitle = "Software developer, AI researcher, and organizer of NTUAIS."
