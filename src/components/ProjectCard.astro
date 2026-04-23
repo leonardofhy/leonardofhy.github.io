@@ -41,7 +41,7 @@ const cardClass = `v6-proj-card${featured ? ' featured' : ''}`;
 
   {projectUrl && (
     <div class="v6-proj-links">
-      <a href={projectUrl} class="secondary">gh ↗</a>
+      <span class="secondary">gh: {projectUrl.replace(/^https?:\/\/(www\.)?github\.com\//, '@').replace(/\/$/, '')}</span>
     </div>
   )}
 </Tag>

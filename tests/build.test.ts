@@ -62,6 +62,33 @@ describe('post detail', () => {
   });
 });
 
+describe('projects list', () => {
+  it('renders a card per project', () => {
+    const doc = $('dist/projects/index.html');
+    expect(doc('.v6-proj-card').length).toBe(2);
+  });
+
+  it('featured project shows the star flag', () => {
+    const doc = $('dist/projects/index.html');
+    expect(doc('.v6-proj-card.featured .flag').length).toBeGreaterThan(0);
+  });
+
+  it('build log section exists', () => {
+    const doc = $('dist/projects/index.html');
+    expect(doc('.v6-buildlog').length).toBe(1);
+  });
+});
+
+describe('project detail', () => {
+  const slug = 'ai-blog-assistant';
+  it('renders manifest + body', () => {
+    const doc = $(`dist/projects/${slug}/index.html`);
+    expect(doc('.v6-post-head h1').text()).toBe('AI Blog Assistant');
+    expect(doc('.v6-fm-pre').text()).toContain('stack:');
+    expect(doc('.v6-post-body').length).toBe(1);
+  });
+});
+
 describe('home page (V6 Agent)', () => {
   it('renders V6 top bar with agent link active', () => {
     const doc = $('dist/index.html');
