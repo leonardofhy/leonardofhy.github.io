@@ -1,0 +1,80 @@
+{{- define "main" }}
+{{- $slug := .File.ContentBaseName -}}
+{{- $status := .Params.status | default "shipped" -}}
+{{- $techJson := jsonify (.Params.technologies | default (slice)) -}}
+
+<div class="v6-subhead">
+  <a href="{{ "projects/" | absLangURL }}">← cat projects.json</a>
+  <span class="sep">/</span>
+  <span>{{ $slug }}</span>
+</div>
+
+<section class="v6-shell">
+  <div class="v6-panel">
+    <div class="v6-panel-top">
+      <div class="v6-panel-top-l">
+        <div class="v6-dots"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+        <span>$ read_file projects/{{ $slug }}.md</span>
+      </div>
+      <div class="v6-panel-top-r">
+        <span>status: {{ $status }}</span>
+        {{- if .Params.featured }}<span>featured: true</span>{{ end }}
+        <span>updated: {{ .Lastmod.Format "2006-01-02" }}</span>
+      </div>
+    </div>
+
+    <div style="padding: 18px 0 0;">
+      <div class="v6-fm-card">
+        <div class="v6-section-label">▸ project manifest</div>
+        <pre class="v6-fm-pre"><span class="k">name:       </span>"{{ .Title }}"
+<span class="k">slug:       </span>"{{ $slug }}"
+<span class="k">year:       </span>{{ .Date.Format "2006" }}
+<span class="k">status:     </span>"{{ $status }}"
+<span class="k">featured:   </span>{{ .Params.featured | default false }}
+<span class="k">stack:      </span>{{ $techJson }}
+{{- with .Params.project_url }}
+<span class="k">url:        </span>"{{ . }}"{{ end }}</pre>
+      </div>
+
+      <div class="v6-post-head">
+        <h1>{{ .Title }}</h1>
+        <div class="v6-post-meta">
+          <span>started {{ .Date.Format "2006-01-02" }}</span>
+          <span>·</span>
+          <span>status: <em>{{ $status }}</em></span>
+          {{- with .Params.project_url }}
+          <span>·</span>
+          <span><a href="{{ . }}" target="_blank" rel="noopener noreferrer">repo ↗</a></span>
+          {{- end }}
+        </div>
+      </div>
+
+      <article class="v6-post-body">
+        {{ .Content }}
+      </article>
+
+      {{- with .Params.technologies }}
+      <div style="margin: 0 24px 20px; padding: 14px 16px; background: rgba(245,244,238,0.02); border: 1px solid var(--rule-mid); border-radius: 8px;">
+        <div class="v6-section-label">▸ stack</div>
+        <div class="v6-proj-stack">
+          {{- range . }}<span>{{ . | lower }}</span>{{ end }}
+        </div>
+      </div>
+      {{- end }}
+
+      <nav class="v6-post-nav" aria-label="Project navigation">
+        <a class="prev" href="{{ "projects/" | absLangURL }}">
+          <span class="nv-label">← back</span>
+          <span class="nv-title">All projects</span>
+        </a>
+        {{- with .Params.project_url }}
+        <a class="next" href="{{ . }}" target="_blank" rel="noopener noreferrer">
+          <span class="nv-label">open →</span>
+          <span class="nv-title">Repository</span>
+        </a>
+        {{- end }}
+      </nav>
+    </div>
+  </div>
+</section>
+{{- end }}

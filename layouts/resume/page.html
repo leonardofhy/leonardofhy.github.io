@@ -1,0 +1,168 @@
+{{- define "main" }}
+
+<section class="v6-shell">
+  <div class="v6-panel">
+    <div class="v6-panel-top">
+      <div class="v6-panel-top-l">
+        <div class="v6-dots"><i class="r"></i><i class="y"></i><i class="g"></i></div>
+        <span>$ git log --oneline --graph --all ~/career</span>
+      </div>
+      <div class="v6-panel-top-r">
+        <span>6 commits</span>
+        <span>branch: main</span>
+        <span>branches: education · career · research · community</span>
+      </div>
+    </div>
+
+    <div style="padding: 22px 24px 26px;">
+      <div class="v6-resume-head">
+        <div>
+          <h1>Leonardo Foo <em>Haw Yang</em></h1>
+          <div class="v6-resume-sub">
+            software dev · ai researcher · ntuais organizer · <em>taipei, tw</em>
+          </div>
+        </div>
+        <a class="v6-dl-btn" href="#" aria-label="Download PDF resume">↓ download.pdf</a>
+      </div>
+
+      <div class="v6-tools">
+        <div class="v6-tool"><span class="ok">✓</span><span><b>git_log</b>(<em>--oneline --graph --all</em>) → 6 commits</span></div>
+      </div>
+
+      {{- $commits := slice
+        (dict "hash" "a7f3e21" "d" "2024" "tag" "(HEAD → main, ntuais)" "kind" "feat" "msg" "launch NTUAIS — organize student-led AI safety activities" "color" "var(--accent)")
+        (dict "hash" "3c1b88a" "d" "Sep 2024" "tag" "" "kind" "perf" "msg" "ship defect-detection CV model · 30% speedup via TensorRT" "color" "var(--ok)")
+        (dict "hash" "9e2d14f" "d" "Jul 2024" "tag" "(intern)" "kind" "feat" "msg" "start AI research internship at Tech Company Inc." "color" "var(--warn)")
+        (dict "hash" "51fa09c" "d" "Sep 2023" "tag" "(m.s.)" "kind" "feat" "msg" "begin M.S. in Communication Engineering @ NTU" "color" "var(--accent)")
+        (dict "hash" "8b4e2a7" "d" "Jun 2023" "tag" "(b.s.)" "kind" "merge" "msg" "graduate B.S. in Electrical Engineering @ NTU" "color" "var(--accent)")
+        (dict "hash" "1c0aab2" "d" "Sep 2019" "tag" "" "kind" "init" "msg" "initial commit — enroll B.S. in Electrical Engineering" "color" "var(--ink-4)")
+      }}
+      <div class="v6-gitlog">
+        {{- range $commits }}
+        {{- $dotStyle := printf "color: %s;" .color -}}
+        <div class="v6-gitlog-row">
+          <span class="dot" style="{{ $dotStyle | safeCSS }}">●</span>
+          <span class="hash">{{ .hash }}</span>
+          <span class="date">{{ .d }}</span>
+          <span class="kind {{ .kind }}">{{ .kind }}</span>
+          <span class="msg">{{ .msg }}{{ with .tag }}<span class="tag" style="{{ $dotStyle | safeCSS }}">&nbsp;{{ . }}</span>{{ end }}</span>
+        </div>
+        {{- end }}
+      </div>
+
+      <div class="v6-cv">
+        <aside>
+          <div class="v6-toml-block">
+            <div class="v6-toml-head">[<b>contact</b>]</div>
+            <div class="v6-toml-rows">
+              <div class="v6-toml-row"><span class="k">loc</span><span class="v">Taipei, TW</span></div>
+              <div class="v6-toml-row"><span class="k">email</span><span class="v">leonardo@…</span></div>
+              <div class="v6-toml-row"><span class="k">gh</span><span class="v">@leonardofhy</span></div>
+              <div class="v6-toml-row"><span class="k">li</span><span class="v">leonardo-fhy</span></div>
+            </div>
+          </div>
+          <div class="v6-toml-block">
+            <div class="v6-toml-head">[<b>languages</b>]</div>
+            <div class="v6-toml-rows">
+              <div class="v6-toml-row"><span class="k">中文</span><span class="v">native</span></div>
+              <div class="v6-toml-row"><span class="k">english</span><span class="v">fluent</span></div>
+            </div>
+          </div>
+          <div class="v6-toml-block">
+            <div class="v6-toml-head">[<b>availability</b>]</div>
+            <div class="v6-toml-rows">
+              <div class="v6-toml-row"><span class="k">open_to</span><span class="v">research / intern</span></div>
+              <div class="v6-toml-row"><span class="k">response</span><span class="v">&lt; 24h</span></div>
+              <div class="v6-toml-row"><span class="k">tz</span><span class="v">utc+8</span></div>
+            </div>
+          </div>
+        </aside>
+
+        <main>
+          <section class="v6-cv-section">
+            <h2>## summary</h2>
+            <p class="v6-cv-p">
+              Graduate student in Communication Engineering at NTU focusing on artificial intelligence
+              and machine learning, with active research interests in AI safety, system-level impact,
+              and practical deployment.
+            </p>
+          </section>
+
+          <section class="v6-cv-section">
+            <h2>## education</h2>
+            <div class="v6-cv-entry">
+              <span class="v6-cv-when">Sep 2023 — Present</span>
+              <div>
+                <div class="v6-cv-inst">National Taiwan University</div>
+                <div class="v6-cv-role">M.S. in Communication Engineering</div>
+                <ul class="v6-cv-notes">
+                  <li>focus: deep learning · computer vision</li>
+                  <li>research: ai safety · practical eval</li>
+                </ul>
+              </div>
+            </div>
+            <div class="v6-cv-entry">
+              <span class="v6-cv-when">Sep 2019 — Jun 2023</span>
+              <div>
+                <div class="v6-cv-inst">National Taiwan University</div>
+                <div class="v6-cv-role">B.S. in Electrical Engineering</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="v6-cv-section">
+            <h2>## experience</h2>
+            <div class="v6-cv-entry">
+              <span class="v6-cv-when">Jul 2024 — Sep 2024</span>
+              <div>
+                <div class="v6-cv-inst">AI Research Intern</div>
+                <div class="v6-cv-role italic">Tech Company Inc.</div>
+                <ul class="v6-cv-notes">
+                  <li>computer vision models for industrial defect detection</li>
+                  <li>30% inference speedup via tensorrt</li>
+                </ul>
+              </div>
+            </div>
+            <div class="v6-cv-entry">
+              <span class="v6-cv-when">2024 — Present</span>
+              <div>
+                <div class="v6-cv-inst">Organizer</div>
+                <div class="v6-cv-role italic">NTUAIS (NTU AI Safety)</div>
+                <ul class="v6-cv-notes">
+                  <li>organize discussions, speaker sessions, student-led activities</li>
+                  <li>connect researchers + students for practical safety insights</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+
+          <section class="v6-cv-section">
+            <h2>## skills</h2>
+            {{- $skills := slice
+              (slice "languages" (slice "python" "c++" "javascript" "go"))
+              (slice "ai/ml" (slice "pytorch" "tensorflow" "opencv" "huggingface" "safe-ai-eval"))
+              (slice "web" (slice "hugo" "react" "node.js" "gh-actions"))
+              (slice "tools" (slice "docker" "git" "linux" "aws"))
+            }}
+            {{- range $skills }}
+            <div class="v6-skills-row">
+              <span class="k">{{ index . 0 }}</span>
+              <div class="chips">
+                {{- range (index . 1) }}<span>{{ . }}</span>{{ end }}
+              </div>
+            </div>
+            {{- end }}
+          </section>
+
+          {{- if .Content }}
+          <section class="v6-cv-section" style="margin-top: 32px;">
+            <h2>## from resume.md</h2>
+            <div class="v6-post-body" style="padding:0;">{{ .Content }}</div>
+          </section>
+          {{- end }}
+        </main>
+      </div>
+    </div>
+  </div>
+</section>
+{{- end }}
