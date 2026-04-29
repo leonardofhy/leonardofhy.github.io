@@ -1,10 +1,9 @@
 import rss from '@astrojs/rss';
-import { getCollection } from 'astro:content';
 import type { APIContext } from 'astro';
+import { getPublishedPosts } from '../lib/posts';
 
 export async function GET(context: APIContext) {
-  const posts = await getCollection('posts', (p) => p.data.draft !== true);
-  const sorted = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  const sorted = await getPublishedPosts();
   return rss({
     title: "Leonardo Foo's Blog",
     description:

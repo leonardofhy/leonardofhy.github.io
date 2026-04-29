@@ -23,10 +23,11 @@ npm run check     # type + content-schema check only
 
 - **Framework**: Astro 6, `output: 'static'` (default), `trailingSlash: 'always'` in `astro.config.mjs`. Integrations: `@astrojs/react` (for interactive islands), `@astrojs/mdx`, `@astrojs/sitemap`. RSS via `@astrojs/rss`.
 - **TypeScript**: `tsconfig.json` extends `astro/tsconfigs/strict`; React 19 JSX. Only `src/` and `tests/` are included.
-- **Content**: typed via `src/content.config.ts` using Zod (v4, imported as `astro/zod`). Three collections:
+- **Content**: typed via `src/content.config.ts` using Zod (v4, imported as `astro/zod`). Two collections:
   - `posts` — `src/content/posts/*.md` (frontmatter: `title`, `date`, `summary` required; `tags`, `categories`, `author`, `featured`, `hiddenInHomeList`, `lang`, `draft` optional)
   - `projects` — `src/content/projects/*.md` (adds `technologies`, `status`, `project_url`, `featured`)
-  - `pages` — `src/content/pages/*.md` (about/resume markdown; the routed pages are `src/pages/about.astro` and `src/pages/resume.astro`, which are prose-as-code for now)
+  - `about.astro` and `resume.astro` are prose-as-code (data tables literal in the `.astro` file).
+- **Shared post helpers** in `src/lib/posts.ts`: `getPublishedPosts()` (draft-filtered), `getHomePosts()` (also drops `hiddenInHomeList`), `getPostStats(post)` (body, words, lines, readMin, dateStr, fileName, frontmatterText), `formatDate` / `formatTime` (Asia/Taipei).
 - **Styling**: single `src/styles/global.css` imported by `src/layouts/BaseLayout.astro`. All V6 class names (`.v6-panel`, `.v6-topbar`, `.v6-stream-item`, …) live here.
 - **Components** (`src/components/`): split by JS cost
   - `.astro` (zero JS): `TopBar`, `TerminalPanel`, `ToolCall`, `BelowCard`, `TomlBlock`, `ProjectCard`, `GitLogRow`

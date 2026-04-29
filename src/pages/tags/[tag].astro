@@ -1,17 +1,18 @@
 ---
-import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TopBar from '../../components/TopBar.astro';
 import TerminalPanel from '../../components/TerminalPanel.astro';
 import ToolCall from '../../components/ToolCall.astro';
 import StreamItem from '../../components/StreamItem';
+import { getPublishedPosts, getPostStats, tagToSlug } from '../../lib/posts';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts', (p) => p.data.draft !== true);
-  const byTag = new Map<string, typeof posts>();
+  const posts = await getPublishedPosts();
+  type Post = (typeof posts)[number];
+  const byTag = new Map<string, Post[]>();
   for (const post of posts) {
     for (const t of post.data.tags ?? []) {
-      const slug = t.toLowerCase().replace(/\s+/g, '-');
+      const slug = tagToSlug(t);
       if (!byTag.has(slug)) byTag.set(slug, []);
       byTag.get(slug)!.push(post);
     }
@@ -19,38 +20,26 @@ export async function getStaticPaths() {
   return Array.from(byTag.entries()).map(([slug, entries]) => ({
     params: { tag: slug },
     props: {
-      tagSlug: slug,
-      tagLabel: entries[0].data.tags!.find(
-        (t) => t.toLowerCase().replace(/\s+/g, '-') === slug
-      ) ?? slug,
-      entries: entries.sort((a, b) => b.data.date.getTime() - a.data.date.getTime()),
+      tagLabel:
+        entries[0].data.tags!.find((t) => tagToSlug(t) === slug) ?? slug,
+      entries,
     },
   }));
 }
 
-const { tagSlug, tagLabel, entries } = Astro.props;
+const { tagLabel, entries } = Astro.props;
 
 const streamItems = entries.map((p, idx) => {
-  const body = (p as unknown as { body?: string }).body ?? '';
-  const words = body.trim().split(/\s+/).filter(Boolean).length;
-  const readMin = Math.max(1, Math.round(words / 220));
-  const lines = body.split('\n').length;
-  const fmText = `---
-file:     ${p.id}.md
-date:     ${p.data.date.toISOString().slice(0, 10)}
-tags:     ${JSON.stringify(p.data.tags ?? [])}
-read:     ${readMin} min
-lines:    ${lines}
----`;
+  const stats = getPostStats(p);
   return {
-    date: p.data.date.toISOString().slice(0, 10),
+    date: stats.dateStr,
     title: p.data.title,
     href: `/posts/${p.id}/`,
-    readMin,
-    words,
-    frontmatterText: fmText,
+    readMin: stats.readMin,
+    words: stats.words,
+    frontmatterText: stats.frontmatterText,
     summary: p.data.summary,
-    fileName: `${p.id}.md`,
+    fileName: stats.fileName,
     initiallyOpen: idx === 0,
   };
 });

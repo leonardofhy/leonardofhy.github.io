@@ -1,12 +1,12 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TopBar from '../../components/TopBar.astro';
 import TerminalPanel from '../../components/TerminalPanel.astro';
+import { getPublishedPosts, getPostStats, formatTime } from '../../lib/posts';
 
 export async function getStaticPaths() {
-  const posts = await getCollection('posts', (p) => p.data.draft !== true);
-  const sorted = posts.sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+  const sorted = await getPublishedPosts();
   return sorted.map((post, idx) => ({
     params: { slug: post.id },
     props: {
@@ -22,20 +22,15 @@ export async function getStaticPaths() {
 const { post, total, index, prev, next } = Astro.props;
 const { Content } = await render(post);
 
-const body = (post as unknown as { body?: string }).body ?? '';
-const bytes = new TextEncoder().encode(body).length;
-const lines = body.split('\n').length;
+const stats = getPostStats(post);
+const bytes = new TextEncoder().encode(stats.body).length;
 const fmBlock = `title:    "${post.data.title}"
 date:     ${post.data.date.toISOString()}
 author:   ${post.data.author ?? 'Leonardo Foo Haw Yang'}
 tags:     ${JSON.stringify(post.data.tags ?? [])}
 summary:  "${post.data.summary.replace(/"/g, '\\"')}"`;
 
-const dateStr = post.data.date.toISOString().slice(0, 10);
-const timeStr = post.data.date.toISOString().slice(11, 16);
-
-const words = body.trim().split(/\s+/).filter(Boolean).length;
-const readMin = Math.max(1, Math.round(words / 220));
+const timeStr = formatTime(post.data.date);
 ---
 <BaseLayout
   title={`${post.data.title} — Leonardo Foo`}
@@ -53,7 +48,7 @@ const readMin = Math.max(1, Math.round(words / 220));
   <section class="v6-shell">
     <TerminalPanel
       title={`$ read_file content/posts/${post.id}.md`}
-      meta={[`md · ${bytes} bytes`, `${lines} lines`, 'encoding: utf-8']}
+      meta={[`md · ${bytes} bytes`, `${stats.lines} lines`, 'encoding: utf-8']}
     >
       <div style="padding: 18px 0 0;">
         <div class="v6-fm-card">
@@ -64,9 +59,9 @@ const readMin = Math.max(1, Math.round(words / 220));
         <div class="v6-post-head">
           <h1>{post.data.title}</h1>
           <div class="v6-post-meta">
-            <span>{dateStr} · {timeStr} utc+8</span>
+            <span>{stats.dateStr} · {timeStr} utc+8</span>
             <span>·</span>
-            <span>{readMin} min read</span>
+            <span>{stats.readMin} min read</span>
             {post.data.tags && post.data.tags.length > 0 && (
               <>
                 <span>·</span>
