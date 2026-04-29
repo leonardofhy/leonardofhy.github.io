@@ -44,7 +44,7 @@ export default function AgentREPL({ initialMessages, quickCommands }: Props) {
   const [history] = useState<Message[]>(initialMessages);
   const [thinking] = useState(false);
 
-  const onSubmit = (e: React.FormEvent) => {
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // v1: no-op. Wiring a real Claude call is a follow-up change.
   };

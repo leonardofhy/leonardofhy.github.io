@@ -20,9 +20,18 @@ const links: { key: Props['active']; label: string; href: string }[] = [
       <div><b>leonardo.dev</b><span>— 胡皓雍 · taipei</span></div>
     </a>
     <nav class="v6-topnav">
-      {links.map((l) => (
-        <a href={l.href} class={l.key === active ? 'active' : undefined}>{l.label}</a>
-      ))}
+      {links.map((l) => {
+        const isActive = l.key === active;
+        return (
+          <a
+            href={l.href}
+            class={isActive ? 'active' : undefined}
+            aria-current={isActive ? 'page' : undefined}
+          >
+            {l.label}
+          </a>
+        );
+      })}
     </nav>
     <div class="v6-status"><i></i> online · open to research collab</div>
   </header>
