@@ -96,10 +96,8 @@ kbd {
 }
 
 /* -----------------------------------------------------------------------
-   Top bar (replaces PaperMod .header)
+   Top bar
    ----------------------------------------------------------------------- */
-body > header.header { display: none !important; }
-
 .v6-topbar-wrap {
   position: relative;
   z-index: 2;
@@ -478,32 +476,6 @@ body > header.header { display: none !important; }
   gap: 12px;
 }
 
-.v6-post-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 2px;
-  background: var(--rule);
-  border: 1px solid var(--rule);
-  border-radius: 8px;
-  overflow: hidden;
-  margin: 4px 0 14px;
-}
-.v6-post-row {
-  display: grid;
-  grid-template-columns: 100px 1fr 160px;
-  gap: 16px;
-  padding: 10px 14px;
-  background: var(--paper-2);
-  font-size: 12.5px;
-  color: var(--ink-2);
-  text-decoration: none;
-  transition: background 0.12s;
-}
-.v6-post-row:hover { background: #30302d; color: var(--ink-2); }
-.v6-post-row .d { color: var(--ink-5); font-size: 11px; }
-.v6-post-row .t { color: var(--ink); }
-.v6-post-row .g { color: var(--ink-3); font-size: 11px; text-align: right; }
-
 /* -----------------------------------------------------------------------
    Writing list — $ tail -f posts/
    ----------------------------------------------------------------------- */
@@ -559,7 +531,6 @@ body > header.header { display: none !important; }
   margin-bottom: 14px;
   transition: border-color 0.15s;
 }
-details.v6-stream-item[open],
 .v6-stream-item.open { border-color: var(--accent); }
 .v6-stream-summary {
   cursor: pointer;
@@ -570,15 +541,10 @@ details.v6-stream-item[open],
   list-style: none;
   padding: 4px 0;
 }
-.v6-stream-summary::-webkit-details-marker { display: none; }
 .v6-stream-caret { color: var(--accent); font-size: 11px; }
 .v6-stream-date { color: var(--ink-5); font-size: 11px; }
 .v6-stream-title { color: var(--ink); font-size: 14px; font-weight: 500; }
 .v6-stream-meta { color: var(--ink-4); font-size: 11px; text-align: right; }
-details.v6-stream-item[open] .v6-stream-caret::before,
-.v6-stream-item.open .v6-stream-caret::before { content: "▾"; }
-details.v6-stream-item:not([open]) .v6-stream-caret::before,
-.v6-stream-item:not(.open):not([open]) .v6-stream-caret::before { content: "▸"; }
 
 .v6-stream-body { margin-top: 10px; padding-left: 24px; }
 .v6-stream-fm {
@@ -1001,19 +967,6 @@ details.v6-stream-item:not([open]) .v6-stream-caret::before,
   text-transform: uppercase;
   font-family: var(--mono);
 }
-.v6-portrait-monogram {
-  font-family: var(--serif);
-  font-size: 36px;
-  color: var(--accent);
-  font-style: italic;
-}
-.v6-portrait-label {
-  font-size: 10px;
-  color: var(--ink-5);
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  margin-top: 6px;
-}
 .v6-about-headline {
   font-family: var(--serif);
   font-size: 48px;
@@ -1112,19 +1065,6 @@ details.v6-stream-item:not([open]) .v6-stream-caret::before,
 .v6-resume-head h1 em { color: var(--ink-4); font-style: italic; }
 .v6-resume-sub { color: var(--ink-3); font-size: 13px; }
 .v6-resume-sub em { color: var(--accent); font-style: normal; }
-.v6-dl-btn {
-  font-family: var(--mono);
-  font-size: 11px;
-  padding: 8px 14px;
-  border: 1px solid var(--accent);
-  color: var(--accent);
-  text-decoration: none;
-  border-radius: 6px;
-  letter-spacing: 0.06em;
-  align-self: flex-start;
-}
-.v6-dl-btn:hover { background: var(--accent); color: var(--paper); }
-
 .v6-gitlog {
   font-family: var(--mono);
   font-size: 12.5px;
@@ -1239,72 +1179,6 @@ details.v6-stream-item:not([open]) .v6-stream-caret::before,
 }
 
 /* -----------------------------------------------------------------------
-   Footer
-   ----------------------------------------------------------------------- */
-footer.footer {
-  background: transparent !important;
-  color: var(--ink-5) !important;
-  font-family: var(--mono) !important;
-  font-size: 11px !important;
-  padding: 20px 24px 28px !important;
-  max-width: var(--shell-max) !important;
-  margin: 0 auto !important;
-  border-top: 1px dashed var(--rule) !important;
-}
-footer.footer span { color: var(--ink-5) !important; }
-footer.footer a { color: var(--accent) !important; }
-
-/* -----------------------------------------------------------------------
-   Fallback list/single pages — minimal V6 reskin
-   ----------------------------------------------------------------------- */
-.page-header, .post-header {
-  max-width: var(--shell-max);
-  margin: 20px auto 0;
-  padding: 0 24px;
-}
-.page-header h1, .post-header h1 {
-  font-family: var(--serif);
-  font-weight: 400;
-  color: var(--ink);
-  letter-spacing: -0.015em;
-}
-.breadcrumbs, .breadcrumbs a {
-  font-family: var(--mono);
-  font-size: 11px;
-  color: var(--ink-4);
-  text-transform: lowercase;
-}
-.breadcrumbs a:hover { color: var(--accent); }
-
-.post-entry, .first-entry, .tag-entry {
-  background: var(--paper-2) !important;
-  border: 1px solid var(--rule) !important;
-  border-radius: 10px !important;
-  padding: 16px 20px !important;
-  margin-bottom: 12px !important;
-}
-.post-entry:hover, .first-entry:hover, .tag-entry:hover {
-  border-color: var(--accent-line-2) !important;
-}
-.entry-header h2, .first-entry .entry-header h2 {
-  font-family: var(--serif) !important;
-  font-weight: 400 !important;
-  color: var(--ink) !important;
-  letter-spacing: -0.01em;
-}
-.entry-content p { color: var(--ink-3) !important; font-size: 13px; }
-.entry-footer, .post-meta { color: var(--ink-5) !important; font-size: 11px !important; }
-
-.pagination .prev, .pagination .next {
-  background: var(--paper-2) !important;
-  color: var(--accent) !important;
-  border: 1px solid var(--accent-line) !important;
-  font-family: var(--mono) !important;
-  font-size: 11px !important;
-  border-radius: 6px !important;
-}
-
-/* -----------------------------------------------------------------------
    Responsive
    ----------------------------------------------------------------------- */
 @media (max-width: 900px) {
@@ -1323,8 +1197,6 @@ footer.footer a { color: var(--accent) !important; }
   .v6-gitlog-row { grid-template-columns: 16px 70px 80px 60px 1fr; font-size: 11.5px; }
   .v6-cv-entry { grid-template-columns: 1fr; }
   .v6-legend span:last-child { display: none; }
-  .v6-post-row { grid-template-columns: 80px 1fr; }
-  .v6-post-row .g { display: none; }
   .v6-connect { grid-template-columns: 1fr; }
 }
 
