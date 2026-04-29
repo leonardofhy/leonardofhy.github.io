@@ -1,6 +1,7 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import { execSync } from 'node:child_process';
-import { readFileSync, existsSync } from 'node:fs';
+import { readdirSync, readFileSync, existsSync } from 'node:fs';
+import { join } from 'node:path';
 import * as cheerio from 'cheerio';
 
 const run = (cmd: string) => execSync(cmd, { stdio: 'pipe' }).toString();
@@ -11,6 +12,18 @@ beforeAll(() => {
 
 function $(path: string) {
   return cheerio.load(readFileSync(path, 'utf8'));
+}
+
+function publishedCount(dir: string): number {
+  return readdirSync(dir)
+    .filter((f) => f.endsWith('.md') || f.endsWith('.mdx'))
+    .filter((f) => {
+      const text = readFileSync(join(dir, f), 'utf8');
+      const fm = text.match(/^---\n([\s\S]*?)\n---/);
+      const block = fm ? fm[1] : '';
+      return !/^draft:\s*true\b/m.test(block);
+    })
+    .length;
 }
 
 describe('build', () => {
@@ -33,7 +46,7 @@ describe('posts list', () => {
 
   it('renders one StreamItem per post source file', () => {
     const doc = $('dist/posts/index.html');
-    expect(doc('.v6-stream-item').length).toBe(6);
+    expect(doc('.v6-stream-item').length).toBe(publishedCount('src/content/posts'));
   });
 
   it('topbar marks writing active', () => {
@@ -65,7 +78,7 @@ describe('post detail', () => {
 describe('projects list', () => {
   it('renders a card per project', () => {
     const doc = $('dist/projects/index.html');
-    expect(doc('.v6-proj-card').length).toBe(2);
+    expect(doc('.v6-proj-card').length).toBe(publishedCount('src/content/projects'));
   });
 
   it('featured project shows the star flag', () => {

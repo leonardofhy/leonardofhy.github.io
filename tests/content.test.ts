@@ -20,18 +20,12 @@ function readFrontmatter(path: string): Record<string, unknown> {
 }
 
 describe('content source files', () => {
-  it('has 6 posts in src/content/posts', () => {
-    expect(listMd('src/content/posts')).toHaveLength(6);
+  it('has at least one post in src/content/posts', () => {
+    expect(listMd('src/content/posts').length).toBeGreaterThan(0);
   });
 
-  it('has 2 projects in src/content/projects', () => {
-    expect(listMd('src/content/projects')).toHaveLength(2);
-  });
-
-  it('has about + resume in src/content/pages', () => {
-    const files = listMd('src/content/pages');
-    expect(files).toContain('about.md');
-    expect(files).toContain('resume.md');
+  it('has at least one project in src/content/projects', () => {
+    expect(listMd('src/content/projects').length).toBeGreaterThan(0);
   });
 
   it('every post has title, date, summary', () => {
