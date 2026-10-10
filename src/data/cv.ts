@@ -35,6 +35,6 @@ export const experience: CvEntry[] = [
 export const skills: [string, string[]][] = [
   ['languages', ['python', 'c++', 'javascript', 'go']],
   ['ai/ml', ['pytorch', 'tensorflow', 'opencv', 'huggingface', 'safe-ai-eval']],
-  ['web', ['astro', 'react', 'node.js', 'gh-actions']],
+  ['web', ['hugo', 'astro', 'react', 'node.js', 'gh-actions']],
   ['tools', ['docker', 'git', 'linux', 'aws']],
 ];
