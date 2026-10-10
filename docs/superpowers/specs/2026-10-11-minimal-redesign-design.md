@@ -1,81 +1,64 @@
-# Minimal text-first redesign — design spec
+# 極簡純文字重新設計 — 設計規格
 
-Date: 2026-10-11
-Status: approved in conversation, awaiting written review
+日期：2026-10-11
+狀態：對話中已確認，等待書面審閱
 
-## 1. Purpose
+## 1. 目的
 
-Turn the site into a research / job "calling card": the page a PhD
-committee, an internship recruiter, or a potential collaborator opens
-first. Writing stays on the site but is secondary.
+把網站變成「研究／求職名片」：PhD 審查委員、實習招募者、潛在合作者第一個打開的頁面。文章保留在站上，但退居次要。
 
-Non-goals: dark mode, interactive islands, a streaming Claude endpoint,
-the Astro 7 major upgrade (separate task), preserving the V6 terminal
-aesthetic in any form.
+不做的事：深色模式、互動 island、串流 Claude endpoint、Astro 7 大版升級（另開 task）、以任何形式保留 V6 終端機風格。
 
-## 2. Visual system
+## 2. 視覺系統
 
-- **Layout.** One centred column, `max-width: 42rem`. 16px side gutter
-  on phones. No sidebars, cards, shadows, or bordered panels. Sections
-  are separated by whitespace and a small heading.
-- **Type.** System fonts only, no webfont requests.
-  - Body: `-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, "PingFang TC", "Noto Sans TC", sans-serif`
-  - Code: `ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`
-  - Body 17px / line-height 1.6. Posts with `lang: zh-TW` get
-    line-height 1.75.
-- **Colour.** Light only. White background, near-black text, grey for
-  dates and meta, one low-saturation link colour with underline.
-  Tokens live on `:root` in `src/styles/global.css`.
-- **Navigation.** Header: name (links to `/`) left, `writing · projects
-  · cv` right. Footer: github, linkedin, rss. Email is added once the
-  user supplies it.
-- **JavaScript.** Zero. No islands. The built HTML contains no
-  `<script>` tags (enforced by test).
+- **排版。** 單欄置中，`max-width: 42rem`。手機兩側 16px 邊距。沒有側欄、卡片、陰影、邊框區塊。區塊之間只用留白與小標題分隔。
+- **字型。** 只用系統字型，不載入 webfont。
+  - 內文：`-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang TC", "Noto Sans TC", sans-serif`
+  - 程式碼：`ui-monospace, SFMono-Regular, Menlo, Consolas, monospace`
+  - 內文 17px、行高 1.6。`lang: zh-TW` 的文章行高 1.75。
+- **色彩。** 只有淺色。白底、近黑文字、灰色日期與附註、一個低飽和連結色加底線。色彩 token 放在 `src/styles/global.css` 的 `:root`。
+- **導覽。** 頁首：左邊名字（連回 `/`），右邊 `writing · projects · cv`。頁尾：github、linkedin、rss。email 等使用者提供後再加。
+- **JavaScript。** 零。沒有 island。建置出的 HTML 不含任何 `<script>` 標籤（由測試強制）。
 
-## 3. Pages
+## 3. 頁面
 
-| Route | Content |
+| 路由 | 內容 |
 |---|---|
-| `/` | Name + one-line identity (research area, affiliation, city). 2–3 sentence intro. "Selected work": up to 3 `featured` projects. "Writing": 3 most recent posts. "Contact": link row. |
-| `/writing/` | All non-draft posts grouped by year, one line each: date + title. |
-| `/writing/[slug]/` | Title, date, reading time, body. No prev/next, no tags page. |
-| `/projects/` | One block per project: title (external link if `project_url`), summary, technologies, status. |
-| `/projects/[slug]/` | Title, meta, body. Kept for future long-form projects. |
-| `/cv/` | Education, Experience, Skills. Each entry: when · institution · role · 1–2 notes. Data from `src/data/cv.ts`. |
-| `/404.html` | Plain "not found" + link home. |
+| `/` | 名字 + 一行身份（研究方向、單位、城市）。2–3 句自我介紹。「Selected work」：最多 3 個 `featured` project。「Writing」：最近 3 篇。「Contact」：連結列。 |
+| `/writing/` | 所有非 draft 文章，按年份分組，每篇一行：日期 + 標題。 |
+| `/writing/[slug]/` | 標題、日期、閱讀分鐘數、內文。不做上一篇／下一篇，不做 tag 頁。 |
+| `/projects/` | 每個 project 一個區塊：標題（有 `project_url` 則外連）、摘要、技術、狀態。 |
+| `/projects/[slug]/` | 標題、meta、內文。保留給之後有長說明的 project。 |
+| `/cv/` | Education、Experience、Skills。每個條目：時間 · 機構 · 角色 · 1–2 點附註。資料來自 `src/data/cv.ts`。 |
+| `/404.html` | 純文字「not found」+ 回首頁連結。 |
 
-Empty-collection behaviour: when `projects` has zero entries, the home
-"Selected work" section and `/projects/` render a single line
-"coming soon" and the build must not fail.
+空集合行為：`projects` 沒有任何條目時，首頁「Selected work」與 `/projects/` 顯示一行「coming soon」，建置不得失敗。
 
-Removed routes: `/about/`, `/resume/`, `/posts/`, `/posts/[slug]/`,
-`/tags/[tag]/`.
+移除的路由：`/about/`、`/resume/`、`/posts/`、`/posts/[slug]/`、`/tags/[tag]/`。
 
-## 4. Data and content
+## 4. 資料與內容
 
-### Collections (`src/content.config.ts`)
+### 集合（`src/content.config.ts`）
 
-`posts` schema (reduced to fields actually rendered):
+`posts` schema（只留實際會渲染的欄位）：
 
-| field | required | type |
+| 欄位 | 必填 | 型別 |
 |---|---|---|
-| `title` | yes | string |
-| `date` | yes | coerced Date |
-| `summary` | yes | string |
-| `tags` | no | string[] |
-| `draft` | no | boolean, default false |
-| `featured` | no | boolean, default false |
-| `lang` | no | `'en' \| 'zh-TW'`, default `'en'` |
+| `title` | 是 | string |
+| `date` | 是 | coerced Date |
+| `summary` | 是 | string |
+| `tags` | 否 | string[] |
+| `draft` | 否 | boolean，預設 false |
+| `featured` | 否 | boolean，預設 false |
+| `lang` | 否 | `'en' \| 'zh-TW'`，預設 `'en'` |
 
-Removed from schema: `categories`, `author`, `hiddenInHomeList`.
+從 schema 移除：`categories`、`author`、`hiddenInHomeList`。
 
-`projects` schema: unchanged (`technologies`, `status`, `project_url`,
-`featured` on top of the base fields).
+`projects` schema：不動（基本欄位之外的 `technologies`、`status`、`project_url`、`featured`）。
 
-### Content changes
+### 內容變更
 
-Delete:
+刪除：
 - `src/content/posts/hello-world.md`
 - `src/content/posts/getting-started-with-machine-learning.md`
 - `src/content/posts/python-virtual-environments-quick-guide.md`
@@ -84,30 +67,24 @@ Delete:
 - `src/content/projects/ai-blog-assistant.md`
 - `src/content/projects/edge-deployment-monitor.md`
 
-Keep and strip `categories` / `author` from frontmatter:
+保留，並從 frontmatter 拿掉 `categories` / `author`：
 - `src/content/posts/rebuilding-my-site-as-an-agent.md`
-- `src/content/posts/little-leo-workspace-to-system.md` (currently
-  untracked; add to git)
+- `src/content/posts/little-leo-workspace-to-system.md`（目前 untracked，要加進 git）
 
-### CV data (`src/data/cv.ts`)
+### CV 資料（`src/data/cv.ts`）
 
-Typed literal exporting `education`, `experience`, `skills`. Seed only
-with facts already consistent across the current live site:
+型別化的字面量，匯出 `education`、`experience`、`skills`。只放現站已經一致出現的事實：
 
-- B.S. Electrical Engineering, National Taiwan University, Sep 2019 –
-  Jun 2023
-- M.S. Communication Engineering, National Taiwan University, Sep 2023 –
-  present
+- B.S. Electrical Engineering, National Taiwan University, Sep 2019 – Jun 2023
+- M.S. Communication Engineering, National Taiwan University, Sep 2023 – present
 - Organizer, NTUAIS (NTU AI Safety), 2024 – present
-- Skills: carried over verbatim from the current `resume.astro` list
-  (languages / ai-ml / web / tools); the user prunes it.
+- Skills：直接沿用現在 `resume.astro` 的清單（languages / ai-ml / web / tools），由使用者刪減。
 
-Dropped as placeholder: the "Tech Company Inc." internship, the fake
-commit hashes, `leonardo@…` / `leonardo@example.com`.
+視為 placeholder 而刪除：「Tech Company Inc.」實習、假的 commit hash、`leonardo@…` / `leonardo@example.com`。
 
-## 5. Routing, redirects, feeds
+## 5. 路由、轉址、feed
 
-`astro.config.mjs` `redirects`:
+`astro.config.mjs` 的 `redirects`：
 
 ```js
 redirects: {
@@ -118,67 +95,55 @@ redirects: {
 }
 ```
 
-Static output emits meta-refresh pages for these. `/tags/*` becomes 404.
+靜態輸出會為這些產生 meta-refresh 頁。`/tags/*` 變成 404。
 
-Feeds: `/rss.xml` kept, item links point at `/writing/<slug>/`.
-`/index.xml` Hugo-compat alias kept. Sitemap via `@astrojs/sitemap`.
+Feed：`/rss.xml` 保留，item 連結指向 `/writing/<slug>/`。`/index.xml` Hugo 相容別名保留。Sitemap 由 `@astrojs/sitemap` 產生。
 
-## 6. Components
+## 6. 元件
 
-Delete: `AgentREPL.tsx`, `StreamItem.tsx`, `TopBar.astro`,
-`TerminalPanel.astro`, `ToolCall.astro`, `BelowCard.astro`,
-`TomlBlock.astro`, `ProjectCard.astro`, `GitLogRow.astro`.
+刪除：`AgentREPL.tsx`、`StreamItem.tsx`、`TopBar.astro`、`TerminalPanel.astro`、`ToolCall.astro`、`BelowCard.astro`、`TomlBlock.astro`、`ProjectCard.astro`、`GitLogRow.astro`。
 
-New (all `.astro`, zero JS):
-- `SiteHeader.astro` — name + nav, takes `active`.
-- `SiteFooter.astro` — link row.
-- `PostList.astro` — year-grouped list, takes posts array.
-- `ProjectEntry.astro` — one project block.
-- `CvEntry.astro` — one CV row.
+新增（全部 `.astro`，零 JS）：
+- `SiteHeader.astro` — 名字 + 導覽，接 `active`。
+- `SiteFooter.astro` — 連結列。
+- `PostList.astro` — 按年份分組的清單，接 posts 陣列。
+- `ProjectEntry.astro` — 一個 project 區塊。
+- `CvEntry.astro` — 一個 CV 條目。
 
-`BaseLayout.astro` keeps `<head>` responsibilities (title, description,
-OG image, canonical, RSS link, lang) and imports `global.css`.
-`src/lib/posts.ts` keeps `getPublishedPosts`, `getPostStats`,
-`formatDate`; `getHomePosts` is removed with `hiddenInHomeList`.
+`BaseLayout.astro` 繼續負責 `<head>`（title、description、OG image、canonical、RSS link、lang）並引入 `global.css`。
+`src/lib/posts.ts` 保留 `getPublishedPosts`、`getPostStats`、`formatDate`；`getHomePosts` 隨 `hiddenInHomeList` 一起移除。
 
-## 7. Testing
+## 7. 測試
 
-`tests/build.test.ts` (runs `astro build` in `beforeAll`, asserts with
-cheerio):
-- header has exactly the three nav links with trailing slashes
-- `/` has the four sections (intro, selected work, writing, contact)
-- `/writing/` groups by year; count equals non-draft source files
-- every post page has `<h1>` and a `<time>` element
-- `/cv/` renders the seeded education entries
-- redirect pages exist at `/about/`, `/resume/`, `/posts/` and point at
-  the new paths
-- `/rss.xml` has one `<item>` per published post with `/writing/` links
-- **no `<script>` tag in any built HTML file**
+`tests/build.test.ts`（在 `beforeAll` 跑 `astro build`，用 cheerio 斷言）：
+- 頁首正好有三個導覽連結，都帶尾斜線
+- `/` 有四個區塊（intro、selected work、writing、contact）
+- `/writing/` 按年份分組；數量等於非 draft 的來源檔數
+- 每個文章頁有 `<h1>` 和 `<time>` 元素
+- `/cv/` 渲染出種子的 education 條目
+- `/about/`、`/resume/`、`/posts/` 存在 redirect 頁且指向新路徑
+- `/rss.xml` 每篇已發布文章一個 `<item>`，連結指向 `/writing/`
+- **所有建置出的 HTML 檔不含 `<script>` 標籤**
 
-`tests/content.test.ts`:
-- every post file parses against the new schema
-- no post file contains `categories:` or `author:`
+`tests/content.test.ts`：
+- 每個 post 檔都能通過新 schema
+- 沒有任何 post 檔含 `categories:` 或 `author:`
 
-CI workflow unchanged (already runs `npm test` then `npm run build`).
+CI workflow 不動（已經先跑 `npm test` 再 `npm run build`）。
 
-## 8. Cleanup
+## 8. 清理
 
-- `package.json`: remove `react`, `react-dom`, `@types/react`,
-  `@types/react-dom`, `@astrojs/react`, `@astrojs/mdx`. Run
-  `npm audit fix` and minor bumps; stay on Astro 6.x.
-- `tsconfig.json`: remove `jsx` / `jsxImportSource`; drop Hugo-era
-  `exclude` entries (`themes`, `layouts`, `assets`, `resources`,
-  `content`).
-- `README.md`, `CLAUDE.md`: rewrite for the new structure; remove the
-  non-existent `src/content/pages/` reference.
-- `docs/specs/astro-migration*.md`: keep as history.
+- `package.json`：移除 `react`、`react-dom`、`@types/react`、`@types/react-dom`、`@astrojs/react`、`@astrojs/mdx`。跑 `npm audit fix` 與 minor bump；維持 Astro 6.x。
+- `tsconfig.json`：移除 `jsx` / `jsxImportSource`；拿掉 Hugo 時代的 `exclude` 項目（`themes`、`layouts`、`assets`、`resources`、`content`）。
+- `README.md`、`CLAUDE.md`：依新結構重寫；移除不存在的 `src/content/pages/` 引用。
+- `docs/specs/astro-migration*.md`：保留當歷史。
 
-## 9. Content the user must supply (not rendered as TODO on the site)
+## 9. 使用者需提供的內容（不會以 TODO 形式出現在網站上）
 
-- Contact email
-- Current M.S. status / graduation date, or current position
-- Real experience entries (internships, research roles)
-- Selected projects as `src/content/projects/*.md` files
-- Publications, if any (would become a `/cv/` section)
+- 聯絡 email
+- 目前 M.S. 狀態／畢業時間，或現職
+- 真實經歷條目（實習、研究職位）
+- 代表作，以 `src/content/projects/*.md` 檔案提供
+- Publications（如有，會成為 `/cv/` 的一節）
 
-Until supplied, the corresponding sections render only what §4 seeds.
+提供之前，對應區塊只渲染 §4 的種子資料。
