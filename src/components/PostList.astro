@@ -1,0 +1,33 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { formatDate, yearOf } from '../lib/text';
+
+type Post = CollectionEntry<'posts'>;
+
+interface Props {
+  posts: Post[];
+  groupByYear?: boolean;
+}
+const { posts, groupByYear = false } = Astro.props;
+
+const groups = new Map<string, Post[]>();
+for (const p of posts) {
+  const key = groupByYear ? yearOf(p.data.date) : '';
+  groups.set(key, [...(groups.get(key) ?? []), p]);
+}
+---
+{[...groups.entries()].map(([year, items]) => (
+  <section class="year">
+    {groupByYear && <h2>{year}</h2>}
+    <ul class="post-list">
+      {items.map((p) => (
+        <li>
+          <time datetime={p.data.date.toISOString()}>{formatDate(p.data.date)}</time>
+          <a href={`/writing/${p.id}/`} lang={p.data.lang === 'zh-TW' ? 'zh-Hant-TW' : undefined}>
+            {p.data.title}
+          </a>
+        </li>
+      ))}
+    </ul>
+  </section>
+))}

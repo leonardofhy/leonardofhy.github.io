@@ -1,0 +1,16 @@
+---
+import { SITE, NAV, type NavKey } from '../lib/site';
+
+interface Props {
+  active?: NavKey;
+}
+const { active } = Astro.props;
+---
+<header class="site-header">
+  <a class="name" href="/">{SITE.name}</a>
+  <nav aria-label="Site">
+    {NAV.map((n) => (
+      <a href={n.href} aria-current={active === n.key ? 'page' : undefined}>{n.label}</a>
+    ))}
+  </nav>
+</header>

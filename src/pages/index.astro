@@ -1,0 +1,61 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostList from '../components/PostList.astro';
+import { getPublishedPosts } from '../lib/posts';
+import { SITE, LINKS } from '../lib/site';
+
+const posts = (await getPublishedPosts()).slice(0, 3);
+const projects = (await getCollection('projects', (p) => p.data.draft !== true && p.data.featured))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 3);
+const contact = LINKS.filter((l) => l.label !== 'rss');
+---
+<BaseLayout title={SITE.fullName} description={SITE.description} active="home">
+  <section id="intro">
+    <h1>{SITE.fullName} <span class="muted">{SITE.zhName}</span></h1>
+    <p class="lede">
+      M.S. student in Communication Engineering at National Taiwan University.
+      AI safety, practical evaluation, and organizer of NTUAIS (NTU AI Safety). Taipei.
+    </p>
+    <p>
+      I care about building practical AI systems and advancing responsible AI deployment,
+      and I enjoy connecting people through ideas and community work around AI safety,
+      research, and societal impact.
+    </p>
+  </section>
+
+  <section id="selected-work">
+    <h2>Selected work</h2>
+    {projects.length === 0 ? (
+      <p class="muted">coming soon</p>
+    ) : (
+      <ul class="post-list">
+        {projects.map((p) => (
+          <li>
+            <a href={p.data.project_url ?? `/projects/${p.id}/`}>{p.data.title}</a>
+            <span class="muted">{p.data.summary}</span>
+          </li>
+        ))}
+      </ul>
+    )}
+  </section>
+
+  <section id="writing">
+    <h2>Writing</h2>
+    <PostList posts={posts} />
+    <p><a href="/writing/">All posts</a></p>
+  </section>
+
+  <section id="contact">
+    <h2>Contact</h2>
+    <p>
+      {contact.map((l, i) => (
+        <>
+          {i > 0 && ' · '}
+          <a href={l.href}>{l.label}</a>
+        </>
+      ))}
+    </p>
+  </section>
+</BaseLayout>
