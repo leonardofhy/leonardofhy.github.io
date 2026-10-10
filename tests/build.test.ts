@@ -1,6 +1,6 @@
-import { describe, it, expect, beforeAll } from 'vitest';
+import { describe, it, expect, beforeAll, afterAll } from 'vitest';
 import { execSync } from 'node:child_process';
-import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
+import { readdirSync, readFileSync, existsSync, statSync, writeFileSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import * as cheerio from 'cheerio';
 
@@ -59,6 +59,17 @@ describe('build', () => {
         expect(readFileSync(join('dist/_astro', n), 'utf8')).not.toMatch(/fonts\.googleapis|@font-face/);
       }
     }
+  });
+
+  it('stylesheet wraps long unbreakable strings and scrolls wide tables', () => {
+    let css = $('dist/index.html')('style').text();
+    if (existsSync('dist/_astro')) {
+      for (const n of readdirSync('dist/_astro').filter((n) => n.endsWith('.css'))) {
+        css += readFileSync(join('dist/_astro', n), 'utf8');
+      }
+    }
+    expect(css).toMatch(/overflow-wrap:\s*(anywhere|break-word)/);
+    expect(css).toMatch(/table\s*\{[^}]*overflow-x:\s*auto/);
   });
 
   it('every non-redirect page has a title and description', () => {
@@ -152,12 +163,6 @@ describe('writing', () => {
   it('zh-TW post sets html lang', () => {
     expect($('dist/writing/little-leo-workspace-to-system/index.html')('html').attr('lang')).toBe('zh-Hant-TW');
   });
-
-  it('draft posts get no page', () => {
-    for (const s of sourceSlugs('src/content/posts', { drafts: true })) {
-      expect(existsSync(`dist/writing/${s}`), s).toBe(false);
-    }
-  });
 });
 
 describe('projects', () => {
@@ -240,5 +245,41 @@ describe('feeds and 404', () => {
     const doc = $('dist/404.html');
     expect(doc('h1').text()).toMatch(/404/);
     expect(doc('a[href="/"]').length).toBeGreaterThan(0);
+  });
+});
+
+describe('fixtures: draft post and featured project', () => {
+  const draft = 'src/content/posts/zz-fixture-draft.md';
+  const project = 'src/content/projects/zz-fixture-project.md';
+  const rebuild = () => execSync('npx astro build --silent --force', { stdio: 'pipe' });
+
+  beforeAll(() => {
+    writeFileSync(
+      draft,
+      '---\ntitle: "Fixture Draft"\ndate: 2026-01-01T00:30:00+08:00\nsummary: "Draft fixture."\ndraft: true\n---\n\nHidden body.\n',
+    );
+    writeFileSync(
+      project,
+      '---\ntitle: "Fixture Project"\ndate: 2026-01-01\nsummary: "Project fixture."\ntechnologies: ["Astro"]\nstatus: wip\nfeatured: true\n---\n\nBody paragraph.\n',
+    );
+    rebuild();
+  }, 120_000);
+
+  afterAll(() => {
+    rmSync(draft, { force: true });
+    rmSync(project, { force: true });
+    rebuild();
+  }, 120_000);
+
+  it('draft post gets no page, no list entry and no feed item', () => {
+    expect(existsSync('dist/writing/zz-fixture-draft')).toBe(false);
+    expect($('dist/writing/index.html')('a[href="/writing/zz-fixture-draft/"]').length).toBe(0);
+    expect(readFileSync('dist/rss.xml', 'utf8')).not.toContain('zz-fixture-draft');
+  });
+
+  it('featured project appears on home, in the list, and gets a detail page', () => {
+    expect($('dist/index.html')('section#selected-work li').length).toBe(1);
+    expect($('dist/projects/index.html')('section.project').length).toBe(1);
+    expect($('dist/projects/zz-fixture-project/index.html')('article header h1').text()).toBe('Fixture Project');
   });
 });
