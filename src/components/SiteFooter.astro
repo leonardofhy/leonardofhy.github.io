@@ -1,0 +1,6 @@
+---
+import { LINKS } from '../lib/site';
+---
+<footer class="site-footer">
+  {LINKS.map((l) => <a href={l.href}>{l.label}</a>)}
+</footer>

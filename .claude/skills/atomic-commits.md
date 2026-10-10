@@ -45,7 +45,7 @@ Format:
 
 <optional body explaining WHY, not what>
 
-Co-Authored-By: Claude Opus 4.6 <noreply@anthropic.com>
+Co-Authored-By: Claude Fable 5.1 <noreply@anthropic.com>
 ```
 
 ## Rules

@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PostList from '../../components/PostList.astro';
+import { getPublishedPosts } from '../../lib/posts';
+
+const posts = await getPublishedPosts();
+---
+<BaseLayout title="Writing — Leonardo Foo" description="Posts by Leonardo Foo Haw Yang." active="writing">
+  <h1>Writing</h1>
+  <PostList posts={posts} groupByYear />
+</BaseLayout>

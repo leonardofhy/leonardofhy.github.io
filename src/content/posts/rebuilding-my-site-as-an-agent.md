@@ -3,8 +3,6 @@ title: "Rebuilding My Site as an Agent (and Moving It to Astro)"
 date: 2026-04-23T17:00:00+08:00
 draft: false
 tags: ["astro", "hugo", "design", "ai"]
-categories: ["Web Development"]
-author: "胡皓雍 (Leonardo Foo Haw Yang)"
 summary: "Why my personal site now looks like a Claude Code terminal — and why, after shipping that design on Hugo, I moved the whole stack to Astro + React in the same fortnight."
 featured: true
 ---

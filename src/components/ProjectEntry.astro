@@ -1,0 +1,17 @@
+---
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  project: CollectionEntry<'projects'>;
+}
+const { project } = Astro.props;
+const { title, summary, technologies, status, project_url } = project.data;
+const href = project_url ?? `/projects/${project.id}/`;
+const external = project_url ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+const meta = [...technologies, status].join(' · ');
+---
+<section class="project">
+  <h3><a href={href} {...external}>{title}</a></h3>
+  <p>{summary}</p>
+  <p class="meta">{meta}</p>
+</section>

@@ -1,7 +1,5 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
-import react from '@astrojs/react';
-import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
@@ -11,5 +9,11 @@ export default defineConfig({
   build: {
     format: 'directory',
   },
-  integrations: [react(), mdx(), sitemap()],
+  integrations: [sitemap()],
+  redirects: {
+    '/about': '/',
+    '/resume': '/cv/',
+    '/posts': '/writing/',
+    '/posts/[...slug]': '/writing/[...slug]',
+  },
 });
