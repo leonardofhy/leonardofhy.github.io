@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import CvEntry from '../components/CvEntry.astro';
+import { education, experience, skills } from '../data/cv';
+import { SITE } from '../lib/site';
+---
+<BaseLayout title="CV — Leonardo Foo" description={`CV of ${SITE.fullName}.`} active="cv">
+  <h1>{SITE.fullName}</h1>
+  <p class="muted">Taipei, Taiwan · UTC+8</p>
+
+  <section id="education">
+    <h2>Education</h2>
+    {education.map((e) => <CvEntry entry={e} />)}
+  </section>
+
+  <section id="experience">
+    <h2>Experience</h2>
+    {experience.map((e) => <CvEntry entry={e} />)}
+  </section>
+
+  <section id="skills">
+    <h2>Skills</h2>
+    <dl class="skills">
+      {skills.map(([k, v]) => (
+        <>
+          <dt>{k}</dt>
+          <dd>{v.join(', ')}</dd>
+        </>
+      ))}
+    </dl>
+  </section>
+</BaseLayout>

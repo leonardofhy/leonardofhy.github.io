@@ -1,0 +1,20 @@
+---
+import type { CvEntry } from '../data/cv';
+
+interface Props {
+  entry: CvEntry;
+}
+const { entry } = Astro.props;
+---
+<div class="cv-entry">
+  <span class="when">{entry.when}</span>
+  <div>
+    <div class="org">{entry.org}</div>
+    <div class="role">{entry.role}</div>
+    {entry.notes.length > 0 && (
+      <ul>
+        {entry.notes.map((n) => <li>{n}</li>)}
+      </ul>
+    )}
+  </div>
+</div>
