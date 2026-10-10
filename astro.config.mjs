@@ -14,5 +14,6 @@ export default defineConfig({
     '/about': '/',
     '/resume': '/cv/',
     '/posts': '/writing/',
+    '/posts/[...slug]': '/writing/[...slug]',
   },
 });
