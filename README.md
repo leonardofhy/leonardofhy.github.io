@@ -10,7 +10,7 @@ Claude Code-style terminal UI on Astro until 2026-10 (tag `v6-final`).
 
 ## Local development
 
-Node 20+ (CI uses 22).
+Node 22.12+ (CI uses 22).
 
 ```bash
 npm install
