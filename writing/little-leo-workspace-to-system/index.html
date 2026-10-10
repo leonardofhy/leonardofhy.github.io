@@ -1,0 +1,55 @@
+<!DOCTYPE html><html lang="zh-Hant-TW"> <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>workspace 長成系統：little-leo 的兩千個 commit — Leonardo Foo</title><meta name="description" content="OpenClaw 是我寫的 personal agent，little-leo 本來只是它的 workspace。六十天、兩千零九十八個 commit 之後，workspace 長成了系統本身，OpenClaw 反過來變成它的客戶。"><link rel="canonical" href="https://leonardofhy.github.io/writing/little-leo-workspace-to-system/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><link rel="sitemap" href="/sitemap-index.xml"><link rel="alternate" type="application/rss+xml" title="Leonardo Foo" href="/rss.xml"><meta property="og:title" content="workspace 長成系統：little-leo 的兩千個 commit — Leonardo Foo"><meta property="og:description" content="OpenClaw 是我寫的 personal agent，little-leo 本來只是它的 workspace。六十天、兩千零九十八個 commit 之後，workspace 長成了系統本身，OpenClaw 反過來變成它的客戶。"><meta property="og:image" content="https://leonardofhy.github.io/images/portrait.jpg"><meta property="og:type" content="website"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="https://leonardofhy.github.io/images/portrait.jpg"><style>:root{--bg: #ffffff;--fg: #1a1a1a;--muted: #6b6b6b;--link: #1f4e79;--rule: #e5e5e5;--code-bg: #f4f4f4;--sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "PingFang TC", "Noto Sans TC", sans-serif;--mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;--measure: 42rem}*{box-sizing:border-box}html{font-family:var(--sans);font-size:17px;line-height:1.6;-webkit-text-size-adjust:100%}body{margin:0;background:var(--bg);color:var(--fg);overflow-wrap:break-word}.wrap{max-width:var(--measure);margin:0 auto;padding:0 16px}a{color:var(--link);text-decoration:underline;text-underline-offset:.15em}a:hover{text-decoration-thickness:2px}.site-header{display:flex;justify-content:space-between;align-items:baseline;padding:2rem 0 2.5rem}.site-header .name{font-weight:600;color:var(--fg);text-decoration:none}.site-header nav a{margin-left:1.25rem;color:var(--muted);text-decoration:none}.site-header nav a:hover{color:var(--fg)}.site-header nav a[aria-current=page]{color:var(--fg);text-decoration:underline}main{padding-bottom:3rem}.site-footer{border-top:1px solid var(--rule);padding:1.5rem 0 3rem;color:var(--muted);font-size:.9rem}.site-footer a{margin-right:1rem;color:var(--muted)}h1{font-size:1.6rem;line-height:1.25;margin:0 0 .5rem;font-weight:600}h2{font-size:1.1rem;margin:2.5rem 0 .75rem;font-weight:600}h3{font-size:1rem;margin:1.5rem 0 .5rem;font-weight:600}p{margin:0 0 1rem}ul,ol{padding-left:1.25rem}.muted{color:var(--muted)}.lede{font-size:1.05rem}.year h2{margin-top:2rem}.post-list{list-style:none;padding:0;margin:0}.post-list li{display:flex;gap:1rem;margin:.35rem 0}.post-list time{flex:0 0 6.5rem;color:var(--muted);font-variant-numeric:tabular-nums}article header{margin-bottom:1.5rem}article :is(h2,h3){margin-top:2rem}article img{max-width:100%;height:auto}article pre{font-family:var(--mono);font-size:.85rem;line-height:1.5;padding:1rem;overflow-x:auto;background:var(--code-bg);border-radius:4px}article code{font-family:var(--mono);font-size:.9em}article :not(pre)>code{background:var(--code-bg);padding:.1em .3em;border-radius:3px;overflow-wrap:anywhere}article blockquote{margin:1rem 0;padding-left:1rem;border-left:3px solid var(--rule);color:var(--muted)}article table{display:block;overflow-x:auto;border-collapse:collapse;width:100%;font-size:.95rem}article th,article td{border-bottom:1px solid var(--rule);padding:.4rem .6rem;text-align:left}html[lang=zh-Hant-TW] article{line-height:1.75}.project{margin:0 0 1.75rem}.project h3{margin-top:0}.project .meta{color:var(--muted);font-size:.9rem}.cv-entry{display:grid;grid-template-columns:10.5rem 1fr;gap:.25rem 1rem;margin:0 0 1.25rem}.cv-entry .when{color:var(--muted);font-variant-numeric:tabular-nums}.cv-entry .role{color:var(--muted)}.cv-entry ul{margin:.25rem 0 0;padding-left:1.1rem}.skills dt{font-weight:600;margin-top:.5rem}.skills dd{margin:0;color:var(--muted)}@media(max-width:480px){.site-header{flex-direction:column;gap:.5rem}.site-header nav a{margin-left:0;margin-right:1.25rem}.post-list li{flex-direction:column;gap:0;margin-bottom:.75rem}.post-list time{flex-basis:auto}.cv-entry{grid-template-columns:1fr}}
+</style></head> <body> <div class="wrap"> <header class="site-header"> <a class="name" href="/">Leonardo Foo</a> <nav aria-label="Site"> <a href="/writing/" aria-current="page">writing</a><a href="/projects/">projects</a><a href="/cv/">cv</a> </nav> </header> <main>  <article> <header> <h1>workspace 長成系統：little-leo 的兩千個 commit</h1> <p class="muted"> <time datetime="2026-04-23T11:30:00.000Z">2026-04-23</time>  · 6 min read
+</p> </header> <p>OpenClaw 是我寫給自己的 personal agent——最早只是 Claude Code 的一層 wrapper，讓它能在我的 M3 MacBook 跟實驗室桌機上 24/7 跑研究工作流。<code>little-leo</code> 一開始純粹是它的 workspace：一個放記憶、實驗結果、每日規劃、暫存筆記的資料夾。一個 scratch dir，我甚至沒想過要把它 version-control。</p>
+<p>兩個月之後我回頭看，這個資料夾跑出了 <strong>2,098 個 commit</strong>。而且它已經不是 workspace 了。</p>
+<h2 id="它從出生那天就不-naive">它從出生那天就不 naive</h2>
+<p><code>git init</code> 打下去的時候是 <strong>2026-02-22</strong>，commit <code>ea63448</code>，subject 寫 <em>“initial commit — workspace under version control”</em>。那個 commit 裡面已經有 <code>AGENTS.md</code>、<code>MEMORY.md</code>（316 行）、<code>SOUL.md</code>、<code>IDENTITY.md</code>、<code>HEARTBEAT.md</code>、<code>memory/</code> 下一整棵財務/專案/生活年表的筆記樹。</p>
+<p><strong>git 的 day 0 已經是系統的 day N</strong>。scratch dir 的階段根本沒進 git，是我在 git 外面跑了一陣子、受不了每週重建兩次記憶之後，才決定要把它放進版本控制。隔天（2026-02-23）的第二個 commit 直接就是 <code>feat: add system-scanner skill</code>，修的是自動 heartbeat 已經發現的第一個 bug。</p>
+<h2 id="三月的失控加速">三月的失控加速</h2>
+<p>我沒預期它會這樣長。</p>
+<ul>
+<li><strong>Feb 22 → Apr 23</strong>，六十一天</li>
+<li><strong>2,098 個 commit</strong></li>
+<li>三月單月 <strong>1,542 個</strong>，平均 ~50/day</li>
+<li>最猛的 10 天是 3/10–3/20，<strong>592 個 commit</strong>，59/day</li>
+</ul>
+<p>這裡面有一大部分是 heartbeat job 把新記憶、新 schedule auto-commit 進來（單 <code>heartbeat</code> 相關就 ~307 個），但 skills / autodidact / memory / mailbox 的功能性 commit 也接近一千。三月那段沒有安靜期——連續 31 天的高輸出，沒有週末。</p>
+<h2 id="轉折點是那一天的那個-commit">轉折點是那一天的那個 commit</h2>
+<p>回頭去找，workspace 變成系統的分水嶺是 <strong>2026-02-26，commit <code>439f6b8</code></strong>：</p>
+<blockquote>
+<p>feat: autodidact system — self-directed learning skill, values, goals, knowledge graph</p>
+</blockquote>
+<p>那天 little-leo 進來了一個 <strong>autodidact loop</strong>——每 30 分鐘跑一次，有階段（learn / build / plan / reflect），有 task queue，有自己的 values 跟 goals。在那之前它是「OpenClaw 放東西的地方」；在那之後它是「有自己目標、會自己推進的系統」。</p>
+<p>commit log 之後 <strong>612 個 commit</strong> 觸到 autodidact，是全 repo 最大的一條主題線。其他都是支架——boot budget 是為了讓它啟動得快、mailbox 是為了讓它跨機器、skills framework 是為了它的工具管理。autodidact 是軸，其他都是繞著它長出來的。</p>
+<h2 id="兩個我沒預期會蓋的東西">兩個我沒預期會蓋的東西</h2>
+<p><strong>Boot budget（Mar 9, <code>ad6849e</code>：533 → 167 lines）。</strong> Anthropic 的 prompt cache TTL 是 5 分鐘。如果我的 agent 每次啟動要讀 500 行 context，cache miss 一次就是又慢又貴。所以我寫了一個 boot budget 系統：靜態規則（<code>AGENTS.md</code>）跟動態內容分家、每個檔案有行數預算（<code>SESSION-STATE.md</code> ≤ 40 行、<code>MEMORY.md</code> 當索引用 ≤ 20 行），heartbeat 會跑 <code>boot_budget_check.py</code> 警告超限。這玩意完全是被 prompt cache 的經濟學逼出來的——不是 best practice，是被現實壓扁的。</p>
+<p><strong>跨機器 mailbox（Mar 1, <code>b2763a7</code>）。</strong> 我有兩台機器：M3 MacBook 跟實驗室桌機。一開始兩邊用 iCloud 同步 memory，打架打得很兇。後來寫了一個 durable mailbox：用編號 ticket（<code>MB-001</code>, <code>MB-002</code>, …）搭 ACK/SLA 協定，兩邊各自有分支（<code>macbook-m3</code> 和 <code>lab-desktop</code>），透過 mailbox 協調再 merge。到今天跑了 7 週、11 張票，還活著。兩個月前我完全沒想到「個人 agent」會需要自己實作一個分散式訊息系統。</p>
+<h2 id="四月收斂分家">四月：收斂，分家</h2>
+<p>三月那股狂熱到四月明顯慢下來——掉到 ~17 commit/day。重點不是產能下降，是工作性質變了：</p>
+<ul>
+<li><strong>Apr 8 的 phase-3 refactor</strong> 把 7 個 skills 從 little-leo 拉出去變成<strong>獨立 repo</strong>——它們已經成熟、被別的地方拿去用了，不需要再跟本體綁在一起</li>
+<li>很多 commit 變成 dead weight cleanup、rename 收尾</li>
+<li>daily schedule 的節奏穩下來</li>
+</ul>
+<p>一個 repo 開始把自己孵出來的小孩推出去，就是它長大的訊號。</p>
+<h2 id="rename外部事件踩了一腳油門">Rename：外部事件踩了一腳油門</h2>
+<p>Rename 本來可以不急。主角換人我心裡有數，但我沒打算四月就動工。</p>
+<p>真正把油門踩到底的是 <strong>2026-04-04</strong>：Anthropic 切斷 Claude Pro/Max 訂閱對第三方 AI 代理框架的無限制存取，理由是 token 套利，前面幾個月累積的一串安全事件（2026/01 的 Claude Code CLI 原始碼外洩、代理被拿去當攻擊面）是背景。OpenClaw 這套框架的整個生態系當天被踢下車。我的個人 agent 原本就建在它上面，沒得選：一邊得把技術棧從「單押一家 provider」改成<strong>路由可切換</strong>（同一個 task，本地能跑就本地跑、雲端哪家便宜往哪送），一邊得把 repo 從「OpenClaw 的 workspace」改名成可以獨立存在的東西，因為它靠的那個品牌跟生態現在是負資產。</p>
+<p>於是四月上旬那週有一次壓縮的 rename sprint：4 個主要 commit、18 個收尾 commit，一天內全部寫完。<code>LITTLE_LEO_*</code> 環境變數上線，同時保留 <code>OPENCLAW_*</code> 當 fallback（<code>9ef26d5</code>）。不能把正在跑的 heartbeat 一刀切，必須熱遷移。</p>
+<p>事情過了回看才發現：這個被迫 rename 把一件我本來會拖延的認知壓縮到一週——<strong>OpenClaw 不再是這個專案的主角，真正的主角是那個本來只是它 workspace 的 little-leo</strong>。OpenClaw 現在是它的客戶之一，不是核心；session 背後的 skills、memory、schedules、cross-machine 協調，全部是 little-leo 的。</p>
+<p>這件事真正的副作用不是 rename，而是它強迫我把整個 agent system <strong>去中心化到 provider</strong>。以前假設 Claude 永遠在，壞起來才會發現一整包東西都綁死在一家訂閱上。現在 little-leo 的 skills 跟 memory 層完全不假設 provider，哪家 API、哪個本地模型，都可以當成底層。</p>
+<h2 id="什麼時候一個資料夾會變成系統">什麼時候一個資料夾會變成系統</h2>
+<p>事後歸納，讓我認出它已經不是 workspace 的那幾件事：</p>
+<ul>
+<li>它有自己的<strong>循環</strong>（autodidact 每 30 分鐘）</li>
+<li>它有<strong>跨機器的協定</strong>（mailbox）</li>
+<li>它有<strong>經濟學</strong>（boot budget——什麼能進 context、什麼要撤）</li>
+<li>它會<strong>孵出 child repo</strong>（phase-3 分家）</li>
+<li>它的 rename 需要<strong>向後相容</strong>，因為它已經在 production 上跑</li>
+<li>它不能<strong>單押一家 provider</strong>——上游一天就能把你的基底打掉</li>
+</ul>
+<p>而我從來沒有哪個禮拜的 roadmap 寫著「我要蓋一個 agent system」。每週只是解當下最煩的那個問題——記憶爆掉、兩台機器打架、啟動慢、tool 太多擠爆 prompt。解完一個，系統就多一塊。兩千個 commit 之後回頭看，它看起來像是被設計出來的，但實際上每一步都是在補漏。</p>
+<p>大概個人 agent 就是這樣長出來的吧。你不是在「設計」它，你是在一邊用一邊擋住它掉下去。等你回過神，workspace 已經不是 workspace 了。</p>
+<h2 id="接下來">接下來</h2>
+<p>little-leo 目前停在 v1 的穩定態：autodidact、mailbox、schedule 三個在背景跑著。接下來兩個比較大的方向是把 skills 的 registry 再收一收（目前 ~33 個、有重疊），還有把 autodidact 的 reflect 階段接上一個更認真的 knowledge graph，讓它不只學新的，還能主動淘汰已經過期的 topic 檔案。</p>
+<p>目前它還是自用，不是給別人跑的東西。但如果你也在寫個人 agent、也在跟 prompt cache 的經濟學打架，我之後會把 boot budget 那一塊單獨寫一篇更深的。</p> </article>  </main> <footer class="site-footer"> <a href="https://github.com/leonardofhy">github</a><a href="https://www.linkedin.com/in/leonardo-fhy/">linkedin</a><a href="/rss.xml">rss</a> </footer> </div> </body></html>
