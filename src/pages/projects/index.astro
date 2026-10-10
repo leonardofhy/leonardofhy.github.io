@@ -1,0 +1,16 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ProjectEntry from '../../components/ProjectEntry.astro';
+
+const projects = (await getCollection('projects', (p) => p.data.draft !== true))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+<BaseLayout title="Projects — Leonardo Foo" description="Things Leonardo Foo Haw Yang has built." active="projects">
+  <h1>Projects</h1>
+  {projects.length === 0 ? (
+    <p class="muted">coming soon</p>
+  ) : (
+    projects.map((p) => <ProjectEntry project={p} />)
+  )}
+</BaseLayout>

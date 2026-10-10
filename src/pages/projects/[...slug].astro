@@ -1,0 +1,33 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { formatDate } from '../../lib/text';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects', (p) => p.data.draft !== true);
+  return projects.map((project) => ({ params: { slug: project.id }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const d = project.data;
+const meta = [d.status, ...d.technologies].join(' · ');
+---
+<BaseLayout title={`${d.title} — Leonardo Foo`} description={d.summary} active="projects">
+  <article>
+    <header>
+      <h1>{d.title}</h1>
+      <p class="muted">
+        <time datetime={d.date.toISOString()}>{formatDate(d.date)}</time>
+        {' · '}{meta}
+        {d.project_url && (
+          <>
+            {' · '}
+            <a href={d.project_url} target="_blank" rel="noopener noreferrer">link</a>
+          </>
+        )}
+      </p>
+    </header>
+    <Content />
+  </article>
+</BaseLayout>
