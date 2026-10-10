@@ -1,196 +1,244 @@
 import { describe, it, expect, beforeAll } from 'vitest';
 import { execSync } from 'node:child_process';
-import { readdirSync, readFileSync, existsSync } from 'node:fs';
+import { readdirSync, readFileSync, existsSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import * as cheerio from 'cheerio';
 
-const run = (cmd: string) => execSync(cmd, { stdio: 'pipe' }).toString();
-
 beforeAll(() => {
-  run('npx astro build --silent');
+  execSync('npx astro build --silent', { stdio: 'pipe' });
 }, 120_000);
 
-function $(path: string) {
-  return cheerio.load(readFileSync(path, 'utf8'));
-}
+const $ = (path: string) => cheerio.load(readFileSync(path, 'utf8'));
 
-function publishedCount(dir: string): number {
+function sourceSlugs(dir: string, { drafts }: { drafts: boolean }): string[] {
   return readdirSync(dir)
     .filter((f) => f.endsWith('.md') || f.endsWith('.mdx'))
     .filter((f) => {
       const text = readFileSync(join(dir, f), 'utf8');
       const fm = text.match(/^---\n([\s\S]*?)\n---/);
-      const block = fm ? fm[1] : '';
-      return !/^draft:\s*true\b/m.test(block);
+      const isDraft = /^draft:\s*true\b/m.test(fm ? fm[1] : '');
+      return drafts ? isDraft : !isDraft;
     })
-    .length;
+    .map((f) => f.replace(/\.mdx?$/, ''));
 }
+
+function walkHtml(dir: string): string[] {
+  const out: string[] = [];
+  for (const name of readdirSync(dir)) {
+    const p = join(dir, name);
+    if (statSync(p).isDirectory()) out.push(...walkHtml(p));
+    else if (name.endsWith('.html')) out.push(p);
+  }
+  return out;
+}
+
+const isRedirectPage = (path: string) =>
+  $(path)('meta[http-equiv="refresh"]').length > 0;
+
+const GITHUB = 'https://github.com/leonardofhy';
+const LINKEDIN = 'https://www.linkedin.com/in/leonardo-fhy/';
 
 describe('build', () => {
   it('produces dist/index.html', () => {
     expect(existsSync('dist/index.html')).toBe(true);
   });
 
-  it('global stylesheet is emitted', () => {
-    const doc = $('dist/index.html');
-    const href = doc('link[rel="stylesheet"]').attr('href');
-    expect(href, 'stylesheet link present').toBeTruthy();
-  });
-});
-
-describe('posts list', () => {
-  it('renders a terminal panel with tail -f title', () => {
-    const doc = $('dist/posts/index.html');
-    expect(doc('.v6-panel-top-l span').text()).toContain('tail -f');
-  });
-
-  it('renders one StreamItem per post source file', () => {
-    const doc = $('dist/posts/index.html');
-    expect(doc('.v6-stream-item').length).toBe(publishedCount('src/content/posts'));
-  });
-
-  it('topbar marks writing active', () => {
-    const doc = $('dist/posts/index.html');
-    expect(doc('.v6-topnav a.active').text().trim()).toBe('writing');
-  });
-});
-
-describe('post detail', () => {
-  const slug = 'building-hugo-blog-lessons-learned';
-  it('renders title, frontmatter card, and body', () => {
-    const doc = $(`dist/posts/${slug}/index.html`);
-    expect(doc('.v6-post-head h1').text()).toBe('Building a Hugo Blog: Lessons Learned');
-    expect(doc('.v6-fm-pre').text()).toContain('title:');
-    expect(doc('.v6-post-body').length).toBe(1);
-  });
-
-  it('renders an ask-about-this-post footer', () => {
-    const doc = $(`dist/posts/${slug}/index.html`);
-    expect(doc('.v6-ask').length).toBe(1);
-  });
-
-  it('renders prev/next nav', () => {
-    const doc = $(`dist/posts/${slug}/index.html`);
-    expect(doc('.v6-post-nav').length).toBe(1);
-  });
-});
-
-describe('projects list', () => {
-  it('renders a card per project', () => {
-    const doc = $('dist/projects/index.html');
-    expect(doc('.v6-proj-card').length).toBe(publishedCount('src/content/projects'));
-  });
-
-  it('featured project shows the star flag', () => {
-    const doc = $('dist/projects/index.html');
-    expect(doc('.v6-proj-card.featured .flag').length).toBeGreaterThan(0);
-  });
-
-  it('build log section exists', () => {
-    const doc = $('dist/projects/index.html');
-    expect(doc('.v6-buildlog').length).toBe(1);
-  });
-});
-
-describe('project detail', () => {
-  const slug = 'ai-blog-assistant';
-  it('renders manifest + body', () => {
-    const doc = $(`dist/projects/${slug}/index.html`);
-    expect(doc('.v6-post-head h1').text()).toBe('AI Blog Assistant');
-    expect(doc('.v6-fm-pre').text()).toContain('stack:');
-    expect(doc('.v6-post-body').length).toBe(1);
-  });
-});
-
-describe('about page', () => {
-  it('renders four TOML section blocks', () => {
-    const doc = $('dist/about/index.html');
-    const heads = doc('.v6-toml-head').toArray().map((el) => doc(el).text());
-    for (const label of ['[identity]', '[what_i_do]', '[off_the_clock]', '[availability]']) {
-      expect(heads.join(' ')).toContain(label);
+  it('ships no JavaScript on any page', () => {
+    for (const f of walkHtml('dist')) {
+      expect($(f)('script').length, `${f} contains <script>`).toBe(0);
     }
   });
 
-  it('renders headline with the accent em', () => {
-    const doc = $('dist/about/index.html');
-    expect(doc('.v6-about-headline em').text()).toContain('Leonardo');
+  it('loads no webfonts', () => {
+    for (const f of walkHtml('dist')) {
+      const html = readFileSync(f, 'utf8');
+      expect(html, `${f} references a webfont`).not.toMatch(/fonts\.googleapis|fonts\.gstatic|@font-face/);
+    }
+    if (existsSync('dist/_astro')) {
+      for (const n of readdirSync('dist/_astro').filter((n) => n.endsWith('.css'))) {
+        expect(readFileSync(join('dist/_astro', n), 'utf8')).not.toMatch(/fonts\.googleapis|@font-face/);
+      }
+    }
+  });
+
+  it('every non-redirect page has a title and description', () => {
+    for (const f of walkHtml('dist')) {
+      if (isRedirectPage(f)) continue;
+      const doc = $(f);
+      expect(doc('title').text().trim(), `${f} title`).not.toBe('');
+      expect(doc('meta[name="description"]').attr('content'), `${f} description`).toBeTruthy();
+    }
   });
 });
 
-describe('resume page', () => {
-  it('renders six git-log rows', () => {
-    const doc = $('dist/resume/index.html');
-    expect(doc('.v6-gitlog-row').length).toBe(6);
+describe('site chrome', () => {
+  it('header has the name link and three nav links with trailing slashes', () => {
+    const doc = $('dist/index.html');
+    expect(doc('header.site-header a.name').attr('href')).toBe('/');
+    const hrefs = doc('header.site-header nav a').toArray().map((a) => doc(a).attr('href'));
+    expect(hrefs).toEqual(['/writing/', '/projects/', '/cv/']);
   });
 
-  it('renders contact/languages/availability TOML blocks and skills rows', () => {
-    const doc = $('dist/resume/index.html');
-    expect(doc('.v6-toml-block').length).toBeGreaterThanOrEqual(3);
-    expect(doc('.v6-skills-row').length).toBe(4);
+  it('marks the active nav link with aria-current', () => {
+    expect($('dist/writing/index.html')('header.site-header nav a[aria-current="page"]').text()).toBe('writing');
+    expect($('dist/projects/index.html')('header.site-header nav a[aria-current="page"]').text()).toBe('projects');
+    expect($('dist/cv/index.html')('header.site-header nav a[aria-current="page"]').text()).toBe('cv');
+    expect($('dist/index.html')('header.site-header nav a[aria-current="page"]').length).toBe(0);
+  });
+
+  it('footer links to github, linkedin and rss', () => {
+    const doc = $('dist/index.html');
+    const hrefs = doc('footer.site-footer a').toArray().map((a) => doc(a).attr('href'));
+    expect(hrefs).toEqual([GITHUB, LINKEDIN, '/rss.xml']);
   });
 });
 
-describe('feeds and archives', () => {
-  it('produces rss.xml that parses as an RSS feed', () => {
+describe('home', () => {
+  it('renders the four sections in order', () => {
+    const doc = $('dist/index.html');
+    const ids = doc('main > section').toArray().map((s) => doc(s).attr('id'));
+    expect(ids).toEqual(['intro', 'selected-work', 'writing', 'contact']);
+  });
+
+  it('intro has the full name in h1', () => {
+    expect($('dist/index.html')('section#intro h1').text()).toContain('Leonardo Foo Haw Yang');
+  });
+
+  it('writing section lists one to three posts', () => {
+    const n = $('dist/index.html')('section#writing ul.post-list li').length;
+    expect(n).toBeGreaterThan(0);
+    expect(n).toBeLessThanOrEqual(3);
+  });
+
+  it('selected work shows featured projects or "coming soon"', () => {
+    const doc = $('dist/index.html');
+    const featured = sourceSlugs('src/content/projects', { drafts: false }).filter((s) =>
+      /^featured:\s*true\b/m.test(readFileSync(`src/content/projects/${s}.md`, 'utf8')),
+    );
+    if (featured.length === 0) {
+      expect(doc('section#selected-work').text()).toContain('coming soon');
+    } else {
+      expect(doc('section#selected-work li').length).toBe(Math.min(3, featured.length));
+    }
+  });
+
+  it('contact section links github and linkedin', () => {
+    const doc = $('dist/index.html');
+    const hrefs = doc('section#contact a').toArray().map((a) => doc(a).attr('href'));
+    expect(hrefs).toContain(GITHUB);
+    expect(hrefs).toContain(LINKEDIN);
+  });
+});
+
+describe('writing', () => {
+  const slugs = sourceSlugs('src/content/posts', { drafts: false });
+
+  it('lists every published post, grouped by year', () => {
+    const doc = $('dist/writing/index.html');
+    expect(doc('section.year h2').length).toBeGreaterThan(0);
+    expect(doc('ul.post-list li').length).toBe(slugs.length);
+    for (const s of slugs) expect(doc(`a[href="/writing/${s}/"]`).length, s).toBe(1);
+  });
+
+  it('every post page has h1, time and body paragraphs', () => {
+    for (const s of slugs) {
+      const doc = $(`dist/writing/${s}/index.html`);
+      expect(doc('article header h1').length, `${s} h1`).toBe(1);
+      expect(doc('article time[datetime]').length, `${s} time`).toBe(1);
+      expect(doc('article p').length, `${s} body`).toBeGreaterThan(1);
+    }
+  });
+
+  it('zh-TW post sets html lang', () => {
+    expect($('dist/writing/little-leo-workspace-to-system/index.html')('html').attr('lang')).toBe('zh-Hant-TW');
+  });
+
+  it('draft posts get no page', () => {
+    for (const s of sourceSlugs('src/content/posts', { drafts: true })) {
+      expect(existsSync(`dist/writing/${s}`), s).toBe(false);
+    }
+  });
+});
+
+describe('projects', () => {
+  const slugs = sourceSlugs('src/content/projects', { drafts: false });
+
+  it('lists every project or says coming soon', () => {
+    const doc = $('dist/projects/index.html');
+    if (slugs.length === 0) {
+      expect(doc('main').text()).toContain('coming soon');
+    } else {
+      expect(doc('section.project').length).toBe(slugs.length);
+    }
+  });
+
+  it('renders a detail page per project', () => {
+    for (const s of slugs) {
+      const doc = $(`dist/projects/${s}/index.html`);
+      expect(doc('article header h1').length, s).toBe(1);
+    }
+  });
+});
+
+describe('cv', () => {
+  it('renders education, experience and skills', () => {
+    const doc = $('dist/cv/index.html');
+    expect(doc('section#education .cv-entry').length).toBe(2);
+    expect(doc('section#experience .cv-entry').length).toBeGreaterThan(0);
+    expect(doc('section#skills dl.skills dt').length).toBe(4);
+  });
+
+  it('contains no placeholder employer or email', () => {
+    const text = $('dist/cv/index.html')('body').text();
+    expect(text).not.toContain('Tech Company');
+    expect(text).not.toContain('example.com');
+    expect(text).not.toContain('leonardo@');
+  });
+});
+
+describe('redirects', () => {
+  const refresh = (file: string) => $(file)('meta[http-equiv="refresh"]').attr('content') ?? '';
+
+  it.each([
+    ['dist/about/index.html', '/'],
+    ['dist/resume/index.html', '/cv/'],
+    ['dist/posts/index.html', '/writing/'],
+  ])('%s redirects to %s', (file, target) => {
+    expect(existsSync(file), file).toBe(true);
+    expect(refresh(file)).toMatch(new RegExp(`url=${target.replace(/\//g, '\\/')}$`));
+  });
+
+  it('old post urls redirect to /writing/<slug>/', () => {
+    for (const s of sourceSlugs('src/content/posts', { drafts: false })) {
+      const file = `dist/posts/${s}/index.html`;
+      expect(existsSync(file), file).toBe(true);
+      expect(refresh(file)).toMatch(new RegExp(`url=/writing/${s}/?$`));
+    }
+  });
+
+  it('tag archives are gone', () => {
+    expect(existsSync('dist/tags')).toBe(false);
+  });
+});
+
+describe('feeds and 404', () => {
+  it('rss.xml has one item per published post, linking to /writing/', () => {
     const xml = readFileSync('dist/rss.xml', 'utf8');
+    const slugs = sourceSlugs('src/content/posts', { drafts: false });
     expect(xml).toContain('<rss');
-    expect(xml).toContain('<channel>');
-    expect(xml).toContain('Leonardo');
+    expect((xml.match(/<item>/g) ?? []).length).toBe(slugs.length);
+    for (const s of slugs) expect(xml).toContain(`/writing/${s}/`);
+    expect(xml).not.toContain('/posts/');
   });
 
-  it('produces index.xml as a Hugo-compat alias', () => {
-    const xml = readFileSync('dist/index.xml', 'utf8');
-    expect(xml).toContain('<rss');
-  });
-
-  it('generates sitemap-index.xml', () => {
+  it('index.xml alias and sitemap exist', () => {
+    expect(readFileSync('dist/index.xml', 'utf8')).toContain('<rss');
     expect(existsSync('dist/sitemap-index.xml')).toBe(true);
   });
 
-  it('generates a tag archive for "hugo"', () => {
-    expect(existsSync('dist/tags/hugo/index.html')).toBe(true);
-    const doc = $('dist/tags/hugo/index.html');
-    expect(doc('.v6-stream-item').length).toBeGreaterThan(0);
-  });
-
-  it('renders a 404 page', () => {
-    expect(existsSync('dist/404.html')).toBe(true);
+  it('404 page has a 404 heading and a link home', () => {
     const doc = $('dist/404.html');
     expect(doc('h1').text()).toMatch(/404/);
+    expect(doc('a[href="/"]').length).toBeGreaterThan(0);
   });
 });
-
-describe('home page (V6 Agent)', () => {
-  it('renders V6 top bar with agent link active', () => {
-    const doc = $('dist/index.html');
-    expect(doc('.v6-topbar').length).toBe(1);
-    expect(doc('.v6-topnav a.active').text().trim()).toBe('agent');
-  });
-
-  it('renders the terminal panel with the session title', () => {
-    const doc = $('dist/index.html');
-    expect(doc('.v6-panel').length).toBe(1);
-    expect(doc('.v6-panel-top-l span').text()).toContain('session · ask-leonardo');
-  });
-
-  it('renders the welcome card + seed conversation', () => {
-    const doc = $('dist/index.html');
-    expect(doc('.v6-welcome-title').text()).toContain("Hi, I'm");
-    expect(doc('.v6-msg-system').length).toBeGreaterThan(0);
-    expect(doc('.v6-msg-user-text').length).toBeGreaterThan(0);
-    expect(doc('.v6-msg-assistant').length).toBeGreaterThan(0);
-  });
-
-  it('renders quick-command chips as anchors', () => {
-    const doc = $('dist/index.html');
-    const chips = doc('.v6-quick-chip');
-    expect(chips.length).toBe(4);
-    expect(chips.toArray().every((el) => el.name === 'a')).toBe(true);
-  });
-
-  it('renders three highlight cards below the panel', () => {
-    const doc = $('dist/index.html');
-    expect(doc('.v6-below-card').length).toBe(3);
-  });
-});
-
