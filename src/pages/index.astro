@@ -12,17 +12,28 @@ const projects = (await getCollection('projects', (p) => p.data.draft !== true &
 const contact = LINKS.filter((l) => l.label !== 'rss');
 ---
 <BaseLayout title={SITE.fullName} description={SITE.description} active="home">
-  <section id="intro">
-    <h1>{SITE.fullName} <span class="muted">{SITE.zhName}</span></h1>
-    <p class="lede">
-      M.S. student in Communication Engineering at National Taiwan University.
-      AI safety, practical evaluation, and organizer of NTUAIS (NTU AI Safety). Taipei.
-    </p>
-    <p>
-      I care about building practical AI systems and advancing responsible AI deployment,
-      and I enjoy connecting people through ideas and community work around AI safety,
-      research, and societal impact.
-    </p>
+  <section id="intro" class="intro">
+    <div>
+      <h1>{SITE.fullName} <span class="muted">{SITE.zhName}</span></h1>
+      <p class="lede">
+        M.S. student in Communication Engineering at National Taiwan University.
+        AI safety, practical evaluation, and organizer of NTUAIS (NTU AI Safety). Taipei.
+      </p>
+      <p>
+        I care about building practical AI systems and advancing responsible AI deployment,
+        and I enjoy connecting people through ideas and community work around AI safety,
+        research, and societal impact.
+      </p>
+    </div>
+    <img
+      class="portrait"
+      src="/images/portrait.jpg"
+      alt={SITE.fullName}
+      width="120"
+      height="120"
+      loading="lazy"
+      decoding="async"
+    />
   </section>
 
   <section id="selected-work">

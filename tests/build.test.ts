@@ -115,6 +115,15 @@ describe('home', () => {
     expect($('dist/index.html')('section#intro h1').text()).toContain('Leonardo Foo Haw Yang');
   });
 
+  it('intro shows the portrait', () => {
+    const img = $('dist/index.html')('section#intro img.portrait');
+    expect(img.length).toBe(1);
+    expect(img.attr('src')).toBe('/images/portrait.jpg');
+    expect(img.attr('alt')).toContain('Leonardo');
+    expect(img.attr('width')).toBeTruthy();
+    expect(img.attr('height')).toBeTruthy();
+  });
+
   it('writing section lists one to three posts', () => {
     const n = $('dist/index.html')('section#writing ul.post-list li').length;
     expect(n).toBeGreaterThan(0);
